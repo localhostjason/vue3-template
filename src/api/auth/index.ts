@@ -1,7 +1,7 @@
-import request from '@/utils/http'
+import { http } from '@/utils/http'
 
 export const login = (data: object): any => {
-  return request({
+  return http.request({
     url: '/auth/login',
     method: 'post',
     data
@@ -9,7 +9,7 @@ export const login = (data: object): any => {
 }
 
 export const getUserInfo = (): any => {
-  return request({
+  return http.request({
     url: `/user/info`,
     method: 'get'
   })
