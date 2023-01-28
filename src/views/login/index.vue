@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left" size="medium">
+    <el-form ref="loginForm" :model="form" :rules="rules" class="login-form" auto-complete="on" label-position="left" size="large">
       <div class="title-container">
         <h3 class="title">
           <span>VUE3</span>
@@ -12,13 +12,13 @@
       <el-form-item prop="username">
         <span class="svg-container"><svg-icon icon-class="user" /></span>
         <el-input
-          v-model="loginForm.username"
+          v-model="form.username"
           :autofocus="isAutoFocus"
           placeholder="请输入用户名"
           name="username"
           type="text"
           auto-complete="on"
-          size="medium"
+          size="large"
         ></el-input>
       </el-form-item>
 
@@ -26,90 +26,74 @@
         <span class="svg-container"><svg-icon icon-class="password" /></span>
         <el-input
           :type="passwordType"
-          v-model="loginForm.password"
+          v-model="form.password"
           placeholder="请输入密码"
           name="password"
           auto-complete="on"
           @keyup.enter.native="handleLogin"
-          size="medium"
+          size="large"
         ></el-input>
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon icon-class="eye" />
-        </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width: 100%; margin-bottom: 30px" @click.native.prevent="handleLogin" size="medium">登录 </el-button>
+      <el-button :loading="loading" type="primary" style="width: 100%; margin-bottom: 30px" @click.native.prevent="handleLogin(loginForm)" size="large"
+        >登录
+      </el-button>
     </el-form>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, reactive, ref } from 'vue'
+import { FormInstance, FormRules } from 'element-plus'
+import { useStore } from 'vuex'
 import { login } from '@/api/auth'
 
-export default {
+export default defineComponent({
   name: 'Login',
-  data() {
-    return {
-      loginForm: {
-        username: 'admin',
-        password: '123'
-      },
-      loginRules: {
-        username: [{ required: true, trigger: 'blur', message: '请输入用户名' }],
-        password: [{ required: true, trigger: 'blur', message: '请输入密码' }]
-      },
-      passwordType: 'password',
-      loading: false,
-      showDialog: false,
-      disabled: true,
-      isAutoFocus: true,
-      redirect: undefined
-    }
-  },
-  watch: {
-    loginForm: {
-      handler(form) {
-        this.disabled = !(form.username && form.password)
-      },
-      deep: true
-    },
-    $route: {
-      handler: function (route) {
-        this.redirect = route.query && route.query.redirect
-      },
-      immediate: true
-    }
-  },
-  methods: {
-    showPwd() {
-      if (this.passwordType === 'password') {
-        this.passwordType = ''
-      } else {
-        this.passwordType = 'password'
-      }
-    },
-    handleLogin() {
-      this.$refs.loginForm.validate(async valid => {
-        if (!valid) return
-        try {
-          this.loading = true
-          const { token } = await login(this.loginForm)
-          this.loading = false
-          await this.$store.dispatch('user/setToken', token)
-        } catch (e) {
-          this.loading = false
-          return
-        }
+  setup() {
+    const store = useStore()
 
-        await this.$router.push({ path: '/' })
-        this.$notify.success({
-          title: '登录成功',
-          message: '欢迎您进入VUE3管理系统'
-        })
+    const form = reactive<object>({
+      username: 'admin',
+      password: '123'
+    })
+
+    const rules = reactive<FormRules>({
+      username: [{ required: true, trigger: 'blur', message: '请输入用户名' }],
+      password: [{ required: true, trigger: 'blur', message: '请输入密码' }]
+    })
+    const loginForm = ref<FormInstance>()
+
+    const passwordType = ref<string>('password')
+    const loading = ref<boolean>(false)
+    const isAutoFocus = ref<boolean>(true)
+
+    const handleLogin = async (formEl: FormInstance | undefined) => {
+      if (!formEl) return
+      await formEl.validate(async (valid, fields) => {
+        if (!valid) return
+
+        loading.value = true
+
+        try {
+          const { token } = await login(form)
+          await store.dispatch('user/setToken', token)
+        } catch (e) {}
+        loading.value = false
       })
     }
+
+    return {
+      form,
+      rules,
+      loginForm,
+      passwordType,
+      loading,
+      isAutoFocus,
+      handleLogin
+    }
   }
-}
+})
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
