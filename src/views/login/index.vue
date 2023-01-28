@@ -25,7 +25,7 @@
       <el-form-item prop="password">
         <span class="svg-container"><svg-icon icon-class="password" /></span>
         <el-input
-          :type="passwordType"
+          type="password"
           v-model="form.password"
           placeholder="请输入密码"
           name="password"
@@ -51,7 +51,7 @@ import { login } from '@/api/auth'
 export default defineComponent({
   name: 'Login',
   setup() {
-    const store = useStore()
+    const store = useStore() //todo vuex 切换 Pinia
 
     const form = reactive<object>({
       username: 'admin',
@@ -87,7 +87,7 @@ export default defineComponent({
       form,
       rules,
       loginForm,
-      passwordType,
+      passwordType, //todo ?
       loading,
       isAutoFocus,
       handleLogin
