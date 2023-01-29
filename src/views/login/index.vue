@@ -1,6 +1,14 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="form" :rules="rules" class="login-form" auto-complete="on" label-position="left" size="large">
+    <el-form
+      ref="loginForm"
+      :model="form"
+      :rules="rules"
+      class="login-form"
+      auto-complete="on"
+      label-position="left"
+      size="large"
+    >
       <div class="title-container">
         <h3 class="title">
           <span>VUE3</span>
@@ -35,7 +43,12 @@
         ></el-input>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width: 100%; margin-bottom: 30px" @click.native.prevent="handleLogin(loginForm)" size="large"
+      <el-button
+        :loading="loading"
+        type="primary"
+        style="width: 100%; margin-bottom: 30px"
+        @click.native.prevent="handleLogin(loginForm)"
+        size="large"
         >登录
       </el-button>
     </el-form>

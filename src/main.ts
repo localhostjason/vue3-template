@@ -30,7 +30,7 @@ import './styles/index.scss'
 
   // 加载 element ui
   app.use(ElementPlus, {
-    size: 'small'
+    size: 'default'
   })
   for (const iconName in ElIcon) {
     app.component(iconName, ElIcon[iconName])
