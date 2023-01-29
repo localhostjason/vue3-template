@@ -23,7 +23,7 @@ import DialogUser from './dialog.vue'
 
 import { reactive, ref } from 'vue'
 
-const dialogUser = ref(null)
+const dialogUser = ref<any>(null)
 
 const state = reactive({
   data: []

@@ -18,7 +18,7 @@ const userRoutes: Array<AppRouteRecordRaw> = [
         component: () => import('@/views/user/index.vue'),
         meta: {
           title: '用户列表',
-          icon: 'user'
+          icon: 'person'
         }
       },
       {
