@@ -1,18 +1,20 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="Tips" width="30%" top="15vh" :before-close="handleClose">
-    <span>This is a message</span>
-    <span>{{ foo }}</span>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="submit"> Confirm </el-button>
-      </span>
-    </template>
-  </el-dialog>
+  <div>
+    <el-dialog v-model="dialogVisible" title="Tips" width="30%" top="15vh" :before-close="handleClose">
+      <span>This is a message</span>
+      <span>{{ foo }}</span>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogVisible = false">Cancel</el-button>
+          <el-button type="primary" @click="submit"> Confirm </el-button>
+        </span>
+      </template>
+    </el-dialog>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { defineComponent, ref, defineExpose, defineEmits } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { ElMessageBox } from 'element-plus'
 import { onMounted } from '@vue/runtime-core'
 
@@ -46,4 +48,8 @@ const props = defineProps({
 })
 </script>
 
-<style scoped></style>
+<style>
+.el-overlay-dialog {
+  top: 100px;
+}
+</style>
