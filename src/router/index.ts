@@ -26,7 +26,7 @@ import UserRoutes from './modules/user'
  * all roles can be accessed
  */
 
-const basicRoutes: Array<AppRouteRecordRaw> = [
+export const basicRoutes: Array<AppRouteRecordRaw> = [
   {
     path: '/',
     name: 'Dash',

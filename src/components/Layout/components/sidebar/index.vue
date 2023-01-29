@@ -33,7 +33,7 @@ export default defineComponent({
     SidebarItem
   },
   setup() {
-    const router = useRouter().options.routes
+    // const router = useRouter().options.routes
 
     const store = useStore()
 
@@ -46,6 +46,8 @@ export default defineComponent({
       }
       return path
     })
+
+    const router = store.getters.permission_routers
 
     return {
       routes: router,

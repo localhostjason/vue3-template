@@ -35,10 +35,16 @@ router.beforeEach(async (to, _from, next) => {
   try {
     const data = await getUserInfo()
     await store.dispatch('user/setUserInfo', data)
-    // todo menu 权限
     // generate accessible routes map based on roles
+    const menus = [] // menus = ["Apis"] // 此menus 可通過接口獲得
+    // generate accessible routes map based on roles
+    const accessRoutes = await store.dispatch('permission/generateRoutes', menus)
+    // dynamically add accessible routes
+    accessRoutes.forEach(val => {
+      router.addRoute(val)
+    })
 
-    next()
+    next({ ...to, replace: true })
   } catch (error) {
     console.log('err:', error)
     // remove token and go to login page to re-login
