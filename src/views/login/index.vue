@@ -18,7 +18,7 @@
       </div>
 
       <el-form-item prop="username">
-        <span class="svg-container"><svg-icon icon-class="user" /></span>
+        <span class="svg-container"><svg-icon icon-class="person" /></span>
         <el-input
           v-model="form.username"
           :autofocus="isAutoFocus"
@@ -59,12 +59,15 @@
 import { defineComponent, reactive, ref } from 'vue'
 import { FormInstance, FormRules } from 'element-plus'
 import { useStore } from 'vuex'
-import { login } from '@/api/auth'
+import { useRouter } from 'vue-router'
+import { getUserInfo, login } from '@/api/auth'
+import { ElNotification } from 'element-plus'
 
 export default defineComponent({
   name: 'Login',
   setup() {
     const store = useStore() //todo vuex 切换 Pinia
+    const router = useRouter()
 
     const form = reactive<object>({
       username: 'admin',
@@ -93,6 +96,12 @@ export default defineComponent({
           await store.dispatch('user/setToken', token)
         } catch (e) {}
         loading.value = false
+
+        await router.push({ path: '/' })
+        ElNotification.success({
+          title: '登录成功',
+          message: '欢迎您进入管理中心'
+        })
       })
     }
 
