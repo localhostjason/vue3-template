@@ -14,7 +14,7 @@
     <el-sub-menu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
       <template #title>
         <svg-icon v-if="item.meta && item.meta.icon" :icon-class="item.meta.icon" />
-        <span v-if="item.meta && item.meta.title && opened" slot="title">{{ item.meta.title }}</span>
+        <span v-if="item.meta && item.meta.title && sidebar.opened" slot="title">{{ item.meta.title }}</span>
       </template>
 
       <template v-for="child in item.children">
@@ -41,8 +41,9 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import AppLink from './Link.vue'
-import { useStore } from 'vuex'
 import { AppRouteRecordRaw } from '@/router/types'
+import { useAppStore } from '@/store/modules/app'
+import { storeToRefs } from 'pinia'
 
 export default defineComponent({
   name: 'SidebarItem',
@@ -62,8 +63,8 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const store = useStore()
-    const opened = store.getters.sidebar.opened
+    const appStore = useAppStore()
+    const { sidebar } = storeToRefs(appStore)
 
     const onlyOneChild = ref<AppRouteRecordRaw>({} as any)
 
@@ -86,7 +87,7 @@ export default defineComponent({
     }
 
     return {
-      opened,
+      sidebar,
       resolvePath,
       onlyOneChild,
       hasOneShowingChild

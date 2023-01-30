@@ -23,9 +23,11 @@
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useStore } from 'vuex'
 import SidebarItem from './SidebarItem.vue'
 import settings from '@/settings'
+import { usePermissionStore } from '@/store/modules/permission'
+import { useAppStore } from '@/store/modules/app'
+import { storeToRefs } from 'pinia'
 
 export default defineComponent({
   name: 'sidebar',
@@ -34,8 +36,11 @@ export default defineComponent({
   },
   setup() {
     // const router = useRouter().options.routes
+    const permissionStore = usePermissionStore()
+    const appStore = useAppStore()
 
-    const store = useStore()
+    const { sidebar } = storeToRefs(appStore)
+    const { routers } = storeToRefs(permissionStore)
 
     const route = useRoute()
 
@@ -47,12 +52,10 @@ export default defineComponent({
       return path
     })
 
-    const router = store.getters.permission_routers
-
     return {
-      routes: router,
+      routes: routers,
       activeMenu,
-      isCollapse: computed(() => !store.getters.sidebar.opened),
+      isCollapse: computed(() => !sidebar.value.opened),
       settings
     }
   }

@@ -1,4 +1,6 @@
 import { asyncRoutes, basicRoutes } from '@/router'
+import { defineStore } from 'pinia'
+import store from '@/store'
 
 /**
  * 匹配 router：name，生成新的router
@@ -45,26 +47,33 @@ const state = {
   addRouters: []
 }
 
-const mutations = {
-  SET_ROUTERS: (state, routes) => {
-    state.addRouters = routes
-    state.routers = basicRoutes.concat(routes)
-  }
+interface PermissionState {
+  routers: any[]
+  addRouters: any[]
 }
 
-const actions = {
-  generateRoutes({ commit }, data) {
-    return new Promise(resolve => {
+export const usePermissionStore = defineStore({
+  id: 'app-permission',
+  state: (): PermissionState => ({
+    routers: [],
+    addRouters: []
+  }),
+  getters: {
+    getPermissionAddRouters(): any[] {
+      return this.addRouters
+    }
+  },
+  actions: {
+    async generateRoutes(data: any) {
       let accessedRoutes = filterAsyncRoutes(asyncRoutes, data)
-      commit('SET_ROUTERS', accessedRoutes)
-      resolve(accessedRoutes)
-    })
+      this.addRouters = accessedRoutes
+      this.routers = basicRoutes.concat(accessedRoutes)
+      return accessedRoutes
+    }
   }
-}
+})
 
-export default {
-  namespaced: true,
-  state,
-  mutations,
-  actions
+// Need to be used outside the setup
+export function usePermissionStoreWithOut() {
+  return usePermissionStore(store)
 }

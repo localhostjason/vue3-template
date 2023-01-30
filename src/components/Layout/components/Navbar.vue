@@ -22,17 +22,17 @@
 </template>
 
 <script lang="ts">
-// @ts-ignore
 import { SwitchButton } from '@element-plus/icons-vue'
 
 import { defineComponent } from 'vue'
 import Breadcrumb from '@/components/BreadCrumb'
 import Hamburger from '@/components/HamBurger'
 import Screenfull from '@/components/Screenfull/index.vue'
-import { useMapGetters } from '../store'
 import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
+import { useUserStore } from '@/store/modules/user'
 import { successMessage } from '@/utils/message'
+import { useAppStore } from '@/store/modules/app'
+import { storeToRefs } from 'pinia'
 
 export default defineComponent({
   name: 'Navbar',
@@ -42,23 +42,24 @@ export default defineComponent({
     Screenfull
   },
   setup() {
-    const store = useStore()
+    const userStore = useUserStore()
+    const appStore = useAppStore()
+    const { sidebar } = storeToRefs(appStore)
     const router = useRouter()
 
     let username = 'admin'
 
     // 退出登录
     const logout = (): void => {
-      store.dispatch('user/removeUserInfo')
+      userStore.removeUserStore()
       router.push('/login')
       successMessage('退出登录成功')
     }
 
     return {
-      // @ts-ignore
-      ...useMapGetters(['sidebar']),
+      sidebar,
       toggleSideBar() {
-        store.dispatch('app/toggleSideBar')
+        appStore.toggleSideBar()
       },
       username,
       logout,

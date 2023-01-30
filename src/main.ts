@@ -19,6 +19,7 @@ import 'normalize.css/normalize.css'
 import './styles/index.scss'
 
 // init
+
 ;(async () => {
   const app = createApp(App)
 

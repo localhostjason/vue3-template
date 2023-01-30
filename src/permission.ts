@@ -1,13 +1,14 @@
-// @ts-ignore
 import NProgress from '@/utils/progress'
 import router from './router'
-import store from '@/store'
 import { getUserInfo } from '@/api/auth'
+import { useUserStoreWithOut } from '@/store/modules/user'
+import { usePermissionStoreWithOut } from '@/store/modules/permission'
 
-// @ts-ignore
 import getPageTitle from '@/utils/get-page-title'
 
 const whiteList = ['/login']
+const permissionStore = usePermissionStoreWithOut()
+const userStore = useUserStoreWithOut()
 
 router.beforeEach(async (to, _from, next) => {
   NProgress.start()
@@ -15,7 +16,9 @@ router.beforeEach(async (to, _from, next) => {
   // set page title
   document.title = getPageTitle(to.meta.title)
 
-  if (!store.getters.token) {
+  const token = userStore.getToken
+  const username = userStore.getUsername
+  if (!token) {
     whiteList.includes(to.path) ? next() : next(`/login`)
     NProgress.done()
     return
@@ -27,18 +30,18 @@ router.beforeEach(async (to, _from, next) => {
     return
   }
 
-  if (store.getters.username) {
+  if (username) {
     next()
     return
   }
 
   try {
-    const data = await getUserInfo()
-    await store.dispatch('user/setUserInfo', data)
+    const { username, role } = await getUserInfo()
+    userStore.setUserInfo(username, role)
     // generate accessible routes map based on roles
     const menus = [] // menus = ["Apis"] // 此menus 可通過接口獲得
     // generate accessible routes map based on roles
-    const accessRoutes = await store.dispatch('permission/generateRoutes', menus)
+    const accessRoutes = await permissionStore.generateRoutes(menus)
     // dynamically add accessible routes
     accessRoutes.forEach(val => {
       router.addRoute(val)
@@ -48,7 +51,7 @@ router.beforeEach(async (to, _from, next) => {
   } catch (error) {
     console.log('err:', error)
     // remove token and go to login page to re-login
-    await store.dispatch('user/removeUserInfo')
+    userStore.removeUserStore()
     next(`/login`)
     NProgress.done()
   }

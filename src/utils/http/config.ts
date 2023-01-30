@@ -1,5 +1,6 @@
 import { AxiosRequestConfig } from 'axios'
 import store from '@/store'
+import { useUserStoreWithOut } from '@/store/modules/user'
 
 const defaultConfig: AxiosRequestConfig = {
   baseURL: process.env.VUE_APP_BASE_API, // api的base_url
@@ -12,9 +13,12 @@ const defaultConfig: AxiosRequestConfig = {
   }
 }
 
+const userStore = useUserStoreWithOut()
+
 const getRequestConfig = (config?: AxiosRequestConfig): AxiosRequestConfig => {
-  if (store.getters.token) {
-    defaultConfig.headers['Authorization'] = `Bearer ${store.getters.token}`
+  const token = userStore.getToken
+  if (token) {
+    defaultConfig.headers['Authorization'] = `Bearer ${token}`
   }
   if (!config) {
     return defaultConfig

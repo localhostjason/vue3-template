@@ -1,51 +1,52 @@
-// @ts-ignore
 import { storageLocal } from '@/utils/storage'
+import { defineStore } from 'pinia'
+import store from '@/store'
+import { usePermissionStore } from '@/store/modules/permission'
 
-const state = {
-  token: storageLocal.getItem('token'),
-  username: null,
-  role: null
+interface UserState {
+  token?: string
+  username?: string
+  role?: string
 }
 
-const mutations = {
-  SET_TOKEN: (state: any, token: string) => {
-    state.token = token
+export const useUserStore = defineStore({
+  id: 'app-user',
+  state: (): UserState => ({
+    token: undefined,
+    username: null,
+    role: null
+  }),
+  getters: {
+    getToken(): string {
+      return this.token || storageLocal.getItem('token')
+    },
+    getUsername(): string {
+      return this.username
+    },
+    getUserRole(): string {
+      return this.role
+    }
   },
-  SET_USERNAME: (state: any, username: string) => {
-    state.username = username
-  },
-  SET_ROLE: (state: any, role: string) => {
-    state.role = role
+  actions: {
+    setToken(token: string) {
+      this.token = token
+      storageLocal.setItem('token', token)
+    },
+    setUserInfo(username: string, role: string) {
+      this.username = username
+      this.role = role
+    },
+    removeUserStore() {
+      this.token = ''
+      this.username = ''
+      this.role = ''
+      storageLocal.clear()
+    }
   }
-}
+})
 
-function removeStore(commit) {
-  commit('SET_TOKEN', '')
-  commit('SET_USERNAME', '')
-  commit('SET_ROLE', '')
 
-  storageLocal.clear()
-}
-
-const actions = {
-  setToken({ commit }, token: string) {
-    storageLocal.setItem('token', token)
-    commit('SET_TOKEN', token)
-  },
-
-  setUserInfo({ commit }, { username, role }) {
-    commit('SET_USERNAME', username)
-    commit('SET_ROLE', role)
-  },
-
-  removeUserInfo({ commit }) {
-    removeStore(commit)
-  }
-}
-
-export default {
-  namespaced: true,
-  state,
-  mutations,
-  actions
+// Need to be used outside the setup
+export function useUserStoreWithOut() {
+  return useUserStore(store)
 }

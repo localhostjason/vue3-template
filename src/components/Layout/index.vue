@@ -15,9 +15,9 @@
 <script lang="ts">
 import { Navbar, AppMain, Sidebar } from './components'
 import { ref, reactive, computed, toRefs, watchEffect, onMounted, onBeforeMount } from 'vue'
-import { useStore } from 'vuex'
 import { useEventListener } from '@vueuse/core'
 import settings from '@/settings'
+import {useAppStore} from '@/store/modules/app'
 
 interface setInter {
   sidebar: any
@@ -33,17 +33,17 @@ export default {
     Sidebar
   },
   setup() {
-    const store = useStore()
+    const appStore = useAppStore()
 
     const WIDTH = ref(992)
 
     const set: setInter = reactive({
       sidebar: computed(() => {
-        return store.state.app.sidebar
+        return appStore.sidebar
       }),
 
       device: computed(() => {
-        return store.state.app.device
+        return appStore.device
       }),
 
       classes: computed(() => {
@@ -58,12 +58,12 @@ export default {
 
     watchEffect(() => {
       if (set.device === 'mobile' && !set.sidebar.opened) {
-        store.dispatch('app/closeSideBar', { withoutAnimation: false })
+        appStore.closeSideBar(false)
       }
     })
 
     const handleClickOutside = () => {
-      store.dispatch('app/closeSideBar', { withoutAnimation: false })
+      appStore.closeSideBar(false)
     }
 
     const $_isMobile = () => {
@@ -74,10 +74,10 @@ export default {
     const $_resizeHandler = () => {
       if (!document.hidden) {
         const isMobile = $_isMobile()
-        store.dispatch('app/toggleDevice', isMobile ? 'mobile' : 'desktop')
+        appStore.toggleDevice(isMobile ? 'mobile' : 'desktop')
 
         if (isMobile) {
-          store.dispatch('app/closeSideBar', { withoutAnimation: true })
+          appStore.closeSideBar(true)
         }
       }
     }
@@ -85,8 +85,8 @@ export default {
     onMounted(() => {
       const isMobile = $_isMobile()
       if (isMobile) {
-        store.dispatch('app/toggleDevice', 'mobile')
-        store.dispatch('app/closeSideBar', { withoutAnimation: true })
+        appStore.toggleDevice('mobile')
+        appStore.closeSideBar(true)
       }
     })
 

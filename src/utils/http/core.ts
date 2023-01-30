@@ -5,8 +5,11 @@ import { getRequestConfig } from './config'
 import store from '@/store'
 import { trimArgs } from '@/utils/http/utils'
 import router from '@/router'
+import { useUserStoreWithOut } from '@/store/modules/user'
 
 export type RequestMethods = Extract<Method, 'get' | 'post' | 'put' | 'delete' | 'patch' | 'option' | 'head'>
+
+const userStore = useUserStoreWithOut()
 
 class AxiosHttp {
   constructor() {
@@ -19,8 +22,9 @@ class AxiosHttp {
   private httpInterceptorsRequest(): void {
     AxiosHttp.axiosInstance.interceptors.request.use(
       config => {
-        if (store.getters.token) {
-          config.headers['Authorization'] = `Bearer ` + store.getters.token
+        const token = userStore.getToken
+        if (token) {
+          config.headers['Authorization'] = `Bearer ` + token
         }
 
         // trim 参数
@@ -94,7 +98,7 @@ class AxiosHttp {
         })
 
         if (status === 401) {
-          await store.dispatch('user/removeUserInfo')
+          await userStore.removeUserStore()
           await router.push({ path: '/login' })
         }
         return Promise.reject(error)

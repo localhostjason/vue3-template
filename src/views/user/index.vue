@@ -63,7 +63,6 @@ const submitTest = () => {
     name: 'AA',
     address: 'aaa'
   })
-  console.log(222, state.data)
 }
 </script>
 

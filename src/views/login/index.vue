@@ -58,15 +58,15 @@
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue'
 import { FormInstance, FormRules } from 'element-plus'
-import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { getUserInfo, login } from '@/api/auth'
 import { ElNotification } from 'element-plus'
+import { useUserStore } from '@/store/modules/user'
 
 export default defineComponent({
   name: 'Login',
   setup() {
-    const store = useStore() //todo vuex 切换 Pinia
+    const userStore = useUserStore()
     const router = useRouter()
 
     const form = reactive<object>({
@@ -93,7 +93,7 @@ export default defineComponent({
 
         try {
           const { token } = await login(form)
-          await store.dispatch('user/setToken', token)
+          userStore.setToken(token)
         } catch (e) {}
         loading.value = false
 
