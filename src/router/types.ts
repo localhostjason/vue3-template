@@ -2,13 +2,17 @@
 import { RouteRecordRaw } from 'vue-router'
 import { defineComponent } from 'vue'
 
-export type Component<T extends any = any> = ReturnType<typeof defineComponent> | (() => Promise<typeof import('*.vue')>) | (() => Promise<T>)
+export type Component<T extends any = any> =
+  ReturnType<typeof defineComponent>
+  | (() => Promise<typeof import('*.vue')>)
+  | (() => Promise<T>)
 
 export interface RouteMeta {
   // title
   title: string
   // icon on tab
   icon?: string
+  affix?: boolean
 }
 
 // @ts-ignore

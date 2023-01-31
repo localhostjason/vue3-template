@@ -39,7 +39,8 @@ export const basicRoutes: Array<AppRouteRecordRaw> = [
         component: () => import('@/views/dashboard/index.vue'),
         meta: {
           title: '概览',
-          icon: 'home'
+          icon: 'home',
+          affix: true
         }
       }
     ]
@@ -85,3 +86,22 @@ const router = createRouter({
 })
 
 export default router
+
+// 白名单应该包含基本静态路由
+const WHITE_NAME_LIST: string[] = []
+const getRouteNames = (array: any[]) =>
+  array.forEach(item => {
+    WHITE_NAME_LIST.push(item.name)
+    getRouteNames(item.children || [])
+  })
+getRouteNames(basicRoutes)
+
+// reset router
+export function resetRouter() {
+  router.getRoutes().forEach(route => {
+    const { name } = route
+    if (name && !WHITE_NAME_LIST.includes(name as string)) {
+      router.hasRoute(name) && router.removeRoute(name)
+    }
+  })
+}

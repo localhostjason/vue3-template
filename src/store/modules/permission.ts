@@ -64,7 +64,7 @@ export const usePermissionStore = defineStore({
     }
   },
   actions: {
-    async generateRoutes(data: any) {
+    generateRoutes(data: any) {
       let accessedRoutes = filterAsyncRoutes(asyncRoutes, data)
       this.addRouters = accessedRoutes
       this.routers = basicRoutes.concat(accessedRoutes)

@@ -6,6 +6,8 @@
     <sidebar class="sidebar-container"></sidebar>
     <div class="main-container">
       <navbar />
+
+      <tags-view></tags-view>
       <!-- 主体内容 -->
       <app-main />
     </div>
@@ -13,11 +15,11 @@
 </template>
 
 <script lang="ts">
-import { Navbar, AppMain, Sidebar } from './components'
+import { Navbar, AppMain, Sidebar, TagsView } from './components'
 import { ref, reactive, computed, toRefs, watchEffect, onMounted, onBeforeMount } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import settings from '@/settings'
-import {useAppStore} from '@/store/modules/app'
+import { useAppStore } from '@/store/modules/app'
 
 interface setInter {
   sidebar: any
@@ -28,6 +30,7 @@ interface setInter {
 export default {
   name: 'layout',
   components: {
+    TagsView,
     Navbar,
     AppMain,
     Sidebar

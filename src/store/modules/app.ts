@@ -9,22 +9,6 @@ interface AppState {
   device: string
 }
 
-function getStateStatus(): boolean {
-  const data = storageLocal.getItem('sidebarStatus')
-  if (data === null) {
-    return true
-  }
-  return Boolean(Number(data))
-}
-
-const state = {
-  sidebar: {
-    opened: getStateStatus(),
-    withoutAnimation: false
-  },
-  device: 'desktop'
-}
-
 function getSideBarOpened(): boolean {
   const data = storageLocal.getItem('sidebarStatus')
   if (data === null) {

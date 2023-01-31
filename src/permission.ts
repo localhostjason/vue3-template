@@ -1,5 +1,5 @@
 import NProgress from '@/utils/progress'
-import router from './router'
+import router, { resetRouter } from './router'
 import { getUserInfo } from '@/api/auth'
 import { useUserStoreWithOut } from '@/store/modules/user'
 import { usePermissionStoreWithOut } from '@/store/modules/permission'
@@ -41,8 +41,9 @@ router.beforeEach(async (to, _from, next) => {
     // generate accessible routes map based on roles
     const menus = [] // menus = ["Apis"] // 此menus 可通過接口獲得
     // generate accessible routes map based on roles
-    const accessRoutes = await permissionStore.generateRoutes(menus)
+    const accessRoutes = permissionStore.generateRoutes(menus)
     // dynamically add accessible routes
+    resetRouter()
     accessRoutes.forEach(val => {
       router.addRoute(val)
     })
