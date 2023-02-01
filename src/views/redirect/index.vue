@@ -1,12 +1,30 @@
-<script>
-export default {
-  beforeCreate() {
-    const { params, query } = this.$route
-    const { path } = params
-    this.$router.replace({ path: '/' + path, query })
-  },
-  render: function (h) {
-    return h() // avoid warning message
-  }
+<template>
+  <div></div>
+</template>
+<script lang="ts" setup>
+import { unref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const { currentRoute, replace } = useRouter()
+
+const { params, query } = unref(currentRoute)
+const { path, _redirect_type = 'path' } = params
+
+Reflect.deleteProperty(params, '_redirect_type')
+Reflect.deleteProperty(params, 'path')
+
+const _path = Array.isArray(path) ? path.join('/') : path
+
+if (_redirect_type === 'name') {
+  replace({
+    name: _path,
+    query,
+    params
+  })
+} else {
+  replace({
+    path: _path.startsWith('/') ? _path : '/' + _path,
+    query
+  })
 }
 </script>

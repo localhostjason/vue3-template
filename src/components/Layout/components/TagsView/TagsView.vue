@@ -1,16 +1,6 @@
 <template>
-  <div id="tags-view-container" class="tags-view-container">
+  <div ref="tagsViewRef" id="tags-view-container" class="tags-view-container">
     <scroll-pane ref="scrollPane" class="tags-view-wrapper">
-      <!--      <router-link
-              v-for="tag in visitedViews"
-              ref="tagRef"
-              :key="tag.path"
-              :class="isActive(tag) ? 'active' : ''"
-              :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
-              class="tags-view-item"
-              @click.middle.native="closeSelectedTag(tag)"
-              @contextmenu.prevent.native="openMenu(tag, $event)"
-            >-->
       <!-- 暂时无右击行为  -->
       <router-link
         v-for="tag in visitedViews"
@@ -20,13 +10,14 @@
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
         class="tags-view-item"
         @click.middle.native="closeSelectedTag(tag)"
+        @contextmenu.prevent.native="openMenu(tag, $event)"
       >
         {{ tag.title }}
 
         <Close
           v-if="!tag.meta.affix"
           class="el-icon-close"
-          style="width: 1em; height: 1em; margin-right: 8px; position: relative; top: 3px; left: 5px"
+          style="width: 10px; height: 10px; margin-right: 2px; position: relative; top: 3px; left: 5px"
           @click.prevent.stop="closeSelectedTag(tag)"
         />
       </router-link>
@@ -56,7 +47,8 @@ const router = useRouter()
 const tagsStore = useTagsStore()
 const permissionStore = usePermissionStore()
 
-const visitedViews = tagsStore.visitedViews
+const { visitedViews } = storeToRefs(tagsStore)
+
 const routes = permissionStore.routers
 
 const visible = ref<boolean>(false)
@@ -67,6 +59,7 @@ let affixTags = ref<any[]>([])
 
 const contextmenuRef = ref<HTMLElement | null>(null)
 const tagRef = ref(null)
+const tagsViewRef = ref(null)
 const scrollPane = ref(null)
 
 onMounted(() => {
@@ -83,7 +76,7 @@ watch(
 )
 
 watch(
-  () => visible,
+  () => visible.value,
   value => {
     if (value) {
       document.body.addEventListener('click', closeMenu)
@@ -139,7 +132,7 @@ const moveToCurrentTag = () => {
     for (const tag of tagRef.value) {
       if (tag.to.path === route.path) {
         scrollPane.value.moveToTarget(tag)
-        // when query is different then update
+        // when query is different , then update
         if (tag.to.fullPath !== route.fullPath) {
           tagsStore.updateVisitedView(route)
         }
@@ -148,7 +141,14 @@ const moveToCurrentTag = () => {
     }
   })
 }
-const refreshSelectedTag = async view => {}
+const refreshSelectedTag = async view => {
+  const { fullPath } = view
+  await nextTick(() => {
+    router.replace({
+      path: '/redirect' + fullPath
+    })
+  })
+}
 
 const closeSelectedTag = view => {
   const data = tagsStore.delView(view)
@@ -159,10 +159,22 @@ const closeSelectedTag = view => {
 }
 
 // 右击：关闭其他
-const closeOthersTags = () => {}
+const closeOthersTags = () => {
+  router.push(selectedTag.value)
+  tagsStore.delOthersViews(selectedTag.value)
+
+  moveToCurrentTag()
+}
 
 // 右击：关闭所有
-const closeAllTags = view => {}
+const closeAllTags = async view => {
+  const data = await tagsStore.delAllViews()
+  const views = data['visitedViews']
+  if (affixTags.value.some(tag => tag.path === view.path)) {
+    return
+  }
+  toLastView(views, view)
+}
 
 const toLastView = (visitedViews, view) => {
   const latestView = visitedViews.slice(-1)[0]
@@ -181,19 +193,22 @@ const toLastView = (visitedViews, view) => {
 }
 
 const openMenu = (tag, e) => {
-  // const menuMinWidth = 105
-  // const parentNode = contextmenuRef.value?.parentNode as HTMLElement
-  //
-  // let _left = e.clientX - parentNode.offsetLeft - 5
-  // let _top = e.clientY - parentNode.offsetTop + 10
-  // if(e.clientX + contextmenuRef.value.offsetWidth > document.body.offsetWidth) {
-  //   _left = _left - contextmenuRef.value.offsetWidth + 15
-  // }
-  //
-  // top.value = _top + 8
-  // left.value = _left - 200
-  // visible.value = true
-  // selectedTag.value = tag
+  const menuMinWidth = 105
+
+  const offsetLeft = tagsViewRef.value.getBoundingClientRect().left
+  const offsetWidth = tagsViewRef.value.offsetWidth
+  const maxLeft = offsetWidth - menuMinWidth
+  const left_ = e.clientX - offsetLeft + 15
+
+  if (left_ > maxLeft) {
+    left.value = maxLeft
+  } else {
+    left.value = left_
+  }
+
+  top.value = e.clientY - 37
+  visible.value = true
+  selectedTag.value = tag
 }
 const closeMenu = () => {
   visible.value = false
