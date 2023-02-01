@@ -1,37 +1,41 @@
 import { ElMessage } from 'element-plus'
 
 // 消息
-const Message = (message: string): any => {
+const Message = (message: string, duration: number = 3000): any => {
   return ElMessage({
     showClose: true,
-    message
+    message,
+    duration
   })
 }
 
 // 成功
-const successMessage = (message: string): any => {
+const successMessage = (message: string,duration: number = 3000): any => {
   return ElMessage({
     showClose: true,
     message,
-    type: 'success'
+    type: 'success',
+    duration
   })
 }
 
 // 警告
-const warnMessage = (message: string): any => {
+const warnMessage = (message: string,duration: number = 3000): any => {
   return ElMessage({
     showClose: true,
     message,
-    type: 'warning'
+    type: 'warning',
+    duration
   })
 }
 
 // 失败
-const errorMessage = (message: string): any => {
+const errorMessage = (message: string,duration: number = 3000): any => {
   return ElMessage({
     showClose: true,
     message,
-    type: 'error'
+    type: 'error',
+    duration
   })
 }
 

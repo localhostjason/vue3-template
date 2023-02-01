@@ -4,7 +4,7 @@ import { getUserInfo } from '@/api/auth'
 import { useUserStoreWithOut } from '@/store/modules/user'
 import { usePermissionStoreWithOut } from '@/store/modules/permission'
 
-import getPageTitle from '@/utils/get-page-title'
+import { getPageTitle } from '@/utils/get-page-title'
 
 const whiteList = ['/login']
 const permissionStore = usePermissionStoreWithOut()

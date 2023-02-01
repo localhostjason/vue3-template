@@ -1,7 +1,6 @@
 import { storageLocal } from '@/utils/storage'
 import { defineStore } from 'pinia'
 import store from '@/store'
-import { usePermissionStore } from '@/store/modules/permission'
 
 interface UserState {
   token?: string
@@ -44,7 +43,6 @@ export const useUserStore = defineStore({
     }
   }
 })
-
 
 // Need to be used outside the setup
 export function useUserStoreWithOut() {

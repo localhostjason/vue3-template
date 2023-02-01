@@ -1,9 +1,9 @@
 import Axios, { AxiosRequestConfig, Method, CancelTokenStatic, AxiosInstance, Canceler } from 'axios'
 import { ElMessage, ElNotification } from 'element-plus'
+import { errorMessage } from '@/utils/message'
 
 import { getRequestConfig } from './config'
-import store from '@/store'
-import { trimArgs } from '@/utils/http/utils'
+import { trimArgs, httpResponseMessageByCode } from '@/utils/http/utils'
 import router from '@/router'
 import { useUserStoreWithOut } from '@/store/modules/user'
 
@@ -24,9 +24,8 @@ class AxiosHttp {
       config => {
         const token = userStore.getToken
         if (token) {
-          config.headers['Authorization'] = `Bearer ` + token
+          config.headers['Authorization'] = `Bearer ${token}`
         }
-
         // trim 参数
         return trimArgs(config)
       },
@@ -45,57 +44,14 @@ class AxiosHttp {
         try {
           status = error.response.status
         } catch (e) {
-          ElMessage({
-            message: '连接不上后台。已超时',
-            type: 'error',
-            duration: 3 * 1000
-          })
-          return Promise.reject('连接不上后台。已超时')
+          const msg = '连接不上后台，已超时！'
+          errorMessage(msg)
+          return Promise.reject(msg)
         }
 
-        const errMsg = error.response.data.msg
-        const errCode = error.response.data.code || ''
-
-        let message
-        // 根据自己业务 拦截error
-        switch (status) {
-          case 403:
-            message = '权限不足'
-            break
-
-          case 404:
-            message = '相关的资源不存在'
-            break
-
-          case 401:
-            message = errMsg
-            break
-
-          case 422:
-            message = errMsg
-            break
-
-          default:
-            message = '服务器错误'
-        }
-
-        // 一些警告类型信息，不影响流程
-        if (errCode === 'E_TOOL') {
-          ElNotification({
-            title: '警告',
-            dangerouslyUseHTMLString: true,
-            message: message,
-            type: 'warning',
-            duration: 0
-          })
-          return
-        }
-
-        ElMessage({
-          message: `${message}`,
-          type: 'error',
-          duration: 3 * 1000
-        })
+        const { msg, code } = error.response.data
+        const message = httpResponseMessageByCode(status, msg)
+        errorMessage(message)
 
         if (status === 401) {
           await userStore.removeUserStore()

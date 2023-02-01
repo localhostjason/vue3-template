@@ -2,10 +2,6 @@
   <router-view></router-view>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-class-component'
-
-export default class App extends Vue {}
-</script>
+<script lang="ts" setup></script>
 
 <style lang="scss"></style>

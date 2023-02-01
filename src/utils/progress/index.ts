@@ -1,4 +1,3 @@
-// @ts-ignore
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 

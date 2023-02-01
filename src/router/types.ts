@@ -1,4 +1,3 @@
-// @ts-ignore
 import { RouteRecordRaw } from 'vue-router'
 import { defineComponent } from 'vue'
 

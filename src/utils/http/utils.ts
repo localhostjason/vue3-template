@@ -32,3 +32,32 @@ const trimArgs = (config: object): object => {
 }
 
 export { trimArgs }
+
+export const httpResponseMessageByCode = (code: number, errMsg: string): string => {
+  // 根据自己业务 拦截error
+  let message = ''
+  switch (code) {
+    case 403:
+      message = '权限不足'
+      break
+
+    case 404:
+      message = '相关的资源不存在'
+      break
+
+    case 401:
+      message = errMsg
+      break
+
+    case 422:
+      message = errMsg
+      break
+
+    case 500:
+      message = '服务器错误'
+      break
+    default:
+      message = '未知错误'
+  }
+  return message
+}
