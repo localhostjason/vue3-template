@@ -131,7 +131,7 @@ const moveToCurrentTag = () => {
   nextTick(() => {
     for (const tag of tagRef.value) {
       if (tag.to.path === route.path) {
-        scrollPane.value.moveToTarget(tag)
+        scrollPane.value.moveToTarget(tag, tagRef.value)
         // when query is different , then update
         if (tag.to.fullPath !== route.fullPath) {
           tagsStore.updateVisitedView(route)

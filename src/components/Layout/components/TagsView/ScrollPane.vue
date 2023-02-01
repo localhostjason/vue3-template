@@ -25,11 +25,45 @@ const handleScroll = e => {
   $scrollWrapper.scrollLeft = $scrollWrapper.scrollLeft + eventDelta / 4
 }
 
-// todo
-const moveToTarget = currentTag => {
+const moveToTarget = (currentTag, tagList) => {
   const $container = scrollContainer.value
   const $containerWidth = $container.offsetWidth
   const $scrollWrapper = scrollWrapper.value
+
+  if (!tagList.length) {
+    return
+  }
+
+  let firstTag = null
+  let lastTag = null
+
+  // find first tag and last tag
+  if (tagList.length > 0) {
+    firstTag = tagList[0]
+    lastTag = tagList[tagList.length - 1]
+  }
+
+  if (firstTag && firstTag.to.path === currentTag.to.path) {
+    $scrollWrapper.scrollLeft = 0
+  } else if (lastTag && lastTag.to.path === currentTag.to.path) {
+    $scrollWrapper.scrollLeft = $scrollWrapper.scrollWidth - $containerWidth
+  } else {
+    const currentIndex = tagList.findIndex(item => item.to.path === currentTag.to.path)
+    const prevTag = tagList[currentIndex - 1]
+    const nextTag = tagList[currentIndex + 1]
+
+    // the tag's offsetLeft after of nextTag
+    const afterNextTagOffsetLeft = nextTag.$el.offsetLeft + nextTag.$el.offsetWidth + tagAndTagSpacing
+
+    // the tag's offsetLeft before of prevTag
+    const beforePrevTagOffsetLeft = prevTag.$el.offsetLeft - tagAndTagSpacing
+
+    if (afterNextTagOffsetLeft > $scrollWrapper.scrollLeft + $containerWidth) {
+      $scrollWrapper.scrollLeft = afterNextTagOffsetLeft - $containerWidth
+    } else if (beforePrevTagOffsetLeft < $scrollWrapper.scrollLeft) {
+      $scrollWrapper.scrollLeft = beforePrevTagOffsetLeft
+    }
+  }
 }
 
 defineExpose({
