@@ -41,4 +41,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ![p1](./example/image-20230130111944216.png)
 
-![home2](./example/image-20230130112001897.png)
+![home2](./example/img.png)
