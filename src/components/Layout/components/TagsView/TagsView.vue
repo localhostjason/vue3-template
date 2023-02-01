@@ -49,7 +49,8 @@ const permissionStore = usePermissionStore()
 
 const { visitedViews } = storeToRefs(tagsStore)
 
-const routes = permissionStore.routers
+const { routers } = storeToRefs(permissionStore)
+const routes = routers.value
 
 const visible = ref<boolean>(false)
 const top = ref<number>(0)
