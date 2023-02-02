@@ -26,6 +26,11 @@ export const useAppStore = defineStore({
     },
     device: 'desktop'
   }),
+  getters: {
+    getSidebarOpened() {
+      return this.sidebar.opened
+    }
+  },
   actions: {
     toggleSideBar(): void {
       this.sidebar.opened = !this.sidebar.opened
