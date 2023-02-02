@@ -15,18 +15,18 @@ const userRoutes: Array<AppRouteRecordRaw> = [
       {
         path: 'list',
         name: 'UserList',
-        component: () => import('@/views/user/index.vue'),
+        component: () => import('@/views/user/list/index.vue'),
         meta: {
           title: '用户列表',
           icon: 'person'
         }
       },
       {
-        path: 'list2',
-        name: 'UserList2',
-        component: () => import('@/views/user/index.vue'),
+        path: 'test',
+        name: 'UserTest',
+        component: () => import('@/views/user/test/index.vue'),
         meta: {
-          title: '用户列表2',
+          title: '测试',
           icon: 'list'
         }
       },
