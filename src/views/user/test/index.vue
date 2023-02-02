@@ -10,8 +10,7 @@
 import PanelTitle from '@/components/PanelTitle/index.vue'
 import { useECharts } from '@/utils/echarts/useEcharts'
 
-import { reactive, ref, Ref, onMounted } from 'vue'
-import { getLineData } from './data'
+import { ref, Ref, onMounted } from 'vue'
 
 defineProps({
   width: {
@@ -20,99 +19,31 @@ defineProps({
   },
   height: {
     type: String as PropType<string>,
-    default: 'calc(100vh - 78px)'
+    default: '500px'
   }
 })
 
 const chartRef = ref<HTMLDivElement | null>(null)
 const { setOptions, echarts } = useECharts(chartRef as Ref<HTMLDivElement>)
-const { barData, lineData, category } = getLineData
 
 onMounted(() => {
   setOptions({
-    backgroundColor: '#0f375f',
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'shadow',
-        label: {
-          show: true,
-          backgroundColor: '#333'
-        }
-      }
+    title: {
+      text: 'ECharts 入门示例'
     },
+    tooltip: {},
     legend: {
-      data: ['line', 'bar'],
-      textStyle: {
-        color: '#ccc'
-      }
+      data: ['销量']
     },
     xAxis: {
-      data: category,
-      axisLine: {
-        lineStyle: {
-          color: '#ccc'
-        }
-      }
+      data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
     },
-    yAxis: {
-      splitLine: { show: false },
-      axisLine: {
-        lineStyle: {
-          color: '#ccc'
-        }
-      }
-    },
+    yAxis: {},
     series: [
       {
-        name: 'line',
-        type: 'line',
-        smooth: true,
-        showAllSymbol: 'auto',
-        symbol: 'emptyCircle',
-        symbolSize: 15,
-        data: lineData
-      },
-      {
-        name: 'bar',
+        name: '销量',
         type: 'bar',
-        barWidth: 10,
-        itemStyle: {
-          borderRadius: 5,
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: '#14c8d4' },
-            { offset: 1, color: '#43eec6' }
-          ])
-        },
-        data: barData
-      },
-      {
-        name: 'line',
-        type: 'bar',
-        barGap: '-100%',
-        barWidth: 10,
-        itemStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: 'rgba(20,200,212,0.5)' },
-            { offset: 0.2, color: 'rgba(20,200,212,0.2)' },
-            { offset: 1, color: 'rgba(20,200,212,0)' }
-          ])
-        },
-        z: -12,
-        data: lineData
-      },
-      {
-        name: 'dotted',
-        type: 'pictorialBar',
-        symbol: 'rect',
-        itemStyle: {
-          color: '#0f375f'
-        },
-        symbolRepeat: true,
-        symbolSize: [12, 4],
-        symbolMargin: 1,
-        z: -10,
-        data: lineData
+        data: [5, 20, 36, 10, 10, 20]
       }
     ]
   })
