@@ -62,7 +62,7 @@ class AxiosHttp {
     )
   }
 
-  public request(data): any {
+  public request<T = any>(data): Promise<T> {
     return new Promise((resolve, reject) => {
       AxiosHttp.axiosInstance
         .request(data)

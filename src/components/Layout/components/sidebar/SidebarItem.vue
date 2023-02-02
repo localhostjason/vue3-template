@@ -17,7 +17,7 @@
         <span v-if="item.meta && item.meta.title && sidebar.opened" slot="title">{{ item.meta.title }}</span>
       </template>
 
-      <template v-for="child in item.children">
+      <template v-for="child in item.children.filter(v => !v.hidden)">
         <sidebar-item
           v-if="child.children && child.children.length > 0"
           :is-nest="true"

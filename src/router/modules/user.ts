@@ -29,6 +29,15 @@ const userRoutes: Array<AppRouteRecordRaw> = [
           title: '用户列表2',
           icon: 'list'
         }
+      },
+      {
+        path: 'info',
+        name: 'UserInfo',
+        component: () => import('@/views/user/info/index.vue'),
+        hidden: true,
+        meta: {
+          title: '个人信息'
+        }
       }
     ]
   }

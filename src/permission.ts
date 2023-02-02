@@ -1,6 +1,6 @@
 import NProgress from '@/utils/progress'
 import router, { resetRouter } from './router'
-import { getUserInfo } from '@/api/auth'
+import { getUserInfo } from '@/api/user/auth'
 import { useUserStoreWithOut } from '@/store/modules/user'
 import { usePermissionStoreWithOut } from '@/store/modules/permission'
 

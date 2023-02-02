@@ -84,3 +84,49 @@ ul {
   font-weight: normal !important;
   margin: 0 4px !important;
 }
+
+
+fieldset {
+  padding: 0;
+  margin: 0;
+  border: 0;
+
+  .el-tabs__item {
+    &.is-left {
+      font-size: 16px !important;
+      height: 120px;
+      line-height: 120px;
+    }
+  }
+
+  h5 {
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    line-height: 1.1;
+    color: #444;
+  }
+
+  .control {
+    font-weight: normal;
+    font-size: 14px;
+    color: #666;
+    text-align: right;
+    width: 120px;
+    position: relative;
+    top: 7px;
+    margin-bottom: 10px;
+  }
+
+  .normal {
+    font-size: 14px;
+    position: relative;
+    top: 7px;
+    left: 15px;
+  }
+
+  label {
+    font-weight: normal;
+  }
+}

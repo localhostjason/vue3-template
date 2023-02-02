@@ -59,7 +59,7 @@
 import { defineComponent, reactive, ref } from 'vue'
 import { FormInstance, FormRules } from 'element-plus'
 import { useRouter } from 'vue-router'
-import { getUserInfo, login } from '@/api/auth'
+import { getUserInfo, login } from '@/api/user/auth'
 import { ElNotification } from 'element-plus'
 import { useUserStore } from '@/store/modules/user'
 

@@ -13,6 +13,7 @@
         </span>
         <template #dropdown>
           <el-dropdown-menu>
+            <el-dropdown-item :icon="User" @click="userInfo">个人信息</el-dropdown-item>
             <el-dropdown-item :icon="SwitchButton" @click="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -22,7 +23,7 @@
 </template>
 
 <script lang="ts">
-import { SwitchButton } from '@element-plus/icons-vue'
+import { User, SwitchButton } from '@element-plus/icons-vue'
 
 import { defineComponent } from 'vue'
 import Breadcrumb from '@/components/BreadCrumb'
@@ -56,6 +57,12 @@ export default defineComponent({
       successMessage('退出登录成功')
     }
 
+    const userInfo = (): void => {
+      router.push({
+        name: 'UserInfo'
+      })
+    }
+
     return {
       sidebar,
       toggleSideBar() {
@@ -63,7 +70,9 @@ export default defineComponent({
       },
       username,
       logout,
-      SwitchButton
+      userInfo,
+      SwitchButton,
+      User
     }
   }
 })
