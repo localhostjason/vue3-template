@@ -2,12 +2,27 @@
 
 ### 前提
 
-​	此整个框架搭建 环境要求，node和npm版本尽可能最新，若以后将webpack替换vite相对容易
+此整个框架搭建 环境要求，node和npm版本尽可能最新，若以后将webpack替换vite相对容易
 
 ```
 node: v18.13.0
 npm: 8.19.3
 ```
+
+此框架会作为 最精简的项目 用于开发。底子搭好了，剩下只要 CV了
+
+
+
+### 更新周期
+
+纯属个人兴趣，更新周期不固定。
+
+从vue2-template更新过来，保留着部分js或者不typescript代码。
+
+下一个tag:
+
+1.  优化代码，看起来更typescript
+2. fix bug
 
 
 
@@ -36,6 +51,19 @@ npm run build
 ```
 
 webpack 更详细配置查看 [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+
+### 注意
+
+此框架未提供 mock . 可自行搭建服务器，提供2个接口
+
+```
+/api/auth/login post => response{"username":"admin", "password": "123"}
+/api/user/info  get|put => response{"username":"admin", "role":"admin"}
+```
+
+
 
 
 
