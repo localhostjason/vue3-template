@@ -5,6 +5,10 @@
     <Breadcrumb class="breadcrumb-container"></Breadcrumb>
 
     <div class="right-menu">
+      <template v-if="device !== 'mobile'">
+        <search id="header-search" class="right-menu-item"></search>
+      </template>
+
       <screenfull id="screenfull" class="right-menu-item hover-effect"></screenfull>
       <!-- 退出登陆 -->
       <el-dropdown trigger="click">
@@ -29,6 +33,7 @@ import { defineComponent } from 'vue'
 import Breadcrumb from '@/components/BreadCrumb'
 import Hamburger from '@/components/HamBurger'
 import Screenfull from '@/components/Screenfull/index.vue'
+import Search from '@/components/HeaderSearch/index.vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/store/modules/user'
 import { successMessage } from '@/utils/message'
@@ -40,15 +45,16 @@ export default defineComponent({
   components: {
     Breadcrumb,
     Hamburger,
-    Screenfull
+    Screenfull,
+    Search
   },
   setup() {
     const userStore = useUserStore()
     const appStore = useAppStore()
-    const { sidebar } = storeToRefs(appStore)
+    const { sidebar, device } = storeToRefs(appStore)
     const router = useRouter()
 
-    let username = 'admin'
+    const username = userStore.username
 
     // 退出登录
     const logout = (): void => {
@@ -69,6 +75,7 @@ export default defineComponent({
         appStore.toggleSideBar()
       },
       username,
+      device,
       logout,
       userInfo,
       SwitchButton,

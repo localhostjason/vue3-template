@@ -12,7 +12,7 @@ import * as ElIcon from '@element-plus/icons-vue'
 
 import SvgIcon from './components/SvgIcon/index.vue'
 import './icons'
-import './permission'
+import { setupPermissionRouter } from './permission'
 
 // 导入公共样式
 import 'normalize.css/normalize.css'
@@ -23,13 +23,13 @@ import './styles/index.scss'
 ;(async () => {
   const app = createApp(App)
 
-  // 加载 router
+  // load vue router
   app.use(router)
 
-  //  加载 store
+  //  load pinia store
   app.use(store)
 
-  // 加载 element ui
+  // load element plus ui
   app.use(ElementPlus, {
     size: 'default'
   })
@@ -37,7 +37,12 @@ import './styles/index.scss'
     app.component(iconName, ElIcon[iconName])
   }
 
-  // 加载svg
+  // load 路由守卫
+  setupPermissionRouter(router)
+
+  // load svg组件
   app.component('svg-icon', SvgIcon)
+
+
   app.mount('#app', true)
 })()
