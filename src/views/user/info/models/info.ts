@@ -1,5 +1,5 @@
-// 定义结构体。  typescript 对应interface 跟go 的interface 不一样
+// 定义结构体。跟go 差不多
 
-export interface UserInfoForm {
+export type UserInfoForm = {
   description: string
 }
