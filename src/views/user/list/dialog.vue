@@ -49,7 +49,5 @@ const props = defineProps({
 </script>
 
 <style>
-.el-overlay-dialog {
-  top: 100px;
-}
+
 </style>
