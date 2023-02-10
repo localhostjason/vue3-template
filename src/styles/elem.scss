@@ -104,3 +104,8 @@
 .el-table th.el-table__cell {
   background: #F5F6FA;
 }
+
+// todo table loading 失效。待官方修復
+.el-loading-mask {
+  z-index: 2000;
+}

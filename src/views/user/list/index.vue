@@ -6,7 +6,7 @@
       <el-button type="primary" @click="test">测试</el-button>
     </el-row>
     <el-row>
-      <el-table v-loading="loading" :data="state.data" ref="tableRef" border>
+      <el-table v-loading="state.loading" :data="state.data" ref="tableRef" border>
         <el-table-column prop="username" label="用户名" width="180" />
         <el-table-column prop="role" label="角色" width="180" />
         <el-table-column prop="last_login_time" label="上次登录时间" width="180">
@@ -31,20 +31,21 @@
 <script setup lang="ts">
 import PanelTitle from '@/components/PanelTitle/index.vue'
 import DialogUser from './dialog.vue'
-import { onBeforeMount, reactive, ref , toRaw} from 'vue'
+import { onBeforeMount, reactive, ref, toRaw } from 'vue'
 import { getUsers, getUsersList } from '@/api/user/users'
 import { dateFormat } from '@/utils/filters'
 
 const dialogUser = ref<any>(null)
-const loading = ref(true)
 
 const state = reactive({
-  data: []
+  data: [],
+  loading: false
 })
 
 onBeforeMount(async () => {
-  loading.value = true
+  state.loading = true
   state.data = await getUsersList()
+  state.loading = false
 })
 
 const test = () => {
