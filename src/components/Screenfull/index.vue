@@ -7,7 +7,7 @@
 <script lang="ts">
 import screenfull from 'screenfull'
 import { defineComponent, ref, onMounted, onBeforeUnmount } from 'vue'
-import { warnMessage } from '@/utils/message'
+import { warnMessage } from '@/utils/element/message'
 
 export default defineComponent({
   name: 'ScreenFull',

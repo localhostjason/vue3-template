@@ -27,8 +27,8 @@
 import PanelTitle from '@/components/PanelTitle/index'
 import { reactive, ref, onBeforeMount } from 'vue'
 import { getUserInfo, updateUserInfo } from '@/api/user/auth'
-import { validate } from '@/utils/form'
-import { successMessage } from '@/utils/message'
+import { validate } from '@/utils/element/form'
+import { successMessage } from '@/utils/element/message'
 import {UserInfoForm} from './models/info'
 
 import type { FormInstance, FormRules } from 'element-plus'

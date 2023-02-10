@@ -6,52 +6,46 @@
       <el-button type="primary" @click="test">测试</el-button>
     </el-row>
     <el-row>
-      <el-table :data="state.data" border>
-        <el-table-column prop="date" label="Date" width="180" />
-        <el-table-column prop="name" label="Name" width="180" />
-        <el-table-column prop="address" label="Address" />
+      <el-table v-loading="loading" :data="state.data" ref="tableRef" border>
+        <el-table-column prop="username" label="用户名" width="180" />
+        <el-table-column prop="role" label="角色" width="180" />
+        <el-table-column prop="last_login_time" label="上次登录时间" width="180">
+          <template #default="scope">
+            <span v-if="scope.row.last_login_time">{{ dateFormat(scope.row.last_login_time) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="desc" label="描述" />
+        <el-table-column label="操作" width="160">
+          <template #default="scope">
+            <el-button type="primary" plain size="small">编辑</el-button>
+            <el-button type="danger" size="small">删除</el-button>
+          </template>
+        </el-table-column>
       </el-table>
     </el-row>
 
-    <dialog-user ref="dialogUser" :foo=" state.data.length.toString()" @submit="submitTest"></dialog-user>
+    <dialog-user ref="dialogUser" :foo="state.data.length.toString()" @submit="submitTest"></dialog-user>
   </div>
 </template>
 
 <script setup lang="ts">
 import PanelTitle from '@/components/PanelTitle/index.vue'
 import DialogUser from './dialog.vue'
-
-import { reactive, ref } from 'vue'
+import { onBeforeMount, reactive, ref , toRaw} from 'vue'
+import { getUsers, getUsersList } from '@/api/user/users'
+import { dateFormat } from '@/utils/filters'
 
 const dialogUser = ref<any>(null)
+const loading = ref(true)
 
 const state = reactive({
   data: []
 })
 
-const tableData = [
-  {
-    date: '2016-05-03',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles'
-  },
-  {
-    date: '2016-05-02',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles'
-  },
-  {
-    date: '2016-05-04',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles'
-  },
-  {
-    date: '2016-05-01',
-    name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles'
-  }
-]
-state.data = tableData
+onBeforeMount(async () => {
+  loading.value = true
+  state.data = await getUsersList()
+})
 
 const test = () => {
   dialogUser.value.showDialog()

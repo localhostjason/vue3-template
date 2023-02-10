@@ -1,6 +1,6 @@
 import Axios, { AxiosRequestConfig, Method, CancelTokenStatic, AxiosInstance, Canceler } from 'axios'
 import { ElMessage, ElNotification } from 'element-plus'
-import { errorMessage } from '@/utils/message'
+import { errorMessage } from '@/utils/element/message'
 
 import { getRequestConfig } from './config'
 import { trimArgs, httpResponseMessageByCode } from '@/utils/http/utils'

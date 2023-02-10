@@ -36,7 +36,7 @@ import Screenfull from '@/components/Screenfull/index.vue'
 import Search from '@/components/HeaderSearch/index.vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/store/modules/user'
-import { successMessage } from '@/utils/message'
+import { successMessage } from '@/utils/element/message'
 import { useAppStore } from '@/store/modules/app'
 import { storeToRefs } from 'pinia'
 
