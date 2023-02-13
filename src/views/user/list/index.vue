@@ -32,8 +32,10 @@
 import PanelTitle from '@/components/PanelTitle/index.vue'
 import DialogUser from './dialog.vue'
 import { onBeforeMount, reactive, ref, toRaw } from 'vue'
-import { getUsers, getUsersList } from '@/api/user/users'
+import { getUsers, getUsersList, downloadFile } from '@/api/user/users'
 import { dateFormat } from '@/utils/filters'
+import { downloadFileByBlob } from '@/utils/download'
+import { successMessage } from '@/utils/element/message'
 
 const dialogUser = ref<any>(null)
 
@@ -48,8 +50,15 @@ onBeforeMount(async () => {
   state.loading = false
 })
 
-const test = () => {
-  dialogUser.value.showDialog()
+const test = async () => {
+  // dialogUser.value.showDialog()
+  try {
+    const { data, filename } = await downloadFile()
+    await downloadFileByBlob(data, filename)
+    successMessage("下载成功")
+  } catch (e) {
+    console.log('e', e)
+  }
 }
 
 const submitTest = () => {

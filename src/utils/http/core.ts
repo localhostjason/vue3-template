@@ -1,26 +1,29 @@
 import Axios, { AxiosRequestConfig, Method, CancelTokenStatic, AxiosInstance, Canceler } from 'axios'
-import { ElMessage, ElNotification } from 'element-plus'
-import { errorMessage } from '@/utils/element/message'
 
 import { getRequestConfig } from './config'
-import { trimArgs, httpResponseMessageByCode } from '@/utils/http/utils'
-import router from '@/router'
+import { trimArgs, downloadHttpResponseErr, httpResponseErr } from '@/utils/http/utils'
 import { useUserStoreWithOut } from '@/store/modules/user'
 
 export type RequestMethods = Extract<Method, 'get' | 'post' | 'put' | 'delete' | 'patch' | 'option' | 'head'>
+type RequestType = 'request' | 'download' | 'upload'
 
 const userStore = useUserStoreWithOut()
 
 class AxiosHttp {
-  constructor() {
+  private axiosInstance: AxiosInstance
+  private readonly requestType: RequestType
+
+  constructor(config?: AxiosRequestConfig, requestType?: RequestType) {
+    this.axiosInstance = Axios.create(getRequestConfig(config))
+    this.requestType = requestType
+
+    // 拦截器配置
     this.httpInterceptorsRequest()
     this.httpInterceptorsResponse()
   }
 
-  private static axiosInstance: AxiosInstance = Axios.create(getRequestConfig())
-
   private httpInterceptorsRequest(): void {
-    AxiosHttp.axiosInstance.interceptors.request.use(
+    this.axiosInstance.interceptors.request.use(
       config => {
         const token = userStore.getToken
         if (token) {
@@ -35,36 +38,37 @@ class AxiosHttp {
     )
   }
 
+  /*
+   * 1. 下载 http {data:xxx，filename: xxx}
+   * 2. 其他 data
+   * */
   private httpInterceptorsResponse(): void {
-    AxiosHttp.axiosInstance.interceptors.response.use(
-      response => response.data,
+    this.axiosInstance.interceptors.response.use(
+      response => {
+        if (this.requestType === 'download') {
+          const content = response.headers['content-disposition']
+          let filename = content.split('filename=')[1]
+
+          filename = decodeURIComponent(filename)
+          return { data: response.data, filename: filename }
+        }
+
+        return response.data
+      },
 
       async error => {
-        let status = 0
-        try {
-          status = error.response.status
-        } catch (e) {
-          const msg = '连接不上后台，已超时！'
-          errorMessage(msg)
-          return Promise.reject(msg)
+        if (this.requestType === 'download') {
+          return downloadHttpResponseErr(error)
         }
 
-        const { msg, code } = error.response.data
-        const message = httpResponseMessageByCode(status, msg)
-        errorMessage(message)
-
-        if (status === 401) {
-          await userStore.removeUserStore()
-          await router.push({ path: '/login' })
-        }
-        return Promise.reject(error)
+        return httpResponseErr(error)
       }
     )
   }
 
   public request<T = any>(data): Promise<T> {
     return new Promise((resolve, reject) => {
-      AxiosHttp.axiosInstance
+      this.axiosInstance
         .request(data)
         .then((response: any) => {
           return resolve(response)

@@ -1,8 +1,9 @@
 import { AxiosRequestConfig } from 'axios'
+import { HttpTimeOut, HttpUrl } from '@/utils/http/const'
 
 const defaultConfig: AxiosRequestConfig = {
-  baseURL: process.env.VUE_APP_BASE_API, // api的base_url
-  timeout: 50 * 1000, // request timeout
+  baseURL: HttpUrl, // api的base_url
+  timeout: HttpTimeOut, // request timeout
   headers: {
     Accept: 'application/json, text/plain, */*; charset=utf-8',
     'Content-Type': 'application/json; charset=utf-8',

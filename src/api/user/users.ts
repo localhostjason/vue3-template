@@ -1,8 +1,16 @@
 import { http } from '@/utils/http'
+import { downloadHttp } from '@/utils/http/download'
 
 export const getUsers = () => {
   return http.request({
     url: `/user/list`,
+    method: 'get'
+  })
+}
+
+export const downloadFile = () => {
+  return downloadHttp.request({
+    url: `/user/file`,
     method: 'get'
   })
 }
