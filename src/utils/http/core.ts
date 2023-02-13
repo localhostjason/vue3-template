@@ -1,4 +1,4 @@
-import Axios, { AxiosRequestConfig, Method, CancelTokenStatic, AxiosInstance, Canceler } from 'axios'
+import Axios, { AxiosRequestConfig, Method, CancelTokenStatic, AxiosInstance, Canceler, AxiosResponse } from 'axios'
 
 import { getRequestConfig } from './config'
 import { trimArgs, downloadHttpResponseErr, httpResponseErr } from '@/utils/http/utils'
@@ -24,7 +24,7 @@ class AxiosHttp {
 
   private httpInterceptorsRequest(): void {
     this.axiosInstance.interceptors.request.use(
-      config => {
+      (config: AxiosRequestConfig): any => {
         const token = userStore.getToken
         if (token) {
           config.headers['Authorization'] = `Bearer ${token}`
@@ -44,7 +44,7 @@ class AxiosHttp {
    * */
   private httpInterceptorsResponse(): void {
     this.axiosInstance.interceptors.response.use(
-      response => {
+      (response: AxiosResponse): any => {
         if (this.requestType === 'download') {
           const content = response.headers['content-disposition']
           let filename = content.split('filename=')[1]
@@ -66,7 +66,7 @@ class AxiosHttp {
     )
   }
 
-  public request<T = any>(data): Promise<T> {
+  public request<T = any>(data: AxiosRequestConfig): Promise<T> {
     return new Promise((resolve, reject) => {
       this.axiosInstance
         .request(data)
