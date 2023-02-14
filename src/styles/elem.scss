@@ -69,3 +69,18 @@
 .el-table th.el-table__cell {
   background: #F5F6FA;
 }
+
+
+.el-dialog .el-dialog__footer {
+  padding: 16px 24px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.el-dialog .el-dialog__header {
+  border-bottom: 1px solid #e5e5e5;
+  margin: 0;
+}
+
+.el-dialog__body {
+  padding-bottom: 10px;
+}
