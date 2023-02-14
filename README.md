@@ -69,6 +69,6 @@ webpack 更详细配置查看 [Configuration Reference](https://cli.vuejs.org/co
 
 页面展示：
 
-![p1](./example/image-20230130111944216.png)
+![p1](./example/img_1.png)
 
 ![home2](./example/img.png)

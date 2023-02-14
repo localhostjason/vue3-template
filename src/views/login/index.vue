@@ -41,21 +41,24 @@
 
             <el-form-item prop="password">
               <el-input
-                type="password"
+                :type="passwordType"
                 v-model="form.password"
                 placeholder="请输入密码"
                 name="password"
                 auto-complete="on"
-                @keyup.enter.native="handleLogin"
+                @keyup.enter.native="handleLogin(loginForm)"
                 size="large"
                 :prefix-icon="Unlock"
               ></el-input>
+              <span class="show-pwd" @click="showPwd">
+              <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'open-eye'" />
+            </span>
             </el-form-item>
 
             <el-button
               :loading="loading"
               type="primary"
-              style="width: 100%; margin-bottom: 30px"
+              style="width: 100%; margin-bottom: 30px;margin-top: 20px"
               @click.native.prevent="handleLogin(loginForm)"
               size="large"
               >登录
@@ -88,7 +91,7 @@ export default defineComponent({
     })
 
     const rules = reactive<FormRules>({
-      username: [{ required: true, trigger: 'blur', message: '请输入用户名' }],
+      username: [{ required: true, trigger: 'blur', message: '请输入账号' }],
       password: [{ required: true, trigger: 'blur', message: '请输入密码' }]
     })
     const loginForm = ref<FormInstance>()
@@ -118,17 +121,26 @@ export default defineComponent({
       })
     }
 
+    const showPwd = () => {
+      if (passwordType.value === "password") {
+        passwordType.value = "";
+      } else {
+        passwordType.value = "password";
+      }
+    }
+
     return {
       form,
       rules,
       loginForm,
-      passwordType, //todo ?
+      passwordType, 
       loading,
       isAutoFocus,
       handleLogin,
       Avatar,
       Unlock,
       User,
+      showPwd,
     }
   }
 })
