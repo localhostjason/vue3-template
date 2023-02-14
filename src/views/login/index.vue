@@ -133,7 +133,7 @@ export default defineComponent({
       form,
       rules,
       loginForm,
-      passwordType, 
+      passwordType,
       loading,
       isAutoFocus,
       handleLogin,

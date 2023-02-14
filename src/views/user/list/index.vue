@@ -18,7 +18,7 @@
         <el-table-column label="操作" width="160">
           <template #default="scope">
             <el-button type="primary" plain size="small">编辑</el-button>
-            <el-button type="danger" size="small">删除</el-button>
+            <el-button type="danger" size="small" @click="deleteUser(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -36,6 +36,8 @@ import { getUsers, getUsersList, downloadFile } from '@/api/user/users'
 import { dateFormat } from '@/utils/filters'
 import { downloadFileByBlob } from '@/utils/download'
 import { successMessage } from '@/utils/element/message'
+import { ElMessageBox } from 'element-plus'
+import { confirmWarning } from '@/utils/element/messageBox'
 
 const dialogUser = ref<any>(null)
 
@@ -55,7 +57,16 @@ const test = async () => {
   try {
     const { data, filename } = await downloadFile()
     await downloadFileByBlob(data, filename)
-    successMessage("下载成功")
+    successMessage('下载成功')
+  } catch (e) {
+    console.log('e', e)
+  }
+}
+
+const deleteUser = async (row: any) => {
+  try {
+    const data = await confirmWarning('此操作将永久删除用户，是否继续？')
+    console.log('data', data)
   } catch (e) {
     console.log('e', e)
   }
