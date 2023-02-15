@@ -16,7 +16,8 @@ import UserRoutes from './modules/user'
  * meta : {
     title: 'title'               the name show in sidebar and breadcrumb (recommend set)
     icon: 'svg-name'             the icon show in the sidebar
-    showLink: true               if set false, item will not show in the sidebar(default is true)
+    affix: true                  fix tags views
+    hideTag: false               if set true , tags view will hide ,default show tags view
   }
  */
 
