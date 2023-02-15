@@ -26,10 +26,9 @@
   </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { User, SwitchButton } from '@element-plus/icons-vue'
 
-import { defineComponent } from 'vue'
 import Breadcrumb from '@/components/BreadCrumb'
 import Hamburger from '@/components/HamBurger'
 import Screenfull from '@/components/Screenfull/index.vue'
@@ -41,52 +40,28 @@ import { useAppStore } from '@/store/modules/app'
 import { storeToRefs } from 'pinia'
 import { logout } from '@/api/user/auth'
 
-export default defineComponent({
-  name: 'Navbar',
-  components: {
-    Breadcrumb,
-    Hamburger,
-    Screenfull,
-    Search
-  },
-  setup() {
-    const userStore = useUserStore()
-    const appStore = useAppStore()
-    const { sidebar, device } = storeToRefs(appStore)
-    const router = useRouter()
+const userStore = useUserStore()
+const appStore = useAppStore()
+const { sidebar, device } = storeToRefs(appStore)
+const router = useRouter()
 
-    const username = userStore.username
+const username = userStore.username
 
-    // 退出登录
-    const handlerLogout = async (): Promise<void> => {
-      try {
-        await logout()
-        userStore.removeUserStore()
-        await router.push('/login')
-        successMessage('退出登录成功')
-      } catch (e) {}
-    }
+// 退出登录
+const handlerLogout = async (): Promise<void> => {
+  try {
+    await logout()
+    userStore.removeUserStore()
+    await router.push('/login')
+    successMessage('退出登录成功')
+  } catch (e) {}
+}
 
-    const userInfo = (): void => {
-      router.push({
-        name: 'UserInfo'
-      })
-    }
-
-    return {
-      sidebar,
-      toggleSideBar() {
-        appStore.toggleSideBar()
-      },
-      username,
-      device,
-      handlerLogout,
-      userInfo,
-      SwitchButton,
-      User
-    }
-  }
-})
+const userInfo = (): void => {
+  router.push({
+    name: 'UserInfo'
+  })
+}
 </script>
 
 <style lang="scss" scoped>

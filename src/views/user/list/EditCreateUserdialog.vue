@@ -96,7 +96,7 @@ const showDialog = (row: User | null = null) => {
 
   nextTick(() => {
     if (row) {
-      // 注：可不这么写，少写代码，估计会有bug
+      // 注：可不这么写，虽然少写代码，估计会有bug
       setFormData(form, row)
 
       formRef.value.clearValidate()
