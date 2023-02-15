@@ -3,29 +3,31 @@
     <el-dialog
       v-model="dialog.visible"
       :title="dialog.title"
-      width="550px"
+      width="600px"
       :close-on-press-escape="false"
       :close-on-click-modal="false"
     >
       <el-row>
-        <el-col :span="24">
-          <el-form :model="form" :rules="rules" ref="formRef" label-width="120px">
-            <el-form-item label="用户名" prop="username">
-              <span class="text-gray-lg sm" v-if='form.user_id'>{{ form.username }}</span>
-              
+        <el-col :span="22">
+          <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
+            <el-form-item label="用户名" :prop="user_id ? '-' : 'username'">
+              <span class="text-gray-lg sm" v-if="user_id">{{ form.username }}</span>
+              <el-input v-model="form.username" v-else></el-input>
             </el-form-item>
 
             <el-form-item label="电子邮件" prop="email">
-              <el-input v-model="form.email" style="width: calc(100% - 70px)"></el-input>
+              <el-input v-model="form.email"></el-input>
+            </el-form-item>
+
+            <el-form-item label="密码:" prop="password" v-if="!user_id">
+              <el-input type="password" v-model="form.password"></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码:" prop="checkPassword" v-if="!user_id">
+              <el-input type="password" v-model="form.checkPassword"></el-input>
             </el-form-item>
 
             <el-form-item label="描述" prop="desc">
-              <el-input
-                type="textarea"
-                v-model="form.desc"
-                :autosize="{ minRows: 4 }"
-                style="width: calc(100% - 70px)"
-              ></el-input>
+              <el-input type="textarea" v-model="form.desc" :autosize="{ minRows: 4 }"></el-input>
             </el-form-item>
           </el-form>
         </el-col>
@@ -41,41 +43,61 @@
 </template>
 
 <script setup lang="ts">
-import { defineComponent, nextTick, reactive, ref } from 'vue'
-import { ElMessageBox, FormInstance, FormRules } from 'element-plus'
+import { nextTick, reactive, ref } from 'vue'
+import { FormInstance, FormRules } from 'element-plus'
 
-import pick from 'lodash/pick'
 import { validate } from '@/utils/element/form'
 import { successMessage } from '@/utils/element/message'
+import { ModifyUserForm, User } from '@/models/user/user'
 
-const dialog = reactive<any>({
+import { validateReg, setFormData, getFormDataByFields } from '@/utils'
+
+const dialog = reactive({
   visible: false,
   title: ''
 })
 const formRef = ref<FormInstance>()
+const user_id = ref<number | undefined>(void 0)
 
-const form = reactive<any>({
-  user_id: null,
+const form = reactive<ModifyUserForm>({
   username: '',
   email: '',
-  desc: ''
+  desc: '',
+  password: '',
+  checkPassword: ''
 })
+
+const validatePass = (rule, value, callback) => {
+  if (!value) callback(new Error('请输入密码'))
+  if (form.checkPassword !== '') {
+    formRef.value.validateField('checkPassword')
+  }
+  callback()
+}
+const validatePass2 = (rule, value, callback) => {
+  if (!value) callback(new Error('请再次输入密码'))
+  if (value !== form.password) callback(new Error('两次输入密码不一致!'))
+  callback()
+}
 
 const rules = reactive<FormRules>({
-  email: { required: true, message: '请输入邮箱', trigger: 'blur' }
+  email: [{ pattern: validateReg.email, message: '请输入正确邮箱', trigger: 'blur' }],
+  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+  password: [{ validator: validatePass, required: true, trigger: 'blur' }],
+  checkPassword: [{ validator: validatePass2, required: true, trigger: 'blur' }],
+  desc: [{ max: 128, message: '最大字数不超过128个', trigger: ['blur', 'change'] }]
 })
 
-const showDialog = (row: any = null) => {
+const showDialog = (row: User | null = null) => {
   dialog.visible = true
 
   dialog.title = row ? '编辑用户' : '创建用户'
-  form.user_id = row ? row.id : void 0
+  user_id.value = row ? row.id : void 0
 
   nextTick(() => {
     if (row) {
-      form.username = row.username
-      form.email = row.email
-      form.desc = row.desc
+      // 注：可不这么写，少写代码，估计会有bug
+      setFormData(form, row)
 
       formRef.value.clearValidate()
       return
@@ -90,11 +112,14 @@ const updateUser = async () => {
   if (!valid) return
 
   try {
-    if (form.user_id) {
+    if (user_id.value) {
+      const data = getFormDataByFields(form, ['email', 'desc'])
       // send update user api
+      console.log('put user', data)
       successMessage('修改用户成功')
     } else {
       // send create user api
+      console.log('post user', form)
       successMessage('创建用户成功')
     }
     dialog.visible = false

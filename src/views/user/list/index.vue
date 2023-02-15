@@ -3,13 +3,18 @@
     <panel-title title="用户管理"></panel-title>
 
     <el-row>
-      <el-button type="primary" @click="test">下载</el-button>
+      <el-button type="primary" @click="download">下载</el-button>
       <el-button type="primary" @click="createUser">创建</el-button>
     </el-row>
     <el-row>
       <el-table v-loading="state.loading" :data="state.data" ref="tableRef" border>
         <el-table-column prop="username" label="用户名" width="180" />
         <el-table-column prop="role" label="角色" width="180" />
+        <el-table-column prop="time" label="创建时间" width="180">
+          <template #default="scope">
+            <span>{{ dateFormat(scope.row.time) }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="last_login_time" label="上次登录时间" width="180">
           <template #default="scope">
             <span v-if="scope.row.last_login_time">{{ dateFormat(scope.row.last_login_time) }}</span>
@@ -38,26 +43,24 @@ import { dateFormat } from '@/utils/filters'
 import { downloadFileByBlob } from '@/utils/download'
 import { successMessage } from '@/utils/element/message'
 import { confirmWarning } from '@/utils/element/messageBox'
+import { User, UserState } from '@/models/user/user'
 
+// 定义
 const userDialogRef = ref<any>(null)
 
-const state = reactive({
+const state = reactive<UserState>({
   data: [],
   loading: false
 })
 
-const getUsersData = async () => {
+// method
+const getUsersData = async (): Promise<void> => {
   state.loading = true
   state.data = await getUsers()
   state.loading = false
 }
 
-onBeforeMount(() => {
-  getUsersData()
-})
-
-
-const test = async () => {
+const download = async (): Promise<void> => {
   try {
     const { data, filename } = await downloadFile()
     await downloadFileByBlob(data, filename)
@@ -67,7 +70,7 @@ const test = async () => {
   }
 }
 
-const deleteUser = async (row: any) => {
+const deleteUser = async (row: User): Promise<void> => {
   try {
     const data = await confirmWarning('此操作将永久删除用户，是否继续？')
     console.log('data', data)
@@ -76,20 +79,17 @@ const deleteUser = async (row: any) => {
   }
 }
 
-const editUser = (row: any) => {
+const editUser = (row: User): void => {
   userDialogRef.value.showDialog(row)
 }
-const createUser = () => {
+const createUser = (): void => {
   userDialogRef.value.showDialog()
 }
 
-const submitTest = () => {
-  state.data.push({
-    date: '2023-01-29',
-    name: 'AA',
-    address: 'aaa'
-  })
-}
+// hook
+onBeforeMount(() => {
+  getUsersData()
+})
 </script>
 
 <style scoped></style>
