@@ -1,5 +1,5 @@
 <template>
-  <div ref="tagsViewRef" id="tags-view-container" class="tags-view-container">
+  <div ref="tagsViewRef" id="tags-view-container" class="tags-view-container" v-if="showTag">
     <scroll-pane ref="scrollPane" class="tags-view-wrapper">
       <!-- 暂时无右击行为  -->
       <router-link
@@ -44,6 +44,8 @@ import { toRaw } from '@vue/reactivity'
 const route = useRoute()
 const router = useRouter()
 
+const showTag = ref<boolean>(true)
+
 const tagsStore = useTagsStore()
 const permissionStore = usePermissionStore()
 
@@ -66,6 +68,9 @@ const scrollPane = ref(null)
 onMounted(() => {
   initTags()
   addTags()
+
+  const { hideTag } = route.meta
+  showTag.value = !hideTag;
 })
 
 watch(
@@ -73,6 +78,13 @@ watch(
   () => {
     addTags()
     moveToCurrentTag()
+  }
+)
+
+watch(
+  () => route.meta,
+  value => {
+    showTag.value = !value.hideTag;
   }
 )
 
@@ -122,8 +134,8 @@ const initTags = () => {
   }
 }
 const addTags = () => {
-  const { name } = route
-  if (name) {
+  const { name, meta } = route
+  if (name && !meta.hideTag) {
     tagsStore.addView(route)
   }
   return false

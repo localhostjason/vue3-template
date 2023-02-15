@@ -12,6 +12,9 @@ export interface RouteMeta {
   // icon on tab
   icon?: string
   affix?: boolean
+
+  // no show tag
+  hideTag?:boolean
 }
 
 // @ts-ignore

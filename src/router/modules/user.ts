@@ -36,7 +36,8 @@ const userRoutes: Array<AppRouteRecordRaw> = [
         component: () => import('@/views/user/info/index.vue'),
         hidden: true,
         meta: {
-          title: '个人信息'
+          title: '个人信息',
+          // hideTag: true
         }
       }
     ]
