@@ -18,7 +18,7 @@
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item :icon="User" @click="userInfo">个人信息</el-dropdown-item>
-            <el-dropdown-item :icon="SwitchButton" @click="logout">退出登录</el-dropdown-item>
+            <el-dropdown-item :icon="SwitchButton" @click="handlerLogout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -39,6 +39,7 @@ import { useUserStore } from '@/store/modules/user'
 import { successMessage } from '@/utils/element/message'
 import { useAppStore } from '@/store/modules/app'
 import { storeToRefs } from 'pinia'
+import { logout } from '@/api/user/auth'
 
 export default defineComponent({
   name: 'Navbar',
@@ -57,10 +58,13 @@ export default defineComponent({
     const username = userStore.username
 
     // 退出登录
-    const logout = (): void => {
-      userStore.removeUserStore()
-      router.push('/login')
-      successMessage('退出登录成功')
+    const handlerLogout = async (): Promise<void> => {
+      try {
+        await logout()
+        userStore.removeUserStore()
+        await router.push('/login')
+        successMessage('退出登录成功')
+      } catch (e) {}
     }
 
     const userInfo = (): void => {
@@ -76,7 +80,7 @@ export default defineComponent({
       },
       username,
       device,
-      logout,
+      handlerLogout,
       userInfo,
       SwitchButton,
       User

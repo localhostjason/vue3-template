@@ -9,10 +9,10 @@
 
           <el-form :model="form" :rules="rules" ref="formRef" label-width="120px">
             <el-form-item label="账号名">
-              <span>{{ _username }}</span>
+              <span>{{ username }}</span>
             </el-form-item>
-            <el-form-item label="描述" prop="description">
-              <el-input type="textarea" v-model="form.description" :autosize="{ minRows: 4 }"></el-input>
+            <el-form-item label="描述" prop="desc">
+              <el-input type="textarea" v-model="form.desc" :autosize="{ minRows: 4 }"></el-input>
             </el-form-item>
           </el-form>
         </fieldset>
@@ -29,24 +29,24 @@ import { reactive, ref, onBeforeMount } from 'vue'
 import { getUserInfo, updateUserInfo } from '@/api/user/auth'
 import { validate } from '@/utils/element/form'
 import { successMessage } from '@/utils/element/message'
-import {UserInfoForm} from './models/info'
 
 import type { FormInstance, FormRules } from 'element-plus'
+import { EditUserInfo } from '@/models/user/auth'
 
-const form = reactive<UserInfoForm>({
-  description: ''
+const form = reactive<EditUserInfo>({
+  desc: ''
 })
 
 const formRef = ref<FormInstance>()
 const rules = reactive<FormRules>({
-  description: { required: true, message: '请输入描述', trigger: ['blur', 'change'] }
+  desc: [{ max: 128, message: '最大字数不超过128个', trigger: ['blur', 'change'] }]
 })
-const _username = ref<string>('')
+const username = ref<string>('')
 
 onBeforeMount(async () => {
-  const { username, description } = await getUserInfo()
-  form.description = description
-  _username.value = username
+  const data = await getUserInfo()
+  form.desc = data.desc
+  username.value = data.username
 })
 
 const saveUserInfo = async () => {

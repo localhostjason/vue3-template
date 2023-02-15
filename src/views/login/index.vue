@@ -78,6 +78,7 @@ import { getUserInfo, login } from '@/api/user/auth'
 import { ElNotification } from 'element-plus'
 import { useUserStore } from '@/store/modules/user'
 import { Avatar ,Unlock, User } from '@element-plus/icons-vue'
+import { Login } from '@/models/user/auth'
 
 export default defineComponent({
   name: 'Login',
@@ -85,7 +86,7 @@ export default defineComponent({
     const userStore = useUserStore()
     const router = useRouter()
 
-    const form = reactive<object>({
+    const form = reactive<Login>({
       username: '',
       password: ''
     })
