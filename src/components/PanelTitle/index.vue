@@ -4,7 +4,7 @@
       <div class="pull-left">
         <h4>{{ title }}</h4>
 
-        <el-button size="mini" class="btn-small" v-if="Boolean(backTitle)" @click="goHistory">
+        <el-button size="small" class="btn-small" v-if="Boolean(backTitle)" @click="goHistory">
           <span class="icon-toinstlist"></span>
           <span>{{ backTitle }}</span>
         </el-button>
@@ -90,9 +90,13 @@ export default defineComponent({
 }
 
 .btn-small {
-  padding: 5px 15px;
-  height: 20px;
-  line-height: 16px;
-  margin-top: -5px;
+  /*padding: 5px 15px;*/
+  height: 21px;
+  /*line-height: 16px;*/
+}
+
+.bline {
+  border-bottom: 1px solid #eee;
+  width: 100%;
 }
 </style>
