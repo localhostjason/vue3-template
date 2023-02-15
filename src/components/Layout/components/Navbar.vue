@@ -62,6 +62,10 @@ const userInfo = (): void => {
     name: 'UserInfo'
   })
 }
+
+const toggleSideBar = () => {
+  appStore.toggleSideBar()
+}
 </script>
 
 <style lang="scss" scoped>
