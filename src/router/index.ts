@@ -1,9 +1,7 @@
-// @ts-ignore
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import { LAYOUT } from '@/router/constant'
 import { AppRouteRecordRaw } from '@/router/types'
 
-// @ts-ignore
 import UserRoutes from './modules/user'
 
 /**

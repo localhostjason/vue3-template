@@ -67,14 +67,14 @@ const form = reactive<ModifyUserForm>({
   checkPassword: ''
 })
 
-const validatePass = (rule, value, callback) => {
+const validatePass = (rule: any, value: any, callback: any) => {
   if (!value) callback(new Error('请输入密码'))
   if (form.checkPassword !== '') {
     formRef.value.validateField('checkPassword')
   }
   callback()
 }
-const validatePass2 = (rule, value, callback) => {
+const validatePass2 = (rule: any, value: any, callback: any) => {
   if (!value) callback(new Error('请再次输入密码'))
   if (value !== form.password) callback(new Error('两次输入密码不一致!'))
   callback()
@@ -96,7 +96,7 @@ const showDialog = (row: User | null = null) => {
 
   nextTick(() => {
     if (row) {
-      // 注：可不这么写，虽然少写代码，估计会有bug
+      // 注：可不这么写，虽然少写代码，用的不当，会有bug。前提 row 跟form 字段要一致或者包含
       setFormData(form, row)
 
       formRef.value.clearValidate()

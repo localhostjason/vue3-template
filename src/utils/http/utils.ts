@@ -3,8 +3,9 @@ import isPlainObject from 'lodash/isPlainObject'
 import { errorMessage } from '@/utils/element/message'
 import router from '@/router'
 import { useUserStoreWithOut } from '@/store/modules/user'
+import { AxiosRequestConfig } from 'axios'
 
-const trim = (data: object): object => {
+const trim = (data: any): any => {
   let newData = {}
   for (const [k, v] of Object.entries(data)) {
     newData[k] = isString(v) ? v.trim() : v
@@ -12,9 +13,8 @@ const trim = (data: object): object => {
   return newData
 }
 
-const trimArgs = (config: object): object => {
+const trimArgs = (config: AxiosRequestConfig): AxiosRequestConfig => {
   // trim 参数
-  // @ts-ignore
   let { method, data, params } = config
   try {
     if (method !== 'get') {
