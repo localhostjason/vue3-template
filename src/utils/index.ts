@@ -1,6 +1,10 @@
 import { toRaw } from 'vue'
 
-export let validateReg: { email: RegExp; ipv4: RegExp; ipv6: RegExp }
+export let validateReg: {
+  email: RegExp
+  ipv4: RegExp
+  ipv6: RegExp
+}
 
 // 正则，用于validate form . pattern: reg
 validateReg = {
