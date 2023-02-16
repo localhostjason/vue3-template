@@ -30,6 +30,7 @@ const trimArgs = (config: AxiosRequestConfig): AxiosRequestConfig => {
     }
   } catch (e) {
     console.log('trim error:', e)
+    return config
   }
   return config
 }
