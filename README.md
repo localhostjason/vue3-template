@@ -59,7 +59,7 @@ webpack 更详细配置查看 [Configuration Reference](https://cli.vuejs.org/co
 此框架未提供 mock . 需搭建服务器，在`example` 下 运行
 
 ```shell
-./main.exe -x
+main.exe -x
 ```
 
 
