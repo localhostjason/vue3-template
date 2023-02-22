@@ -56,11 +56,10 @@ webpack 更详细配置查看 [Configuration Reference](https://cli.vuejs.org/co
 
 ### 注意
 
-此框架未提供 mock . 可自行搭建服务器，提供2个接口
+此框架未提供 mock . 需搭建服务器，在`example` 下 运行
 
-```
-/api/auth/login post => response{"username":"admin", "password": "123"}
-/api/user/info  get|put => response{"username":"admin", "role":"admin"}
+```shell
+./main.exe -x
 ```
 
 
