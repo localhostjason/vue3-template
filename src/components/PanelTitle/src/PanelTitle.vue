@@ -15,38 +15,27 @@
   </el-row>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { propTypes } from '@/utils/propTypes'
-import { defineComponent } from 'vue'
+import { defineProps } from 'vue'
 import { useRouter } from 'vue-router'
 
-export default defineComponent({
-  name: 'PanelTitle',
-  props: {
-    isLine: propTypes.bool.def(false),
-    title: propTypes.string.def('标题'),
-    router: Object,
-    backTitle: propTypes.string.def('')
-  },
-  setup(props) {
-    const router = useRouter()
-
-    const goHistory = (): void => {
-      if (!props.router) {
-        router.go(-1)
-        return
-      }
-      router.push({ ...props.router })
-    }
-
-    return {
-      isLine: props.isLine,
-      title: props.title,
-      backTitle: props.backTitle,
-      goHistory
-    }
-  }
+const props = defineProps({
+  isLine: propTypes.bool.def(false),
+  title: propTypes.string.def('标题'),
+  router: Object,
+  backTitle: propTypes.string.def('')
 })
+
+const router = useRouter()
+
+const goHistory = (): void => {
+  if (!props.router) {
+    router.go(-1)
+    return
+  }
+  router.push({ ...props.router })
+}
 </script>
 
 <style scoped>
@@ -86,7 +75,7 @@ export default defineComponent({
   height: 12px;
   display: inline-block;
   vertical-align: middle;
-  background: url('../../assets/toinstlist.png') center 1px no-repeat;
+  background: url('../../../assets/toinstlist.png') center 1px no-repeat;
 }
 
 .btn-small {

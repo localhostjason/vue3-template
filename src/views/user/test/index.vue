@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import PanelTitle from '@/components/PanelTitle/index.vue'
+import PanelTitle from '@/components/PanelTitle'
 import { useECharts } from '@/utils/echarts/useEcharts'
 
 import { ref, Ref, onMounted } from 'vue'

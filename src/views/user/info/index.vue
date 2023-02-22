@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import PanelTitle from '@/components/PanelTitle/index'
+import PanelTitle from '@/components/PanelTitle'
 import { reactive, ref, onBeforeMount } from 'vue'
 import { getUserInfo, updateUserInfo } from '@/api/user/auth'
 import { validate } from '@/utils/element/form'

@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import PanelTitle from '@/components/PanelTitle/index.vue'
+import PanelTitle from '@/components/PanelTitle'
 import UserDialog from './EditCreateUserdialog.vue'
 import { onBeforeMount, reactive, ref, toRaw } from 'vue'
 import { getUsers, getUsersList, downloadFile } from '@/api/user/users'
