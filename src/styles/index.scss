@@ -2,6 +2,7 @@
 @import "./transition.scss";
 @import "./elem.scss";
 @import "./sidebar.scss";
+@import "./color.scss";
 
 body {
   width: 100%;
@@ -13,7 +14,7 @@ body {
   text-rendering: optimizeLegibility;
   //font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB,
   //Microsoft YaHei, Arial, sans-serif;
-  font-family: PingFang SC,Arial,Microsoft YaHei,sans-serif;
+  //font-family: PingFang SC,Arial,Microsoft YaHei,sans-serif;
 }
 
 html {
@@ -126,4 +127,58 @@ fieldset {
   label {
     font-weight: normal;
   }
+}
+
+.text-gray {
+  color: #565252;
+
+  &.sm {
+    font-size: 12px;
+  }
+}
+
+.text-gray-ol {
+  color: #999999;
+
+  &.sm {
+    font-size: 12px;
+  }
+}
+
+.text-warning {
+  color: $warning;
+
+  &.sm {
+    font-size: 12px;
+  }
+}
+
+.text-success {
+  color: $success;
+}
+
+.text-default {
+  color: $default;
+}
+
+
+.div_title {
+  text-indent: 8px;
+  border-left: 2px solid #88b7e0;
+  color: #666;
+  margin-bottom: 10px;
+  //font-size: 14px;
+
+  //* {
+  //  font-size: 14px;
+  //}
+
+  .el-tag--small {
+    padding-left: 0;
+  }
+}
+
+
+.fs-14 {
+  font-size: 14px;
 }

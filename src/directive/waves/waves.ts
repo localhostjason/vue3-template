@@ -50,7 +50,9 @@ const wavesDirective: Directive = {
       false
     )
   },
-  unmounted(el) {}
+  unmounted(el) {
+    el.removeEventListener('click', () => {})
+  }
 }
 
 export default wavesDirective
