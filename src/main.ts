@@ -19,6 +19,8 @@ import './styles/index.scss'
 
 // init
 
+import { setupGlobDirectives } from '@/directive'
+
 ;(async () => {
   const app = createApp(App)
 
@@ -36,12 +38,14 @@ import './styles/index.scss'
     app.component(iconName, ElIcon[iconName])
   }
 
+  // load 全局指令
+  setupGlobDirectives(app)
+
   // load 路由守卫
   setupPermissionRouter(router)
 
   // load svg组件
   app.component('svg-icon', SvgIcon)
-
 
   app.mount('#app', true)
 })()
