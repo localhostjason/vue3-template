@@ -16,7 +16,7 @@
             </el-form-item>
 
             <el-form-item label="电子邮件" prop="email">
-              <el-input v-model="form.email"></el-input>
+              <el-input v-model="form.email" v-desc:warning="'注:电子邮件'"></el-input>
             </el-form-item>
 
             <el-form-item label="密码:" prop="password" v-if="!user_id">

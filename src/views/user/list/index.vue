@@ -5,6 +5,7 @@
     <el-row>
       <el-button type="primary" @click="download">下载</el-button>
       <el-button type="primary" @click="createUser">创建</el-button>
+      <el-button type="primary" v-waves>TEST</el-button>
     </el-row>
     <el-row>
       <el-table v-loading="state.loading" :data="state.data" ref="tableRef" border>

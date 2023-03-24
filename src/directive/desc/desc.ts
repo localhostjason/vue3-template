@@ -26,8 +26,8 @@ function addInsertElStyle(instance, arg: any) {
   let styles = {
     'font-size': '12px',
     color: '#999',
-    'margin-top': '-4px',
-    'margin-bottom': '-8px'
+    'line-height': '20px',
+    'margin-bottom': '-4px'
   }
   if (arg === 'warning' || arg == 'warn') {
     styles.color = '#ff9032'
