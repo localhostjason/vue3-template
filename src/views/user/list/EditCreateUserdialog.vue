@@ -8,25 +8,25 @@
       :close-on-click-modal="false"
     >
       <el-row>
-        <el-col :span="22">
+        <el-col :span="21">
           <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
-            <el-form-item label="用户名" :prop="user_id ? '-' : 'username'">
+            <el-form-item label="用户名：" :prop="user_id ? '-' : 'username'">
               <span class="text-gray-lg sm" v-if="user_id">{{ form.username }}</span>
               <el-input v-model="form.username" v-else></el-input>
             </el-form-item>
 
-            <el-form-item label="电子邮件" prop="email">
-              <el-input v-model="form.email" v-desc:warning="'注:电子邮件'"></el-input>
+            <el-form-item label="电子邮件：" prop="email">
+              <el-input v-model="form.email"></el-input>
             </el-form-item>
 
-            <el-form-item label="密码:" prop="password" v-if="!user_id">
+            <el-form-item label="密码：" prop="password" v-if="!user_id">
               <el-input type="password" v-model="form.password"></el-input>
             </el-form-item>
-            <el-form-item label="确认密码:" prop="checkPassword" v-if="!user_id">
+            <el-form-item label="确认密码：" prop="checkPassword" v-if="!user_id">
               <el-input type="password" v-model="form.checkPassword"></el-input>
             </el-form-item>
 
-            <el-form-item label="描述" prop="desc">
+            <el-form-item label="描述：" prop="desc">
               <el-input type="textarea" v-model="form.desc" :autosize="{ minRows: 4 }"></el-input>
             </el-form-item>
           </el-form>
@@ -48,7 +48,7 @@ import { FormInstance, FormRules } from 'element-plus'
 
 import { validate } from '@/utils/element/form'
 import { successMessage } from '@/utils/element/message'
-import { ModifyUserForm, User } from '@/models/user/user'
+import { ModifyUserForm, User } from '@/views/user/models/user/user'
 
 import { validateReg, setFormData, getFormDataByFields } from '@/utils'
 
@@ -70,7 +70,7 @@ const form = reactive<ModifyUserForm>({
 const validatePass = (rule: any, value: any, callback: any) => {
   if (!value) callback(new Error('请输入密码'))
   if (form.checkPassword !== '') {
-    formRef.value.validateField('checkPassword')
+    formRef.value && formRef.value.validateField('checkPassword')
   }
   callback()
 }
@@ -99,10 +99,10 @@ const showDialog = (row: User | null = null) => {
       // 注：可不这么写，虽然少写代码，用的不当，会有bug。前提 row 跟form 字段要一致或者包含
       setFormData(form, row)
 
-      formRef.value.clearValidate()
+      formRef.value && formRef.value.clearValidate()
       return
     }
-    formRef.value.resetFields()
+    formRef.value && formRef.value.resetFields()
   })
 }
 

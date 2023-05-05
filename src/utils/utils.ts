@@ -26,7 +26,7 @@ export const setFormData = (fields: any, rows: any): void => {
 // 获取某些字段  值。 todo 可好用？可维护？
 export const getFormDataByFields = (fields: any, keys: string[]): object => {
   const f = toRaw(fields)
-  let data = {}
+  let data: any = {}
   for (const [k, v] of Object.entries(f)) {
     if (keys.includes(k)) {
       data[k] = v

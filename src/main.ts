@@ -36,6 +36,7 @@ import { setupGlobDirectives } from '@/directive'
     locale
   })
   for (const iconName in ElIcon) {
+    // @ts-ignore
     app.component(iconName, ElIcon[iconName])
   }
 

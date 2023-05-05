@@ -12,17 +12,17 @@ export const useUserStore = defineStore({
   id: 'app-user',
   state: (): UserState => ({
     token: undefined,
-    username: null,
-    role: null
+    username: undefined,
+    role: undefined
   }),
   getters: {
     getToken(): string {
       return this.token || storageLocal.getItem('token')
     },
-    getUsername(): string {
+    getUsername(): string | undefined {
       return this.username
     },
-    getUserRole(): string {
+    getUserRole(): string | undefined {
       return this.role
     }
   },

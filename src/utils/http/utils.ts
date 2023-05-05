@@ -6,7 +6,7 @@ import { useUserStoreWithOut } from '@/store/modules/user'
 import { AxiosRequestConfig } from 'axios'
 
 const trim = (data: any): any => {
-  let newData = {}
+  let newData: any = {}
   for (const [k, v] of Object.entries(data)) {
     newData[k] = isString(v) ? v.trim() : v
   }

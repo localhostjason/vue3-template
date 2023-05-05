@@ -79,7 +79,7 @@ import { getUserInfo, login } from '@/api/user/auth'
 import { ElNotification } from 'element-plus'
 import { useUserStore } from '@/store/modules/user'
 import { Avatar, Unlock, User } from '@element-plus/icons-vue'
-import { Login } from '@/models/user/auth'
+import type { Login } from '@/views/user/models/user/auth'
 
 export default defineComponent({
   name: 'Login',

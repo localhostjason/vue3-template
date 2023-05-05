@@ -1,11 +1,16 @@
 import './waves.css'
 import { Directive } from 'vue'
 
+interface ElWaves {
+  pageY: number
+  pageX: number
+}
+
 const wavesDirective: Directive = {
   mounted(el, binding) {
     el.addEventListener(
       'click',
-      e => {
+      (e: ElWaves) => {
         const customOpts = Object.assign({}, binding.value)
         const opts = Object.assign(
           {

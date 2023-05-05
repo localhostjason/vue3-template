@@ -11,7 +11,7 @@ const userStore = useUserStoreWithOut()
 
 class AxiosHttp {
   private axiosInstance: AxiosInstance
-  private readonly requestType: RequestType
+  private readonly requestType: RequestType | undefined
 
   constructor(config?: AxiosRequestConfig, requestType?: RequestType) {
     this.axiosInstance = Axios.create(getRequestConfig(config))
@@ -22,13 +22,25 @@ class AxiosHttp {
     this.httpInterceptorsResponse()
   }
 
+  private setTokeHeader(config: AxiosRequestConfig): AxiosRequestConfig {
+    const token = userStore.getToken
+    let headers = config.headers
+    if (token) {
+      if (headers) {
+        headers['Authorization'] = `Bearer ${token}`
+      } else {
+        config.headers = {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    }
+    return config
+  }
+
   private httpInterceptorsRequest(): void {
     this.axiosInstance.interceptors.request.use(
       (config: AxiosRequestConfig): any => {
-        const token = userStore.getToken
-        if (token) {
-          config.headers['Authorization'] = `Bearer ${token}`
-        }
+        config = this.setTokeHeader(config)
         // trim 参数
         return trimArgs(config)
       },

@@ -44,6 +44,7 @@ import AppLink from './Link.vue'
 import { AppRouteRecordRaw } from '@/router/types'
 import { useAppStore } from '@/store/modules/app'
 import { storeToRefs } from 'pinia'
+import path from 'path'
 
 export default defineComponent({
   name: 'SidebarItem',
@@ -69,7 +70,7 @@ export default defineComponent({
     const onlyOneChild = ref<AppRouteRecordRaw>({} as any)
 
     const resolvePath = (routePath: string) => {
-      const path = require('path')
+      // const path = require('path')
       return path.resolve(props.basePath, routePath)
     }
 

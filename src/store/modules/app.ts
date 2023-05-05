@@ -27,7 +27,7 @@ export const useAppStore = defineStore({
     device: 'desktop'
   }),
   getters: {
-    getSidebarOpened() {
+    getSidebarOpened(): boolean {
       return this.sidebar.opened
     }
   },

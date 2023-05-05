@@ -40,7 +40,7 @@ export const setupPermissionRouter = (router: Router) => {
       const { username, role } = await getUserInfo()
       userStore.setUserInfo(username, role)
       // generate accessible routes map based on roles
-      const menus = [] // menus = ["Apis"] // 此menus 可通過接口獲得
+      const menus: string[] = [] // menus = ["Apis"] // 此menus 可通過接口獲得
       // generate accessible routes map based on roles
       const accessRoutes = permissionStore.generateRoutes(menus)
       // dynamically add accessible routes

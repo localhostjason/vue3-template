@@ -7,7 +7,7 @@ import store from '@/store'
  * @param routes_name
  * @param route
  */
-function hasPermission(routes_name, route) {
+function hasPermission(routes_name: string[], route: any) {
   if (route.name) {
     // console.log(routes_map, route.path, routes_map.some(val => val.includes(route.path)));
     // return routes_map.includes(route.path)
@@ -22,8 +22,8 @@ function hasPermission(routes_name, route) {
  * @param routes
  * @param routes_map
  */
-export function filterAsyncRoutes(routes, routes_map) {
-  const res = []
+export function filterAsyncRoutes(routes: any[], routes_map: string[]) {
+  const res: any[] = []
 
   routes.forEach(route => {
     const tmp = { ...route }

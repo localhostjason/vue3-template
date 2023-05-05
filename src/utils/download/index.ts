@@ -8,7 +8,7 @@ export const downloadFileByBlob = async (data: any, filename: string): Promise<a
 }
 
 // 不需要token ，可指定文件名
-export function downloadFileByUrl(content, fileName) {
+export function downloadFileByUrl(content: BlobPart, fileName: string) {
   const blob = new Blob([content]) //创建一个类文件对象：Blob对象表示一个不可变的、原始数据的类文件对象
   const url = window.URL.createObjectURL(blob) //URL.createObjectURL(object)表示生成一个File对象或Blob对象
   let dom = document.createElement('a') //设置一个隐藏的a标签，href为输出流，设置download
@@ -21,7 +21,7 @@ export function downloadFileByUrl(content, fileName) {
 }
 
 // 不需要token ，不需要指定文件名
-export function downloadFileByUrlIframe(url) {
+export function downloadFileByUrlIframe(url: string) {
   try {
     let elemIF = document.createElement('iframe')
     elemIF.src = url

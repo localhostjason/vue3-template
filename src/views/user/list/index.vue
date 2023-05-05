@@ -24,8 +24,8 @@
         <el-table-column prop="desc" label="描述" />
         <el-table-column label="操作" width="160">
           <template #default="scope">
-            <el-button type="primary" plain size="small" @click="editUser(scope.row)">编辑</el-button>
-            <el-button type="danger" size="small" @click="deleteUser(scope.row)">删除</el-button>
+            <el-button type="primary" link @click="editUser(scope.row)">编辑</el-button>
+            <el-button type="danger" link @click="deleteUser(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -44,7 +44,7 @@ import { dateFormat } from '@/utils/filters'
 import { downloadFileByBlob } from '@/utils/download'
 import { successMessage } from '@/utils/element/message'
 import { confirmWarning } from '@/utils/element/messageBox'
-import { User, UserState } from '@/models/user/user'
+import { User, UserState } from '@/views/user/models/user/user'
 
 // 定义
 const userDialogRef = ref<any>(null)
