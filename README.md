@@ -61,6 +61,11 @@ webpack 更详细配置查看 [Configuration Reference](https://cli.vuejs.org/co
 ```shell
 main.exe -x
 ```
+账号
+```
+用户名：admin
+密码：123
+```
 
 
 
