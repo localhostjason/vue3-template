@@ -2,7 +2,7 @@ import { RouteRecordRaw } from 'vue-router'
 import { defineComponent } from 'vue'
 
 export type Component<T extends any = any> =
-  ReturnType<typeof defineComponent>
+  | ReturnType<typeof defineComponent>
   | (() => Promise<typeof import('*.vue')>)
   | (() => Promise<T>)
 
@@ -14,7 +14,7 @@ export interface RouteMeta {
   affix?: boolean
 
   // no show tag
-  hideTag?:boolean
+  hideTag?: boolean
 }
 
 // @ts-ignore

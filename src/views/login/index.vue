@@ -71,85 +71,67 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+<script lang="ts" setup>
+import { reactive, ref } from 'vue'
 import { FormInstance, FormRules } from 'element-plus'
 import { useRouter } from 'vue-router'
-import { getUserInfo, login } from '@/api/user/auth'
+import { login } from '@/api/user/auth'
 import { ElNotification } from 'element-plus'
 import { useUserStore } from '@/store/modules/user'
-import { Avatar, Unlock, User } from '@element-plus/icons-vue'
+import { Unlock, User } from '@element-plus/icons-vue'
 import type { Login } from '@/views/user/models/user/auth'
 
-export default defineComponent({
-  name: 'Login',
-  setup() {
-    const userStore = useUserStore()
-    const router = useRouter()
+const userStore = useUserStore()
+const router = useRouter()
 
-    const form = reactive<Login>({
-      username: '',
-      password: ''
-    })
-
-    const rules = reactive<FormRules>({
-      username: [{ required: true, trigger: 'blur', message: '请输入账号' }],
-      password: [{ required: true, trigger: 'blur', message: '请输入密码' }]
-    })
-    const loginForm = ref<FormInstance>()
-
-    const passwordType = ref<string>('password')
-    const loading = ref<boolean>(false)
-    const isAutoFocus = ref<boolean>(true)
-
-    const handleLogin = async (formEl: FormInstance | undefined) => {
-      if (!formEl) return
-      await formEl.validate(async (valid, fields) => {
-        if (!valid) return
-
-        loading.value = true
-
-        try {
-          const { token } = await login(form)
-          userStore.setToken(token)
-        } catch (e) {}
-        loading.value = false
-
-        await router.push({ path: '/' })
-        ElNotification.success({
-          title: '登录成功',
-          message: '欢迎您进入管理中心'
-        })
-      })
-    }
-
-    const showPwd = () => {
-      if (passwordType.value === 'password') {
-        passwordType.value = ''
-      } else {
-        passwordType.value = 'password'
-      }
-    }
-
-    return {
-      form,
-      rules,
-      loginForm,
-      passwordType,
-      loading,
-      isAutoFocus,
-      handleLogin,
-      Avatar,
-      Unlock,
-      User,
-      showPwd
-    }
-  }
+const form = reactive<Login>({
+  username: '',
+  password: ''
 })
+
+const rules = reactive<FormRules>({
+  username: [{ required: true, trigger: 'blur', message: '请输入账号' }],
+  password: [{ required: true, trigger: 'blur', message: '请输入密码' }]
+})
+const loginForm = ref<FormInstance>()
+
+const passwordType = ref<string>('password')
+const loading = ref<boolean>(false)
+const isAutoFocus = ref<boolean>(true)
+
+const handleLogin = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return
+  await formEl.validate(async (valid, fields) => {
+    if (!valid) return
+
+    loading.value = true
+
+    try {
+      const { token } = await login(form)
+      userStore.setToken(token)
+    } catch (e) {}
+    loading.value = false
+
+    await router.push({ path: '/' })
+    ElNotification.success({
+      title: '登录成功',
+      message: '欢迎您进入管理中心'
+    })
+  })
+}
+
+const showPwd = () => {
+  if (passwordType.value === 'password') {
+    passwordType.value = ''
+  } else {
+    passwordType.value = 'password'
+  }
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 @import './login.scss';
+
 $dark_gray: #889aa4;
 
 .container {

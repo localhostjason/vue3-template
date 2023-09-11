@@ -4,53 +4,43 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import screenfull from 'screenfull'
-import { defineComponent, ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { warnMessage } from '@/utils/element/message'
 
-export default defineComponent({
-  name: 'ScreenFull',
-  setup() {
-    const isFullscreen = ref(false)
+const isFullscreen = ref(false)
 
-    const click = async () => {
-      if (!screenfull.isEnabled) {
-        warnMessage('当前浏览器不支持')
-        return false
-      }
-      await screenfull.toggle()
-    }
-
-    const change = (): void => {
-      isFullscreen.value = screenfull.isFullscreen
-    }
-
-    const init = () => {
-      if (screenfull.isEnabled) {
-        screenfull.on('change', change)
-      }
-    }
-
-    const destroy = () => {
-      if (screenfull.isEnabled) {
-        screenfull.off('change', change)
-      }
-    }
-
-    onMounted(() => {
-      init()
-    })
-
-    onBeforeUnmount(() => {
-      destroy()
-    })
-
-    return {
-      isFullscreen,
-      click
-    }
+const click = async () => {
+  if (!screenfull.isEnabled) {
+    warnMessage('当前浏览器不支持')
+    return false
   }
+  await screenfull.toggle()
+}
+
+const change = (): void => {
+  isFullscreen.value = screenfull.isFullscreen
+}
+
+const init = () => {
+  if (screenfull.isEnabled) {
+    screenfull.on('change', change)
+  }
+}
+
+const destroy = () => {
+  if (screenfull.isEnabled) {
+    screenfull.off('change', change)
+  }
+}
+
+onMounted(() => {
+  init()
+})
+
+onBeforeUnmount(() => {
+  destroy()
 })
 </script>
 
