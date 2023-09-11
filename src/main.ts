@@ -6,7 +6,7 @@ import store from './store'
 
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-import locale from 'element-plus/lib/locale/lang/zh-cn'
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
 import * as ElIcon from '@element-plus/icons-vue'
 
@@ -33,7 +33,7 @@ import { setupGlobDirectives } from '@/directive'
   // load element plus ui
   app.use(ElementPlus, {
     size: 'default',
-    locale
+    locale: zhCn
   })
   for (const iconName in ElIcon) {
     // @ts-ignore
