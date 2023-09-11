@@ -38,63 +38,51 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script lang="ts" setup>
+import { ref } from 'vue'
 import AppLink from './Link.vue'
 import { AppRouteRecordRaw } from '@/router/types'
 import { useAppStore } from '@/store/modules/app'
 import { storeToRefs } from 'pinia'
 import path from 'path'
 
-export default defineComponent({
-  name: 'SidebarItem',
-  components: { AppLink },
-  props: {
-    item: {
-      type: Object,
-      required: true
-    },
-    isNest: {
-      type: Boolean,
-      default: false
-    },
-    basePath: {
-      type: String,
-      default: ''
-    }
+const props = defineProps({
+  item: {
+    type: Object,
+    required: true
   },
-  setup(props) {
-    const appStore = useAppStore()
-    const { sidebar } = storeToRefs(appStore)
-
-    const onlyOneChild = ref<AppRouteRecordRaw>({} as any)
-
-    const resolvePath = (routePath: string) => {
-      // const path = require('path')
-      return path.resolve(props.basePath, routePath)
-    }
-
-    function hasOneShowingChild(children: AppRouteRecordRaw[] = []) {
-      const showingChildren = children.filter(item => {
-        if (item.hidden) {
-          return false
-        } else {
-          onlyOneChild.value = item
-          return true
-        }
-      })
-
-      return showingChildren.length === 1
-    }
-
-    return {
-      sidebar,
-      resolvePath,
-      onlyOneChild,
-      hasOneShowingChild
-    }
+  isNest: {
+    type: Boolean,
+    default: false
+  },
+  basePath: {
+    type: String,
+    default: ''
   }
 })
+
+const appStore = useAppStore()
+const { sidebar } = storeToRefs(appStore)
+
+const onlyOneChild = ref<AppRouteRecordRaw>({} as any)
+
+const resolvePath = (routePath: string) => {
+  // const path = require('path')
+  return path.resolve(props.basePath, routePath)
+}
+
+function hasOneShowingChild(children: AppRouteRecordRaw[] = []) {
+  const showingChildren = children.filter(item => {
+    if (item.hidden) {
+      return false
+    } else {
+      onlyOneChild.value = item
+      return true
+    }
+  })
+
+  return showingChildren.length === 1
+}
 </script>
 
 <style rel="" lang="scss" scoped>

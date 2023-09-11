@@ -15,25 +15,19 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from "vue";
-export default defineComponent({
-  name: "HamBurger",
-  props: {
-    isActive: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  emits: ["toggleClick"],
-  setup(props, ctx) {
-    const toggleClick = () => {
-      ctx.emit("toggleClick");
-    };
+<script lang="ts" setup>
+const props = defineProps({
+  isActive: {
+    type: Boolean,
+    default: false
+  }
+})
 
-    return { toggleClick };
-  },
-});
+const emit = defineEmits(['toggleClick'])
+
+const toggleClick = () => {
+  emit('toggleClick')
+}
 </script>
 
 <style scoped>

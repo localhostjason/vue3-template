@@ -1,30 +1,21 @@
 <template>
   <component :is="type" v-bind="linkProps(to)">
-    <slot/>
+    <slot />
   </component>
 </template>
 
-<script>
-  import {computed, defineComponent} from "vue"
+<script lang="ts" setup>
+const props = defineProps({
+  to: {
+    type: String,
+    required: true
+  }
+})
+const type = 'router-link'
 
-  export default defineComponent({
-    name: "Link",
-    props: {
-      to: {
-        type: String,
-        required: true,
-      },
-    },
-    setup(props) {
-      const linkProps = (to) => {
-        return {
-          to: to,
-        };
-      };
-      return {
-        type: "router-link",
-        linkProps,
-      };
-    },
-  });
+const linkProps = (to: any) => {
+  return {
+    to: to
+  }
+}
 </script>

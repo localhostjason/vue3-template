@@ -20,50 +20,38 @@
   </el-scrollbar>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+<script lang="ts" setup>
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import SidebarItem from './SidebarItem.vue'
 import settings from '@/settings'
 import { usePermissionStore } from '@/store/modules/permission'
 import { useAppStore } from '@/store/modules/app'
 import { storeToRefs } from 'pinia'
 
-export default defineComponent({
-  name: 'sidebar',
-  components: {
-    SidebarItem
-  },
-  setup() {
-    // const router = useRouter().options.routes
-    const permissionStore = usePermissionStore()
-    const appStore = useAppStore()
+// const router = useRouter().options.routes
+const permissionStore = usePermissionStore()
+const appStore = useAppStore()
 
-    const { sidebar } = storeToRefs(appStore)
-    const { routers } = storeToRefs(permissionStore)
+const { sidebar } = storeToRefs(appStore)
+const { routers } = storeToRefs(permissionStore)
 
-    const route = useRoute()
+const route = useRoute()
 
-    const activeMenu = computed(() => {
-      const { meta, path } = route
-      if (meta.activeMenu) {
-        return meta.activeMenu
-      }
-      return path
-    })
-
-    return {
-      routes: routers,
-      activeMenu,
-      isCollapse: computed(() => !sidebar.value.opened),
-      settings
-    }
+const activeMenu = computed(() => {
+  const { meta, path } = route
+  if (meta.activeMenu) {
+    return meta.activeMenu
   }
+  return path
 })
+
+const isCollapse = computed(() => !sidebar.value.opened)
+const routes = routers
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-@import '../../../../styles/mixin.scss';
+@import '@/styles/mixin.scss';
 
 .sidebar-container {
   .el-menu {
