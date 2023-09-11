@@ -32,7 +32,7 @@ import { setupGlobDirectives } from '@/directive'
 
   // load element plus ui
   app.use(ElementPlus, {
-    size: 'default',
+    size: 'small',
     locale: zhCn
   })
   for (const iconName in ElIcon) {
