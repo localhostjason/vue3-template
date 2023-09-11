@@ -44,7 +44,7 @@ import { dateFormat } from '@/utils/filters'
 import { downloadFileByBlob } from '@/utils/download'
 import { successMessage } from '@/utils/element/message'
 import { confirmWarning } from '@/utils/element/messageBox'
-import { User, UserState } from '@/views/user/models/user/user'
+import { User, UserState } from '@/views/user/models/user'
 
 // 定义
 const userDialogRef = ref<any>(null)

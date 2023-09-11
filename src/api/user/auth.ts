@@ -1,5 +1,5 @@
 import { http } from '@/utils/http'
-import type { EditUserInfo, Login, LoginResult, UserInfo } from '@/views/user/models/user/auth'
+import type { EditUserInfo, Login, LoginResult, UserInfo } from '@/views/user/models/auth'
 
 export const login = (data: Login): Promise<LoginResult> => {
   return http.request({

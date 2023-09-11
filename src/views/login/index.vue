@@ -79,7 +79,7 @@ import { login } from '@/api/user/auth'
 import { ElNotification } from 'element-plus'
 import { useUserStore } from '@/store/modules/user'
 import { Unlock, User } from '@element-plus/icons-vue'
-import type { Login } from '@/views/user/models/user/auth'
+import type { Login } from '@/views/user/models/auth'
 
 const userStore = useUserStore()
 const router = useRouter()

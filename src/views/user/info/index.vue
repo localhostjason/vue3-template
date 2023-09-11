@@ -31,7 +31,7 @@ import { validate } from '@/utils/element/form'
 import { successMessage } from '@/utils/element/message'
 
 import type { FormInstance, FormRules } from 'element-plus'
-import { EditUserInfo } from '@/views/user/models/user/auth'
+import { EditUserInfo } from '@/views/user/models/auth'
 
 const form = reactive<EditUserInfo>({
   desc: ''
