@@ -54,7 +54,7 @@ export const useTagsStore = defineStore({
     addView(view: any) {
       this.addVisitedView(view)
     },
-    delView(view: any): object {
+    delView(view: any): any {
       this.delVisitedView(view)
       return {
         visitedViews: [...this.visitedViews]
@@ -66,7 +66,7 @@ export const useTagsStore = defineStore({
         visitedViews: [...this.visitedViews]
       }
     },
-    delAllViews(): object {
+    delAllViews(): any {
       this.delAllVisitedViews()
       return {
         visitedViews: [...this.visitedViews]

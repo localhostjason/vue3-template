@@ -8,24 +8,25 @@
 
 <script setup lang="ts">
 import { ref, computed, useSlots } from 'vue'
+import { ElScrollbar } from 'element-plus'
 
 const tagAndTagSpacing = 4 // tagAndTagSpacing
 
 const left = ref<number>(0)
-const scrollContainer = ref(null)
-const bar = ref(null)
+const scrollContainer = ref<any>(null)
+const bar = ref<any>(null)
 
 const scrollWrapper = computed(() => {
   return bar.value.wrapRef
 })
 
-const handleScroll = e => {
+const handleScroll = (e: any) => {
   const eventDelta = e.wheelDelta || -e.deltaY * 40
   const $scrollWrapper = scrollWrapper.value
   $scrollWrapper.scrollLeft = $scrollWrapper.scrollLeft + eventDelta / 4
 }
 
-const moveToTarget = (currentTag, tagList) => {
+const moveToTarget = (currentTag: any, tagList: any[]) => {
   const $container = scrollContainer.value
   const $containerWidth = $container.offsetWidth
   const $scrollWrapper = scrollWrapper.value

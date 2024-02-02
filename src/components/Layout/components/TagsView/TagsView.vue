@@ -40,6 +40,7 @@ import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
 import path from 'path'
 import { toRaw } from '@vue/reactivity'
+import { Close } from '@element-plus/icons-vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -61,16 +62,16 @@ const selectedTag = ref<object>({})
 let affixTags = ref<any[]>([])
 
 const contextmenuRef = ref<HTMLElement | null>(null)
-const tagRef = ref(null)
-const tagsViewRef = ref(null)
-const scrollPane = ref(null)
+const tagRef = ref<any>(null)
+const tagsViewRef = ref<any>(null)
+const scrollPane = ref<any>(null)
 
 onMounted(() => {
   initTags()
   addTags()
 
   const { hideTag } = route.meta
-  showTag.value = !hideTag;
+  showTag.value = !hideTag
 })
 
 watch(
@@ -84,7 +85,7 @@ watch(
 watch(
   () => route.meta,
   value => {
-    showTag.value = !value.hideTag;
+    showTag.value = !value.hideTag
   }
 )
 
@@ -99,12 +100,12 @@ watch(
   }
 )
 
-const isActive = r => {
+const isActive = (r: any) => {
   return r.path === route.path
 }
-const filterAffixTags = (routes, basePath = '/'): any[] => {
-  let tags = []
-  routes.forEach(route => {
+const filterAffixTags = (routes: any, basePath = '/'): any[] => {
+  let tags: any[] = []
+  routes.forEach((route: any) => {
     if (route.meta && route.meta.affix) {
       const tagPath = path.resolve(basePath, route.path)
       tags.push({
@@ -154,7 +155,7 @@ const moveToCurrentTag = () => {
     }
   })
 }
-const refreshSelectedTag = async view => {
+const refreshSelectedTag = async (view: any) => {
   const { fullPath } = view
   await nextTick(() => {
     router.replace({
@@ -163,7 +164,7 @@ const refreshSelectedTag = async view => {
   })
 }
 
-const closeSelectedTag = view => {
+const closeSelectedTag = (view: any) => {
   const data = tagsStore.delView(view)
 
   if (isActive(view)) {
@@ -180,7 +181,7 @@ const closeOthersTags = () => {
 }
 
 // 右击：关闭所有
-const closeAllTags = async view => {
+const closeAllTags = async (view: any) => {
   const data = await tagsStore.delAllViews()
   const views = data['visitedViews']
   if (affixTags.value.some(tag => tag.path === view.path)) {
@@ -189,7 +190,7 @@ const closeAllTags = async view => {
   toLastView(views, view)
 }
 
-const toLastView = (visitedViews, view) => {
+const toLastView = (visitedViews: any, view: any) => {
   const latestView = visitedViews.slice(-1)[0]
   if (latestView) {
     router.push(latestView)
@@ -205,7 +206,7 @@ const toLastView = (visitedViews, view) => {
   }
 }
 
-const openMenu = (tag, e) => {
+const openMenu = (tag: any, e: any) => {
   const menuMinWidth = 105
 
   const offsetLeft = tagsViewRef.value.getBoundingClientRect().left
