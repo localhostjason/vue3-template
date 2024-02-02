@@ -10,26 +10,23 @@
       <div class="bullshit">
         <div class="bullshit__oops">404!</div>
         <div class="bullshit__headline">{{ message }}</div>
-        <div class="bullshit__info">请检查您输入的网址是否正确，请点击以下按钮返回主页或者发送错误报告</div>
+        <div class="bullshit__info">请检查您输入的网址是否正确，请点击以下按钮返回主页</div>
         <a href="javascript:void (0)" class="bullshit__return-home" @click="goBack">返回</a>
       </div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Page404',
-  computed: {
-    message() {
-      return '您访问的页面不存在......'
-    }
-  },
-  methods: {
-    goBack() {
-      this.$router.go(-1)
-    }
-  }
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const message = ref<string>('您访问的页面不存在......')
+
+const router = useRouter()
+
+const goBack = () => {
+  router.go(-1)
 }
 </script>
 
@@ -168,7 +165,7 @@ export default {
   .bullshit {
     position: relative;
     float: left;
-    width: 300px;
+    width: 330px;
     padding: 30px 0;
     overflow: hidden;
 

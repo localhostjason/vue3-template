@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHashHistory, Router, RouteRecordRaw } from 'vue-router'
 import { LAYOUT } from '@/router/constant'
 import { AppRouteRecordRaw } from '@/router/types'
 
@@ -78,12 +78,21 @@ export const asyncRoutes = [...UserRoutes]
 
 const r = basicRoutes.concat(asyncRoutes)
 
-const router = createRouter({
+const router: Router = createRouter({
   history: createWebHashHistory(process.env.BASE_URL),
   routes: r as unknown as RouteRecordRaw[],
   scrollBehavior: () => ({ left: 0, top: 0 })
 })
 
+// todo remove : not need router.push catch
+const catchRoute = (router: Router): Router => {
+  const originalPush = router.push
+  router.push = function push(location: RouteRecordRaw) {
+    return originalPush.call(this, location).catch(err => err)
+  }
+  return router
+}
+// const nr = catchRoute(router)
 export default router
 
 // 白名单应该包含基本静态路由

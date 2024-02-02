@@ -30,6 +30,8 @@ export function filterAsyncRoutes(routes: any[], routes_map: string[]) {
     if (hasPermission(routes_map, tmp)) {
       if (tmp.children) {
         tmp.children = filterAsyncRoutes(tmp.children, routes_map)
+        if (tmp.children.length)
+          tmp.redirect = tmp.children[0].path
       }
       res.push(tmp)
     }
