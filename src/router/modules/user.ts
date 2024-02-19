@@ -8,7 +8,7 @@ const userRoutes: Array<AppRouteRecordRaw> = [
     component: LAYOUT,
     meta: {
       title: '用户管理',
-      icon: 'a-apartment'
+      icon: 'a-team'
     },
     redirect: 'list',
     children: [

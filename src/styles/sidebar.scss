@@ -69,6 +69,8 @@
 
     .svg-icon {
       margin-right: 10px;
+      height: 15px;
+      width: 15px;
     }
 
     .el-menu {
@@ -280,13 +282,11 @@ body {
 
 .el-menu-item {
   width: 96%;
-  margin-left: 2%;
   height: 40px;
   margin: 4px;
   border-radius: 10px;
 
   &.is-active {
-    padding: 2px;
     background-color: #1677ff;
   }
 }
