@@ -38,7 +38,7 @@ export const basicRoutes: Array<AppRouteRecordRaw> = [
         component: () => import('@/views/dashboard/index.vue'),
         meta: {
           title: '概览',
-          icon: 'home',
+          icon: 'a-home',
           affix: true
         }
       }

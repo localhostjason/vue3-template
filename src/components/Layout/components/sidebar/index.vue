@@ -11,8 +11,8 @@
       unique-opened
       mode="vertical"
       background-color="#304156"
-      text-color="#bfcbd9"
-      active-text-color="#409EFF"
+      text-color="rgba(255, 255, 255, 0.65)"
+      active-text-color="#fff"
       :collapse-transition="false"
     >
       <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path"></sidebar-item>
@@ -89,12 +89,4 @@ const routes = routers
 }
 </style>
 
-<style rel="stylesheet/scss" lang="scss">
-body {
-  .router-link-active {
-    .el-menu-item {
-      color: rgb(64, 158, 255) !important;
-    }
-  }
-}
-</style>
+<style rel="stylesheet/scss" lang="scss"></style>
