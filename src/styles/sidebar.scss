@@ -2,6 +2,8 @@
   $subMenuActiveText,
   //菜单背景
   $menuBg,
+  // 鼠标覆盖菜单时的背景
+  $menuHover,
   // 子菜单背景
   $subMenuBg,
   // 鼠标覆盖子菜单时的背景
@@ -44,7 +46,7 @@
     }
 
     .el-scrollbar__bar.is-vertical {
-      right: 0;
+      right: 0px;
     }
 
     .el-scrollbar {
@@ -68,9 +70,7 @@
     }
 
     .svg-icon {
-      margin-right: 10px;
-      height: 15px;
-      width: 15px;
+      margin-right: 14px;
     }
 
     .el-menu {
@@ -80,11 +80,10 @@
     }
 
     // menu hover
-    .submenu-title-noDropdown:not(.is-active),
-    .el-submenu__title:not(.is-active) {
+    .submenu-title-noDropdown,
+    .el-submenu__title {
       &:hover {
-        color: #fff !important;
-        background-color: unset !important;
+        background-color: $menuHover !important;
       }
     }
 
@@ -127,7 +126,7 @@
     }
 
     .svg-icon {
-      margin-right: -14px;
+      margin-right: -14px !important;
     }
 
     .submenu-title-noDropdown {
@@ -181,7 +180,7 @@
   // 适配移动端, Mobile responsive
   .mobile {
     .main-container {
-      margin-left: 0;
+      margin-left: 0px;
     }
 
     .sidebar-container {
@@ -216,10 +215,10 @@
     }
 
     .nest-menu .el-submenu > .el-submenu__title,
-    .el-menu-item:not(.is-active) {
+    .el-menu-item {
       &:hover {
-        color: #fff !important;
-        background-color: unset !important;
+        // you can use $subMenuHover
+        background-color: $menuHover !important;
       }
     }
 
@@ -249,6 +248,7 @@ body {
   $subMenuActiveText: #f4f4f5;
 
   $menuBg: #304156;
+  $menuHover: #263445;
 
   $subMenuBg: #1f2d3d;
   $subMenuHover: #001528;
@@ -256,38 +256,13 @@ body {
   @include merge-style(
                   $subMenuActiveText,
                   $menuBg,
+                  $menuHover,
                   $subMenuBg,
                   $subMenuHover
   );
 }
 
-.el-sub-menu {
-  &.is-active {
-    .el-sub-menu__title {
-      color: #fff !important;
-    }
-  }
 
-  .el-menu-item {
-    height: 40px;
-
-  }
+.el-sub-menu .el-sub-menu__icon-arrow {
+  margin-right: -12px;
 }
-
-.el-sub-menu__title {
-  &:hover {
-    color: #fff !important;
-  }
-}
-
-.el-menu-item {
-  width: 96%;
-  height: 40px;
-  margin: 4px;
-  border-radius: 10px;
-
-  &.is-active {
-    background-color: #1677ff;
-  }
-}
-

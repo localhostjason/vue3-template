@@ -11,8 +11,8 @@
       unique-opened
       mode="vertical"
       background-color="#304156"
-      text-color="rgba(255, 255, 255, 0.65)"
-      active-text-color="#fff"
+      text-color="#bfcbd9"
+      active-text-color="#409EFF"
       :collapse-transition="false"
     >
       <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path"></sidebar-item>
@@ -28,6 +28,7 @@ import settings from '@/settings'
 import { usePermissionStore } from '@/store/modules/permission'
 import { useAppStore } from '@/store/modules/app'
 import { storeToRefs } from 'pinia'
+import { Eleme } from '@element-plus/icons-vue'
 
 // const router = useRouter().options.routes
 const permissionStore = usePermissionStore()

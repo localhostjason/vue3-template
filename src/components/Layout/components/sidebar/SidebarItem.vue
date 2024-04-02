@@ -3,7 +3,11 @@
     <template v-if="hasOneShowingChild(item.children) && !onlyOneChild.children">
       <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{ 'submenu-title-noDropdown': !isNest }">
-          <svg-icon v-if="onlyOneChild.meta && onlyOneChild.meta.icon" :icon-class="onlyOneChild.meta.icon"></svg-icon>
+          <svg-icon
+            class="font_icon"
+            v-if="onlyOneChild.meta && onlyOneChild.meta.icon"
+            :icon-class="onlyOneChild.meta.icon"
+          ></svg-icon>
           <template #title>
             <span>{{ onlyOneChild.meta.title }}</span>
           </template>
@@ -13,7 +17,7 @@
 
     <el-sub-menu v-else ref="subMenu" :index="resolvePath(item.path)" teleported>
       <template #title>
-        <svg-icon v-if="item.meta && item.meta.icon" :icon-class="item.meta.icon" />
+        <svg-icon class="font_icon" v-if="item.meta && item.meta.icon" :icon-class="item.meta.icon" />
         <span v-if="item.meta && item.meta.title && sidebar.opened">{{ item.meta.title }}</span>
       </template>
 
@@ -29,7 +33,7 @@
 
         <router-link v-else :to="resolvePath(child.path)" :key="child.name">
           <el-menu-item :index="resolvePath(child.path)">
-            <svg-icon v-if="child.meta && child.meta.icon" :icon-class="child.meta.icon"></svg-icon>
+            <svg-icon class="font_icon" v-if="child.meta && child.meta.icon" :icon-class="child.meta.icon"></svg-icon>
             <span v-if="child.meta && child.meta.title">{{ child.meta.title }}</span>
           </el-menu-item>
         </router-link>
@@ -88,8 +92,8 @@ function hasOneShowingChild(children: AppRouteRecordRaw[] = []) {
 <style rel="" lang="scss" scoped>
 .menu-wrapper {
   .font_icon {
-    width: 1em;
-    height: 1em;
+    width: 12px;
+    height: 12px;
     vertical-align: -0.15em;
     fill: currentColor;
     /*overflow: hidden;*/
