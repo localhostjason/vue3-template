@@ -13,6 +13,7 @@ const permissionDirective: Directive = {
       el.parentNode?.removeChild(el)
     }
   },
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   unmounted(el) {}
 }
 

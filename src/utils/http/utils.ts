@@ -6,7 +6,7 @@ import { useUserStoreWithOut } from '@/store/modules/user'
 import { AxiosRequestConfig } from 'axios'
 
 const trim = (data: any): any => {
-  let newData: any = {}
+  const newData: any = {}
   for (const [k, v] of Object.entries(data)) {
     newData[k] = isString(v) ? v.trim() : v
   }
@@ -15,6 +15,7 @@ const trim = (data: any): any => {
 
 const trimArgs = (config: AxiosRequestConfig): AxiosRequestConfig => {
   // trim 参数
+  // eslint-disable-next-line prefer-const
   let { method, data, params } = config
   try {
     if (method !== 'get') {

@@ -1,7 +1,10 @@
 interface ProxyStorage {
   getItem(key: string): any
+
   setItem(Key: string, value: string): void
+
   removeItem(key: string): void
+
   clear(): void
 }
 

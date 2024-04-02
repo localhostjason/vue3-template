@@ -22,10 +22,6 @@ export const useMenuStore = defineStore({
   }
 })
 
-
 export function useMenuStoreWithOut() {
   return useMenuStore(store)
 }
-
-
-

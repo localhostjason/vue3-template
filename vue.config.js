@@ -35,9 +35,6 @@ module.exports = defineConfig({
     resolve: {
       alias: {
         '@': resolve('src')
-      },
-      fallback: {
-        path: require.resolve('path-browserify')
       }
     },
     performance: {

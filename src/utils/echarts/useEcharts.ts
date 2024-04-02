@@ -15,6 +15,7 @@ export function useECharts(elRef: Ref<HTMLDivElement>, theme: 'light' | 'dark' |
   let chartInstance: echarts.ECharts | null = null
   let resizeFn: Fn = resize
   const cacheOptions = ref({}) as Ref<EChartsOption>
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   let removeResizeFn: Fn = () => {}
 
   resizeFn = useDebounceFn(resize, 200)
@@ -69,7 +70,9 @@ export function useECharts(elRef: Ref<HTMLDivElement>, theme: 'light' | 'dark' |
 
         chartInstance?.setOption(unref(getOptions))
       }, 30)
-    }).catch(e => {})
+    }).catch(e => {
+      console.log('next tick err:', e)
+    })
   }
 
   function resize() {

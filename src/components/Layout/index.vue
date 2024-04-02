@@ -23,7 +23,7 @@ import { useAppStore } from '@/store/modules/app'
 
 interface setInter {
   sidebar: any
-  device: String
+  device: string
   classes: any
 }
 

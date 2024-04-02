@@ -24,7 +24,7 @@ class AxiosHttp {
 
   private setTokeHeader(config: AxiosRequestConfig): AxiosRequestConfig {
     const token = userStore.getToken
-    let headers = config.headers
+    const headers = config.headers
     if (token) {
       if (headers) {
         headers['Authorization'] = `Bearer ${token}`

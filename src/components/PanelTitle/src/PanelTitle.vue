@@ -4,12 +4,12 @@
       <div class="pull-left">
         <h4>{{ title }}</h4>
 
+        <slot name="button"></slot>
+
         <el-button size="small" class="btn-small" v-if="Boolean(backTitle)" @click="goHistory">
           <span class="icon-toinstlist"></span>
           <span>{{ backTitle }}</span>
         </el-button>
-
-        <slot name="button"></slot>
       </div>
     </div>
   </el-row>
@@ -74,7 +74,7 @@ const goHistory = (): void => {
   height: 12px;
   display: inline-block;
   vertical-align: middle;
-  background: url('../../../assets/toinstlist.png') center 1px no-repeat;
+  background: url('@/assets/toinstlist.png') center 1px no-repeat;
 }
 
 .btn-small {

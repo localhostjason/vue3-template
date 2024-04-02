@@ -5,7 +5,7 @@
         <span v-if="item.redirect === 'noRedirect' || index === levelList.length - 1" class="no-redirect">{{
           item.meta.title
         }}</span>
-        <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
+        <a v-else @click.prevent="handleLink(item)" class="has-redirect">{{ item.meta.title }}</a>
       </el-breadcrumb-item>
     </transition-group>
   </el-breadcrumb>
@@ -19,7 +19,7 @@ const levelList: Ref<RouteLocationMatched[]> = ref([])
 const route = useRoute()
 const router = useRouter()
 
-const isDashboard = (route: RouteLocationMatched): Boolean | string => {
+const isDashboard = (route: RouteLocationMatched): boolean | string => {
   const name = route && (route.name as string)
   if (!name) {
     return false
@@ -33,8 +33,8 @@ const getBreadcrumb = (): void => {
   if (!isDashboard(first)) {
     matched = [
       {
-        path: '/dashboard',
-        meta: { title: '概览' }
+        path: 'noPath',
+        meta: { title: '后台管理系统' }
       } as unknown as RouteLocationMatched
     ].concat(matched)
   }
@@ -50,6 +50,10 @@ watch(
 
 const handleLink = (item: RouteLocationMatched): any => {
   const { redirect, path } = item
+  if (path === 'noPath') {
+    return
+  }
+
   if (redirect) {
     router.push(redirect.toString())
     return
@@ -62,7 +66,7 @@ const handleLink = (item: RouteLocationMatched): any => {
 .app-breadcrumb.el-breadcrumb {
   display: inline-block;
   font-size: 14px;
-  line-height: 50px;
+  line-height: 60px;
 
   .no-redirect {
     color: #97a8be;

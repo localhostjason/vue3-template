@@ -30,8 +30,7 @@ export function filterAsyncRoutes(routes: any[], routes_map: string[]) {
     if (hasPermission(routes_map, tmp)) {
       if (tmp.children) {
         tmp.children = filterAsyncRoutes(tmp.children, routes_map)
-        if (tmp.children.length)
-          tmp.redirect = tmp.children[0].path
+        if (tmp.children.length) tmp.redirect = tmp.children[0].path
       }
       res.push(tmp)
     }
@@ -67,7 +66,7 @@ export const usePermissionStore = defineStore({
   },
   actions: {
     generateRoutes(data: string[]) {
-      let accessedRoutes = filterAsyncRoutes(asyncRoutes, data)
+      const accessedRoutes = filterAsyncRoutes(asyncRoutes, data)
       this.addRouters = accessedRoutes
       this.routers = basicRoutes.concat(accessedRoutes)
       return accessedRoutes

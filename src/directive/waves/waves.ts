@@ -56,6 +56,7 @@ const wavesDirective: Directive = {
     )
   },
   unmounted(el) {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     el.removeEventListener('click', () => {})
   }
 }

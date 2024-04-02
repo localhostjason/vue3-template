@@ -18,7 +18,7 @@ export const logout = <T = void>(): Promise<T> => {
 
 export const getUserInfo = <T = UserInfo>(): Promise<T> => {
   return http.request({
-    url: `/user/info`,
+    url: `/user/self`,
     method: 'get'
   })
 }

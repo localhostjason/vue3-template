@@ -26,37 +26,42 @@
 // fuse is a lightweight fuzzy-search module
 // make search results more in line with expectations
 import Fuse from 'fuse.js'
-import * as path from 'path'
+import path from 'path-browserify'
 
 import { ref, computed, watch, nextTick, onMounted, toRaw } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useRouter } from 'vue-router'
+import { RouteLocationRaw, useRouter } from 'vue-router'
 import { usePermissionStore } from '@/store/modules/permission'
 
 const search = ref('')
-const options = ref([])
-const searchPool = ref([])
+const options = ref<any[]>([])
+const searchPool = ref<any[]>([])
 const show = ref(false)
-let fuse = undefined
+let fuse: Fuse<unknown> | undefined = undefined
 
 const { routers } = storeToRefs(usePermissionStore())
 const routes = routers.value
 
 const router = useRouter()
 
-const headerSearchSelectRef = ref(null)
+const headerSearchSelectRef = ref<any>(null)
 
 // Filter out the routes that can be displayed in the sidebar
 // And generate the internationalized title
-const generateRoutes = (routes, basePath = '/', prefixTitle = []) => {
-  let res = []
+type PathInfo = {
+  path: string
+  title: any[]
+}
+
+const generateRoutes = (routes: any[], basePath = '/', prefixTitle: any[] = []) => {
+  let res: any[] = []
   for (const router of routes) {
     // skip hidden router
     if (router.hidden) {
       continue
     }
 
-    const data = {
+    const data: PathInfo = {
       path: path.resolve(basePath, router.path),
       title: [...prefixTitle]
     }
@@ -98,7 +103,7 @@ const close = () => {
   show.value = false
 }
 
-const change = path => {
+const change = (path: RouteLocationRaw) => {
   router.push(path)
   search.value = ''
   options.value = []
@@ -107,8 +112,8 @@ const change = path => {
   })
 }
 
-const querySearch = (query: any) => {
-  if (query !== '') {
+const querySearch = (query: string) => {
+  if (query !== '' && fuse) {
     options.value = fuse.search(query)
   } else {
     options.value = []

@@ -4,7 +4,7 @@ import type { User } from '@/views/user/models/user'
 
 export const getUsers = (): Promise<User[]> => {
   return http.request({
-    url: `/user/list`,
+    url: `/user`,
     method: 'get'
   })
 }

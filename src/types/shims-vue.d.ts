@@ -11,3 +11,7 @@ declare module '*.scss' {
 }
 
 declare module 'element-plus/dist/locale/zh-cn.mjs'
+
+declare module 'path-browserify'
+
+declare module 'js-cookie'

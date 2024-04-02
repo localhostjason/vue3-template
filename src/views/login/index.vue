@@ -46,7 +46,7 @@
                 placeholder="请输入密码"
                 name="password"
                 auto-complete="on"
-                @keyup.enter.native="handleLogin(loginForm)"
+                @keyup.enter="handleLogin(loginForm)"
                 size="large"
                 :prefix-icon="Unlock"
               ></el-input>
@@ -60,7 +60,7 @@
               :loading="loading"
               type="primary"
               style="width: 100%; margin-bottom: 30px; margin-top: 20px"
-              @click.native.prevent="handleLogin(loginForm)"
+              @click.prevent="handleLogin(loginForm)"
               size="large"
               >登录
             </el-button>
@@ -109,8 +109,11 @@ const handleLogin = async (formEl: FormInstance | undefined) => {
     try {
       const { token } = await login(form)
       userStore.setToken(token)
-    } catch (e) {}
-    loading.value = false
+      loading.value = false
+    } catch (e) {
+      loading.value = false
+      return
+    }
 
     await router.push({ path: '/' })
     ElNotification.success({

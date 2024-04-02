@@ -1,7 +1,7 @@
 import { ElMessage } from 'element-plus'
 
 // 消息
-const Message = (message: string, duration: number = 3000): any => {
+const Message = (message: string, duration = 3000): any => {
   return ElMessage({
     showClose: true,
     message,
@@ -10,7 +10,7 @@ const Message = (message: string, duration: number = 3000): any => {
 }
 
 // 成功
-const successMessage = (message: string,duration: number = 3000): any => {
+const successMessage = (message: string, duration = 3000): any => {
   return ElMessage({
     showClose: true,
     message,
@@ -20,7 +20,7 @@ const successMessage = (message: string,duration: number = 3000): any => {
 }
 
 // 警告
-const warnMessage = (message: string,duration: number = 3000): any => {
+const warnMessage = (message: string, duration = 3000): any => {
   return ElMessage({
     showClose: true,
     message,
@@ -30,7 +30,7 @@ const warnMessage = (message: string,duration: number = 3000): any => {
 }
 
 // 失败
-const errorMessage = (message: string,duration: number = 3000): any => {
+const errorMessage = (message: string, duration = 3000): any => {
   return ElMessage({
     showClose: true,
     message,

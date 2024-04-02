@@ -1,6 +1,7 @@
 import { storageLocal } from '@/utils/storage'
 import { defineStore } from 'pinia'
 import store from '@/store'
+import Cookie from 'js-cookie'
 
 interface UserState {
   token?: string
@@ -17,7 +18,7 @@ export const useUserStore = defineStore({
   }),
   getters: {
     getToken(): string {
-      return this.token || storageLocal.getItem('token')
+      return this.token || Cookie.get('token')
     },
     getUsername(): string | undefined {
       return this.username
@@ -29,7 +30,7 @@ export const useUserStore = defineStore({
   actions: {
     setToken(token: string) {
       this.token = token
-      storageLocal.setItem('token', token)
+      Cookie.set('token', token)
     },
     setUserInfo(username: string, role: string) {
       this.username = username

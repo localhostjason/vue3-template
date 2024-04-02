@@ -1,22 +1,8 @@
 <template>
-  <div class="dashboard-container">
-    <!--<panel-title title="概览" is-line></panel-title>-->
-  </div>
+  <div class="dashboard-container"></div>
 </template>
 
-<script>
-export default {
-  name: 'Dashboard',
-  directives: {},
-  components: {},
-  computed: {},
-  data() {
-    return {}
-  },
-  created() {},
-  methods: {}
-}
-</script>
+<script setup lang="ts"></script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .el-row {

@@ -9,8 +9,8 @@
         :class="isActive(tag) ? 'active' : ''"
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
         class="tags-view-item"
-        @click.middle.native="closeSelectedTag(tag)"
-        @contextmenu.prevent.native="openMenu(tag, $event)"
+        @click.middle="closeSelectedTag(tag)"
+        @contextmenu.prevent="openMenu(tag, $event)"
       >
         {{ tag.title }}
 
@@ -33,13 +33,12 @@
 
 <script setup lang="ts">
 import ScrollPane from './ScrollPane.vue'
-import { computed, ref, onMounted, watch, nextTick } from 'vue'
+import { ref, onMounted, watch, nextTick } from 'vue'
 import { useTagsStore } from '@/store/modules/tagsView'
 import { usePermissionStore } from '@/store/modules/permission'
 import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
-import path from 'path'
-import { toRaw } from '@vue/reactivity'
+import path from 'path-browserify'
 import { Close } from '@element-plus/icons-vue'
 
 const route = useRoute()

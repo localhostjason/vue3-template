@@ -8,7 +8,7 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
-import * as ElIcon from '@element-plus/icons-vue'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 import SvgIcon from './components/SvgIcon/index.vue'
 import './icons'
@@ -21,6 +21,10 @@ import './styles/index.scss'
 // init
 
 import { setupGlobDirectives } from '@/directive'
+
+import moment from 'moment'
+// fix: moment date warning
+moment.suppressDeprecationWarnings = true
 ;(async () => {
   const app = createApp(App)
 
@@ -35,9 +39,8 @@ import { setupGlobDirectives } from '@/directive'
     size: 'small',
     locale: zhCn
   })
-  for (const iconName in ElIcon) {
-    // @ts-ignore
-    app.component(iconName, ElIcon[iconName])
+  for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+    app.component(key, component)
   }
 
   // load 全局指令

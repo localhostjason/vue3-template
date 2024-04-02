@@ -2,6 +2,5 @@ const requireAll = (requireContext: __WebpackModuleApi.RequireContext) => requir
 const req = require.context('./svg', false, /\.svg$/)
 requireAll(req)
 
-
 const reqAnt = require.context('./ant', false, /\.svg$/)
 requireAll(reqAnt)
