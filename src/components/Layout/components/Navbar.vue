@@ -11,10 +11,11 @@
 
       <screenfull id="screenfull" class="right-menu-item hover-effect"></screenfull>
       <!-- 退出登陆 -->
-      <el-dropdown trigger="click">
-        <span class="el-dropdown-link">
-          <p>{{ username }}</p>
-        </span>
+      <el-dropdown trigger="click" size="default" style="margin-left: 8px">
+        <div class="el-dropdown-link">
+          <span style="padding-right: 5px">{{ username }}</span>
+          <CaretBottom style="height: 12px"></CaretBottom>
+        </div>
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item :icon="User" @click="userInfo">个人信息</el-dropdown-item>
@@ -27,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { User, SwitchButton } from '@element-plus/icons-vue'
+import { User, SwitchButton, UserFilled, CaretBottom } from '@element-plus/icons-vue'
 
 import Breadcrumb from '@/components/BreadCrumb'
 import Hamburger from '@/components/HamBurger'
@@ -150,10 +151,6 @@ const toggleSideBar = () => {
     }
 
     .el-dropdown-link {
-      width: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
       margin-right: 10px;
       cursor: pointer;
 

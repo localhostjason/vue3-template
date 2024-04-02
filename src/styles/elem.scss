@@ -19,22 +19,12 @@
 }
 
 .el-dialog {
-  border-radius: 0;
-
   .el-dialog__header {
-    padding: 15px;
-    border-bottom: 1px solid #e5e5e5;
-
     .el-dialog__title {
       font-size: 14px;
-      color: #333;
     }
   }
 
-  .el-dialog__footer {
-    padding: 15px 20px;
-    border-top: 1px solid #e5e5e5;
-  }
 }
 
 .el-form-item__label {
@@ -132,7 +122,7 @@
 }
 
 .el-dialog__body {
-  padding: 20px !important;
+  padding: 10px 0 0;
 }
 
 .el-date-editor .el-range-separator {

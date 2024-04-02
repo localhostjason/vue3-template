@@ -8,7 +8,7 @@
       :close-on-click-modal="false"
     >
       <el-row>
-        <el-col :span="21">
+        <el-col :span="22">
           <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
             <el-form-item label="用户名：" :prop="user_id ? '-' : 'username'">
               <span class="text-gray-lg sm" v-if="user_id">{{ form.username }}</span>
@@ -33,10 +33,8 @@
         </el-col>
       </el-row>
       <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="dialog.visible = false">取 消</el-button>
-          <el-button type="primary" @click="updateUser">确 定</el-button>
-        </span>
+        <el-button @click="dialog.visible = false">取 消</el-button>
+        <el-button type="primary" @click="updateUser">确 定</el-button>
       </template>
     </el-dialog>
   </div>
