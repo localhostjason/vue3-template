@@ -1,10 +1,5 @@
-import { App } from 'vue'
 import breadCrumb from './src/BreadCrumb.vue'
+import { withInstall } from '@/utils/vue'
 
-export const BreadCrumb = Object.assign(breadCrumb, {
-  install(app: App) {
-    app.component(breadCrumb.name, breadCrumb)
-  }
-})
-
+export const BreadCrumb = withInstall(breadCrumb)
 export default BreadCrumb

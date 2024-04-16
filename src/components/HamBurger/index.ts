@@ -1,10 +1,5 @@
-import { App } from 'vue'
 import hamBurger from './src/HamBurger.vue'
+import { withInstall } from '@/utils/vue'
 
-export const HamBurger = Object.assign(hamBurger, {
-  install(app: App) {
-    app.component(hamBurger.name, hamBurger)
-  }
-})
-
+export const HamBurger = withInstall(hamBurger)
 export default HamBurger

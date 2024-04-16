@@ -54,6 +54,10 @@ const httpResponseMessageByCode = (code: number, errMsg: string): string => {
       message = errMsg
       break
 
+    case 400:
+      message = errMsg
+      break
+
     case 422:
       message = errMsg
       break
