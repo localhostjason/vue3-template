@@ -40,6 +40,7 @@ export const useUserStore = defineStore({
       this.token = ''
       this.username = ''
       this.role = ''
+      Cookie.remove('token')
       storageLocal.clear()
     }
   }

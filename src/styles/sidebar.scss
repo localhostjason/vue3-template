@@ -266,3 +266,19 @@ body {
 .el-sub-menu .el-sub-menu__icon-arrow {
   margin-right: -12px;
 }
+
+.el-sub-menu.is-active {
+  .el-sub-menu__title {
+    color: #ffffff;
+
+    //&:before {
+    //  content: "";
+    //  background: var(--el-color-primary);
+    //  display: inline-block;
+    //  width: 2px;
+    //  height: 20px;
+    //  position: absolute;
+    //  left: 10px;
+    //}
+  }
+}
