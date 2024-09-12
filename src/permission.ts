@@ -1,5 +1,5 @@
 import NProgress from '@/utils/progress'
-import router, { resetRouter } from './router'
+import { resetRouter } from './router'
 import { getUserInfo } from '@/api/user/auth'
 import { useUserStoreWithOut } from '@/store/modules/user'
 import { usePermissionStoreWithOut } from '@/store/modules/permission'
@@ -39,8 +39,8 @@ export const setupPermissionRouter = (router: Router) => {
     }
 
     try {
-      const { username, role } = await getUserInfo()
-      userStore.setUserInfo(username, role)
+      const user = await getUserInfo()
+      userStore.setUserInfo(user)
       // generate accessible routes map based on roles
       const menus: string[] = [] // menus = ["Apis"] // 此menus 可通過接口獲得
       menuStore.setMenuNames(menus)

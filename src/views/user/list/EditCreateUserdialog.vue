@@ -46,7 +46,7 @@ import { FormInstance, FormRules } from 'element-plus'
 
 import { validate } from '@/utils/element/form'
 import { successMessage } from '@/utils/element/message'
-import { ModifyUserForm, User } from '@/views/user/models/user'
+import { ModifyUserForm, User } from '@/views/user/list/type'
 
 import { validateReg, setFormData, getFormDataByFields } from '@/utils'
 

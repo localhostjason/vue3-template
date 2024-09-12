@@ -1,5 +1,5 @@
 <template>
-  <el-breadcrumb class="app-breadcrumb" separator="/">
+  <el-breadcrumb class="app-breadcrumb" :separator-icon="ArrowRight">
     <transition-group appear name="breadcrumb">
       <el-breadcrumb-item v-for="(item, index) in levelList" :key="item.path">
         <span v-if="item.redirect === 'noRedirect' || index === levelList.length - 1" class="no-redirect">{{
@@ -14,6 +14,7 @@
 <script lang="ts" setup>
 import { ref, watch, Ref } from 'vue'
 import { useRoute, useRouter, RouteLocationMatched } from 'vue-router'
+import { ArrowRight } from '@element-plus/icons-vue'
 
 const levelList: Ref<RouteLocationMatched[]> = ref([])
 const route = useRoute()
@@ -33,8 +34,8 @@ const getBreadcrumb = (): void => {
   if (!isDashboard(first)) {
     matched = [
       {
-        path: 'noPath',
-        meta: { title: '后台管理系统' }
+        path: '/dashboard',
+        meta: { title: '首页' }
       } as unknown as RouteLocationMatched
     ].concat(matched)
   }

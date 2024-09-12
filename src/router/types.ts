@@ -15,6 +15,8 @@ export interface RouteMeta {
 
   // no show tag
   hideTag?: boolean
+
+  activeMenu?: string // hidden router actice
 }
 
 export interface AppRouteRecordRaw extends Omit<RouteRecordRaw, 'meta' | 'children'> {

@@ -1,6 +1,6 @@
 import { http } from '@/utils/http'
 import { downloadHttp } from '@/utils/http/download'
-import type { User } from '@/views/user/models/user'
+import type { User } from '@/views/user/list/type'
 
 export const getUsers = (): Promise<User[]> => {
   return http.request({
