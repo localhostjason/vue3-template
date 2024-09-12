@@ -76,3 +76,6 @@ main.exe -x
 ![p1](./example/img_1.png)
 
 ![home2](./example/img.png)
+
+![home](./example/home.png)
+

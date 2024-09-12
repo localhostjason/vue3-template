@@ -34,3 +34,11 @@ export const getFormDataByFields = (fields: any, keys: string[]): object => {
   }
   return data
 }
+
+export function formatPrice(price: number) {
+  try {
+    return String(price).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  } catch (e) {
+    return price
+  }
+}
