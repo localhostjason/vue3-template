@@ -4,8 +4,7 @@ interface TagsState {
   visitedViews: any[]
 }
 
-export const useTagsStore = defineStore({
-  id: 'app-tags',
+export const useTagsStore = defineStore('app-tags', {
   state: (): TagsState => ({
     visitedViews: []
   }),

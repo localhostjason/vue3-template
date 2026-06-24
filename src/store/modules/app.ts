@@ -17,8 +17,7 @@ function getSideBarOpened(): boolean {
   return Boolean(Number(data))
 }
 
-export const useAppStore = defineStore({
-  id: 'app',
+export const useAppStore = defineStore('app', {
   state: (): AppState => ({
     sidebar: {
       opened: getSideBarOpened(),

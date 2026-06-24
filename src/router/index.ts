@@ -79,7 +79,7 @@ export const asyncRoutes = [...UserRoutes]
 const r = basicRoutes.concat(asyncRoutes)
 
 const router: Router = createRouter({
-  history: createWebHashHistory(process.env.BASE_URL),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: r as unknown as RouteRecordRaw[],
   scrollBehavior: () => ({ left: 0, top: 0 })
 })

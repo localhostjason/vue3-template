@@ -5,8 +5,7 @@ interface MenuState {
   menu_names?: string[]
 }
 
-export const useMenuStore = defineStore({
-  id: 'app-menu',
+export const useMenuStore = defineStore('app-menu', {
   state: (): MenuState => ({
     menu_names: []
   }),

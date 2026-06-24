@@ -53,8 +53,7 @@ interface PermissionState {
   addRouters: any[]
 }
 
-export const usePermissionStore = defineStore({
-  id: 'app-permission',
+export const usePermissionStore = defineStore('app-permission', {
   state: (): PermissionState => ({
     routers: [],
     addRouters: []

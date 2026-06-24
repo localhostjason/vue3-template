@@ -10,8 +10,7 @@ interface UserState {
   role?: string
 }
 
-export const useUserStore = defineStore({
-  id: 'app-user',
+export const useUserStore = defineStore('app-user', {
   state: (): UserState => ({
     token: undefined,
     username: undefined,
