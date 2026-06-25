@@ -2,7 +2,7 @@ export type User = {
   id: number
   username: string
   time: string
-  last_login_time: string | null
+  last_login_time?: string
   email: string
   role: string
   desc: string
@@ -11,6 +11,7 @@ export type User = {
 export type UserState = {
   data: User[]
   loading: boolean
+  total: number
 }
 
 export type ModifyUserForm = {
