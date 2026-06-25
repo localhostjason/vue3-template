@@ -1,6 +1,6 @@
 import NProgress from '@/utils/progress'
 import { useUserStoreWithOut } from '@/store/modules/user'
-import type { NavigationGuardNext, RouteLocationNormalized, Router } from 'vue-router'
+import type { RouteLocationNormalized, Router } from 'vue-router'
 import { getPageTitle } from '@/utils/get-page-title'
 import { loadUserSessionAndRoutes, resolvePostLoginTarget, resolveRouterModuleByRouteName } from '@/permission_util'
 import { useRouterMStore } from '@/store/modules/router'
@@ -15,20 +15,19 @@ const isNotFoundRoute = (to: RouteLocationNormalized): boolean => {
 }
 
 const redirectToFirstAccessible = (
-  next: NavigationGuardNext,
   replace = true
-): void => {
+) => {
   const target = resolvePostLoginTarget()
   if ('path' in target) {
-    next({ path: target.path, replace })
+    return { path: target.path, replace }
   } else {
     routerMStore.setCurrentRouterModule(target.module)
-    next({ name: target.name, replace })
+    return { name: target.name, replace }
   }
 }
 
 export const setupPermissionRouter = (router: Router) => {
-  router.beforeEach(async (to: RouteLocationNormalized, _from: RouteLocationNormalized, next: NavigationGuardNext) => {
+  router.beforeEach(async (to: RouteLocationNormalized, _from: RouteLocationNormalized) => {
     NProgress.start()
 
     // 动态修改 term 开头的路由 title
@@ -47,59 +46,53 @@ export const setupPermissionRouter = (router: Router) => {
     const token = userStore.getToken
     const username = userStore.getUsername
     if (!token) {
-      whiteList.includes(to.path) ? next() : next(`/login`)
       NProgress.done()
-      return
+      return whiteList.includes(to.path) ? true : '/login'
     }
 
     if (whiteList.includes(to.path)) {
       // 已登录再进登录相关页面：按权限落到非 hidden 的首屏，避免固定 `/`
-      redirectToFirstAccessible(next)
       NProgress.done()
-      return
+      return redirectToFirstAccessible()
     }
 
     if (username) {
       // 已有用户信息：访问根路径但无 Dashboard（会命中 404）时，跳到首个可访问页面
       if (to.path === '/' && isNotFoundRoute(to)) {
-        redirectToFirstAccessible(next)
         NProgress.done()
-        return
+        return redirectToFirstAccessible()
       }
 
       const module = resolveRouterModuleByRouteName(to.name as string | undefined)
       if (module) routerMStore.setCurrentRouterModule(module)
-      next()
-      return
+      return true
     }
 
     try {
       const menu_names = await loadUserSessionAndRoutes(router, '')
 
       if (menu_names.includes(<string>to.name)) {
-        next(`/401`)
         NProgress.done()
-        return
+        return '/401'
       }
 
       // 权限路由已注入：若根路径仍命中 404，说明没首页权限，改为跳到首个可访问页面
       if (to.path === '/' && isNotFoundRoute(to)) {
-        redirectToFirstAccessible(next)
         NProgress.done()
-        return
+        return redirectToFirstAccessible()
       }
 
       const module = resolveRouterModuleByRouteName(to.name as string | undefined)
       if (module) routerMStore.setCurrentRouterModule(module)
 
-      next({ ...to, replace: true })
+      return { ...to, replace: true }
     } catch (error) {
       console.log('err:', error)
       // remove token and go to login page to re-login
       userStore.removeUserStore()
       localStorage.setItem('remove_user_store', 'permission err')
-      next(`/login`)
       NProgress.done()
+      return '/login'
     }
   })
 

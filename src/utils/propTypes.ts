@@ -16,20 +16,16 @@ const propTypes = createTypes({
   number: undefined,
   object: undefined,
   array: undefined,
-  integer: undefined
-}) as PropTypes
-
-propTypes.extend([
-  {
-    name: 'style',
+  integer: undefined,
+  style: {
     getter: true,
     type: [String, Object],
     default: undefined
   },
-  {
-    name: 'VNodeChild',
+  VNodeChild: {
     getter: true,
     type: undefined
   }
-])
+}) as PropTypes
+
 export { propTypes }

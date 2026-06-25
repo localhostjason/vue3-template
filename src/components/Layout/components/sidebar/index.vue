@@ -1,5 +1,5 @@
 <template>
-  <div style="display: grid;" v-show="currentRouterModule !== 'dash' && !['UserInfo', 'TestCli'].includes(routerName as string)"
+  <div style="display: grid;" v-show="currentRouterModule !== 'dash' && !['UserInfo'].includes(routerName as string)"
        class="sidebar-container">
 
     <el-scrollbar wrap-class="scrollbar-wrapper">

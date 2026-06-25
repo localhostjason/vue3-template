@@ -2,7 +2,7 @@
   <div :class="classes" class="app-wrapper">
     <!-- 移动端侧边栏遮罩 -->
     <Hamburger
-      v-if="device === 'mobile' && currentRouterModule !== 'dash' && !['UserInfo', 'TestCli'].includes(routerName as string)"
+      v-if="device === 'mobile' && currentRouterModule !== 'dash' && !['UserInfo'].includes(routerName as string)"
       :is-active="sidebar.opened" class="drawer-bg"
       @toggleClick="handleClickOutside"></Hamburger>
 
@@ -11,7 +11,7 @@
 
     <div
       class="main-container"
-      :class="['Dashboard', 'UserInfo', 'TestCli'].includes(routerName as string) ? 'dash' : 'transition'"
+      :class="['Dashboard', 'UserInfo'].includes(routerName as string) ? 'dash' : 'transition'"
     >
       <!-- 侧边栏 -->
       <Sidebar />

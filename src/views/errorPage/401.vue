@@ -4,41 +4,32 @@
     <el-row>
       <el-col :span="12">
         <h1 class="text-jumbo text-ginormous">403!</h1>
-        <h2>你没有权限访问该页面</h2>
-        <ul class="list-unstyled">
+        <h2>你没有权限去该页面</h2>
+        <h6>如需访问，请联系您领导</h6>
+        <ul class="list-styled">
           <li>或者你可以去:</li>
           <li class="link-type">
-            <router-link to="/dashboard">回首页</router-link>
+            <router-link to="/">回关于本系统</router-link>
           </li>
         </ul>
       </el-col>
       <el-col :span="12">
-        <img :src="errGif" width="313" height="428" alt="Girl has dropped her ice cream." />
+        <img :src="err_gif" width="313" height="428" alt="Girl has dropped her ice cream." />
       </el-col>
     </el-row>
   </div>
 </template>
 
-<script>
+<script lang="js" setup>
 import errGif from '@/assets/401_images/401.gif'
+import { useRouter } from 'vue-router'
 
-export default {
-  name: 'Page401',
-  data() {
-    return {
-      errGif: errGif + '?' + +new Date(),
-      dialogVisible: false
-    }
-  },
-  methods: {
-    back() {
-      if (this.$route.query.noGoBack) {
-        this.$router.push({ path: '/dashboard' })
-      } else {
-        this.$router.go(-1)
-      }
-    }
-  }
+const err_gif = errGif + '?' + +new Date()
+
+const router = useRouter()
+const noGoBack = router.currentRoute.value.query.noGoBack
+const back = () => {
+  noGoBack ? router.push({ path: '/dashboard' }) : router.go(-1)
 }
 </script>
 
@@ -54,24 +45,13 @@ export default {
     border: none !important;
   }
 
-  .pan-gif {
-    margin: 0 auto;
-    display: block;
-  }
-
-  .pan-img {
-    display: block;
-    margin: 0 auto;
-    width: 100%;
-  }
-
   .text-jumbo {
     font-size: 60px;
     font-weight: 700;
     color: #484848;
   }
 
-  .list-unstyled {
+  .list-styled {
     font-size: 14px;
 
     li {

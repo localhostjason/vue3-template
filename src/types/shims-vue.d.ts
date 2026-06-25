@@ -15,3 +15,8 @@ declare module 'element-plus/dist/locale/zh-cn.mjs'
 declare module 'path-browserify'
 
 declare module 'js-cookie'
+
+declare module 'virtual:svg-icons-register' {
+  const component: any
+  export default component
+}
