@@ -27,12 +27,13 @@
         <el-table v-loading="state.loading" :data="state.data" ref="tableRef" row-key="id"
                   border
                   class="full-width-table"
+                  @header-dragend="handleHeaderDragend"
                   @selection-change="handleSelectionChange">
           <el-table-column :reserve-selection="true" type="selection" width="50" align="center"></el-table-column>
 
           <CommonTableColumn :column-key="UserColumnKey" @showDetail="showDetail"></CommonTableColumn>
 
-          <el-table-column label="操作" width="120" fixed="right" align="center">
+          <el-table-column label="操作" min-width="120" :width="tableColAutoWidth" fixed="right" align="center">
             <template #default="scope">
               <el-button type="primary" link @click="editUser(scope.row)">编辑</el-button>
               <el-divider direction="vertical" />
@@ -97,6 +98,7 @@ import ModifyUser from '@/views/user/list/ModifyUser.vue'
 import UserDetail from '@/views/user/list/UserDetail.vue'
 import { getTableDragColumn, useTableColumnDrag } from '@/utils/composables/useTableColumnDrag'
 import { useTableColumnStore } from '@/store/modules/table_column'
+import { useTableAutoWidth } from '@/utils/composables/headerDragend'
 
 const pageQuery = ref<PageQuery>({})
 const args = ref<any>({})
@@ -134,7 +136,7 @@ const editUser = async (row: User) => {
 }
 const showDetail = async (row: User, name: string) => {
   drawerDetail.value = true
-  currentId.value =String(row.id)
+  currentId.value = String(row.id)
   drawerTitle.value = `用户详情：${row.username}`
   await nextTick()
   await detailRef.value.loadUser(row.id, name)
@@ -204,6 +206,8 @@ useTableColumnDrag({
     tableColumnStore.setSelectedColumnOrder(UserColumnKey, fields)
   }
 })
+
+const { tableColAutoWidth, handleHeaderDragend } = useTableAutoWidth(UserColumnKey, tableRef)
 </script>
 
 <style scoped></style>
