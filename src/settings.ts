@@ -1,3 +1,3 @@
 export default {
-  title: 'MY ADMIN'
+  title: '后台管理系统'
 }
