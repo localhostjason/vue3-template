@@ -18,13 +18,13 @@
         <sidebar-item
           v-if="child.children && child.children.length"
           :item="child"
-          :is-nest="true"
           :base-path="resolvePath(child.path)"
           class="nest-menu"
+          @closeDraw="handleCloseDraw"
         />
 
         <!-- 普通菜单 -->
-        <router-link v-else :to="resolvePath(child.path)">
+        <router-link v-else :to="resolvePath(child.path)" @click="handleCloseDraw">
           <el-tooltip
             placement="right"
             :disabled="!isCollapse"
@@ -47,8 +47,7 @@
 
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
-import { AppRouteRecordRaw } from '@/router/types'
+import { computed } from 'vue'
 import { useAppStore } from '@/store/modules/app'
 import { storeToRefs } from 'pinia'
 import path from 'path-browserify'
@@ -58,38 +57,28 @@ const props = defineProps({
     type: Object,
     required: true
   },
-  isNest: {
-    type: Boolean,
-    default: false
-  },
   basePath: {
     type: String,
     default: ''
+  },
+  forceExpand: {
+    type: Boolean,
+    default: false
   }
 })
 
+const emit = defineEmits(['closeDraw'])
+
 const appStore = useAppStore()
 const { sidebar } = storeToRefs(appStore)
-const isCollapse = computed(() => !sidebar.value.opened)
-
-const onlyOneChild = ref<AppRouteRecordRaw>({} as any)
+const isCollapse = computed(() => props.forceExpand ? false : !sidebar.value.opened)
 
 const resolvePath = (routePath: string) => {
-  // const path = require('path')
   return path.resolve(props.basePath, routePath)
 }
 
-function hasOneShowingChild(children: AppRouteRecordRaw[] = []) {
-  const showingChildren = children.filter(item => {
-    if (item.hidden) {
-      return false
-    } else {
-      onlyOneChild.value = item
-      return true
-    }
-  })
-
-  return showingChildren.length === 1
+const handleCloseDraw = () => {
+  emit('closeDraw')
 }
 </script>
 

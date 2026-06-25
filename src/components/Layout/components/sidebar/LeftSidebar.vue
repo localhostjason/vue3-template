@@ -11,8 +11,8 @@
         mode="vertical"
         :collapse-transition="false"
       >
-        <SidebarItemV2 v-for="route in activeRoutes" :key="route.path" :item="route" @closeDraw="closeDraw"
-                       :base-path="route.path"></SidebarItemV2>
+        <SidebarItem v-for="route in activeRoutes" :key="route.path" :item="route" force-expand
+                       @closeDraw="closeDraw" :base-path="route.path"></SidebarItem>
       </el-menu>
     </el-scrollbar>
     <div class="nav-footer">
@@ -25,7 +25,7 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import SidebarItemV2 from './SidebarItemV2.vue'
+import SidebarItem from './SidebarItem.vue'
 import { usePermissionStore } from '@/store/modules/permission'
 import { useAppStore } from '@/store/modules/app'
 import { storeToRefs } from 'pinia'
