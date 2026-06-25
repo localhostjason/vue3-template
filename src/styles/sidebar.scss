@@ -11,15 +11,26 @@
 ) {
   $menuText: #bfcbd9;
   $menuActiveText: #409EFF;
-  $sideBarWidth: 210px;
+  $sideBarWidth: 230px;
 
 
   // 主体区域 Main container
   .main-container {
     min-height: 100%;
-    transition: margin-left .28s;
+    height: 100%;
     margin-left: $sideBarWidth;
     position: relative;
+    background: #f5f7fa;
+
+    //transition: margin-left .28s;
+
+    &.dash {
+      margin-left: 0 !important;
+    }
+
+    &.transition {
+      transition: margin-left .28s;
+    }
   }
 
   // 侧边栏 Sidebar container
@@ -27,11 +38,9 @@
     transition: width 0.28s;
     width: $sideBarWidth !important;
     background-color: $menuBg;
-    height: 100%;
+    height: calc(100vh - 50px);
     position: fixed;
     font-size: 0;
-    top: 0;
-    bottom: 0;
     left: 0;
     z-index: 1001;
     overflow: hidden;
@@ -46,7 +55,7 @@
     }
 
     .el-scrollbar__bar.is-vertical {
-      right: 0px;
+      right: 0;
     }
 
     .el-scrollbar {
@@ -70,11 +79,11 @@
     }
 
     .svg-icon {
-      margin-right: 14px;
+      margin-right: 10px;
     }
 
     .el-menu {
-      border: none;
+      //border: none;
       height: 100%;
       width: 100% !important;
     }
@@ -89,9 +98,6 @@
 
     .is-active > .el-submenu__title {
       color: $subMenuActiveText !important;
-      background: -webkit-linear-gradient(left, #294574, #2e3c60); /* Safari 5.1 - 6.0 */
-      background: -o-linear-gradient(right, #294574, #2e3c60); /* Opera 11.1 - 12.0 */
-      background: -moz-linear-gradient(right, #294574, #2e3c60); /* Firefox 3.6 - 15 */
       background: linear-gradient(to right, #294574, #2e3c60); /* 标准的语法 */
 
       &:after {
@@ -125,9 +131,9 @@
       margin-left: 54px;
     }
 
-    .svg-icon {
-      margin-right: -14px !important;
-    }
+    //.svg-icon {
+    //  margin-right: -14px;
+    //}
 
     .submenu-title-noDropdown {
       padding: 0 !important;
@@ -180,7 +186,7 @@
   // 适配移动端, Mobile responsive
   .mobile {
     .main-container {
-      margin-left: 0px;
+      margin-left: 0;
     }
 
     .sidebar-container {
@@ -189,7 +195,7 @@
     }
 
     &.hideSidebar {
-      .sidebar-container {
+      .sidebar-container:not(.left) {
         pointer-events: none;
         transition-duration: 0.3s;
         transform: translate3d(-$sideBarWidth, 0, 0);
@@ -245,13 +251,13 @@
 
 // 暗色主题
 body {
-  $subMenuActiveText: #f4f4f5;
+  $subMenuActiveText: #fff;
 
-  $menuBg: #304156;
-  $menuHover: #263445;
+  $menuBg: #fff;
+  $menuHover: var(--el-menu-hover-bg-color);
 
-  $subMenuBg: #1f2d3d;
-  $subMenuHover: #001528;
+  $subMenuBg: #fff;
+  $subMenuHover: var(--el-menu-hover-bg-color);
 
   @include merge-style(
                   $subMenuActiveText,
@@ -263,22 +269,25 @@ body {
 }
 
 
-.el-sub-menu .el-sub-menu__icon-arrow {
-  margin-right: -12px;
+.el-menu-item {
+  font-size: 12px;
+  transition: none;
 }
 
-.el-sub-menu.is-active {
-  .el-sub-menu__title {
-    color: #ffffff;
-
-    //&:before {
-    //  content: "";
-    //  background: var(--el-color-primary);
-    //  display: inline-block;
-    //  width: 2px;
-    //  height: 20px;
-    //  position: absolute;
-    //  left: 10px;
-    //}
+.el-sub-menu {
+  &.is-active {
+    .el-sub-menu__title {
+      color: rgb(64, 158, 255) !important;
+    }
   }
+
+  .el-sub-menu__title {
+    height: 38px !important;
+    margin: 6px 0;
+  }
+}
+
+
+.el-sub-menu .el-sub-menu__icon-arrow {
+  margin-right: -14px;
 }

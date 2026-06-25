@@ -6,8 +6,6 @@ import path from 'path'
 const resolve = (dir: string) => path.resolve(__dirname, dir)
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd())
-
   return {
     // publicPath equivalent
     base: '/static',
@@ -52,7 +50,7 @@ export default defineConfig(({ mode }) => {
     // Dev server
     server: {
       port: 8082,
-      open: false,
+      open: false
       // proxy: {
       //   '/api': {
       //     target: 'http://127.0.0.1:8088',
@@ -62,14 +60,16 @@ export default defineConfig(({ mode }) => {
     },
 
     plugins: [
-      vue(),
-
-      // SVG sprite plugin — replaces svg-sprite-loader chainWebpack rule
+      vue({
+        template: {
+          compilerOptions: {
+            isCustomElement: () => false
+          }
+        }
+      }),
       createSvgIconsPlugin({
-        iconDirs: [resolve('src/icons/svg'), resolve('src/icons/ant')],
-        symbolId: 'icon-[name]',
-        inject: 'body-last',
-        customDomId: '__svg__icons__dom__'
+        iconDirs: [resolve('src/icons/svg'), resolve('src/icons/svg_v2')],
+        symbolId: 'icon-[name]'
       })
     ],
 

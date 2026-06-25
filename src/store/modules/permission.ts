@@ -1,6 +1,8 @@
 import { asyncRoutes, basicRoutes } from '@/router'
 import { defineStore } from 'pinia'
 import store from '@/store'
+import sysRoutes from '@/router/system_setting'
+import dashRoutes from '@/router/dash'
 
 /**
  * 匹配 router：name，生成新的router
@@ -30,7 +32,11 @@ export function filterAsyncRoutes(routes: any[], routes_map: string[]) {
     if (hasPermission(routes_map, tmp)) {
       if (tmp.children) {
         tmp.children = filterAsyncRoutes(tmp.children, routes_map)
-        if (tmp.children.length) tmp.redirect = tmp.children[0].path
+
+        // fix: redirect hide router
+        if (tmp.path !== '/' && tmp.path) {
+          if (tmp.children.length) tmp.redirect = `${tmp.path}/${tmp.children[0].path}`
+        }
       }
       res.push(tmp)
     }
@@ -43,19 +49,20 @@ export function filterAsyncRoutes(routes: any[], routes_map: string[]) {
  * constantRouterMap : 公共路由，比如login ，404，500
  * asyncRouterMap ：   动态需添加路由，自定义加权限
  */
-const state = {
-  routers: [],
-  addRouters: []
-}
+
 
 interface PermissionState {
   routers: any[]
-  addRouters: any[]
+  systemRouters: any[]
+  dashRouters: any[],
+  addRouters: any[],
 }
 
 export const usePermissionStore = defineStore('app-permission', {
   state: (): PermissionState => ({
     routers: [],
+    systemRouters: [],
+    dashRouters: [],
     addRouters: []
   }),
   getters: {
@@ -67,7 +74,17 @@ export const usePermissionStore = defineStore('app-permission', {
     generateRoutes(data: string[]) {
       const accessedRoutes = filterAsyncRoutes(asyncRoutes, data)
       this.addRouters = accessedRoutes
-      this.routers = basicRoutes.concat(accessedRoutes)
+      this.routers = accessedRoutes
+      return accessedRoutes
+    },
+    generateSystemRoutes(data: string[]) {
+      const accessedRoutes = filterAsyncRoutes(sysRoutes, data)
+      this.systemRouters = accessedRoutes
+      return accessedRoutes
+    },
+    generateDashRoutes(data: string[]) {
+      const accessedRoutes = filterAsyncRoutes(dashRoutes, data)
+      this.dashRouters = accessedRoutes
       return accessedRoutes
     }
   }

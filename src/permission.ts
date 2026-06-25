@@ -1,20 +1,45 @@
 import NProgress from '@/utils/progress'
-import { resetRouter } from './router'
-import { getUserInfo } from '@/api/user/auth'
 import { useUserStoreWithOut } from '@/store/modules/user'
-import { usePermissionStoreWithOut } from '@/store/modules/permission'
-import type { Router } from 'vue-router'
+import type { NavigationGuardNext, RouteLocationNormalized, Router } from 'vue-router'
 import { getPageTitle } from '@/utils/get-page-title'
-import { useMenuStoreWithOut } from '@/store/modules/menu'
+import { loadUserSessionAndRoutes, resolvePostLoginTarget, resolveRouterModuleByRouteName } from '@/permission_util'
+import { useRouterMStore } from '@/store/modules/router'
 
 const whiteList = ['/login']
-const permissionStore = usePermissionStoreWithOut()
 const userStore = useUserStoreWithOut()
-const menuStore = useMenuStoreWithOut()
+const routerMStore = useRouterMStore()
+
+const isNotFoundRoute = (to: RouteLocationNormalized): boolean => {
+  // 404 是 `/:pathMatch(.*)` 且通常无 name
+  return !to.matched?.length || to.matched.some(r => r.path === '/:pathMatch(.*)')
+}
+
+const redirectToFirstAccessible = (
+  next: NavigationGuardNext,
+  replace = true
+): void => {
+  const target = resolvePostLoginTarget()
+  if ('path' in target) {
+    next({ path: target.path, replace })
+  } else {
+    routerMStore.setCurrentRouterModule(target.module)
+    next({ name: target.name, replace })
+  }
+}
 
 export const setupPermissionRouter = (router: Router) => {
-  router.beforeEach(async (to, _from, next) => {
+  router.beforeEach(async (to: RouteLocationNormalized, _from: RouteLocationNormalized, next: NavigationGuardNext) => {
     NProgress.start()
+
+    // 动态修改 term 开头的路由 title
+    if (to.name?.toString().startsWith('Term')) {
+      const protocol = to.query.protocol
+      to.meta.title = protocol ? `${protocol} ${to.meta.title}` : to.meta.title
+    }
+
+    if (to.query.activeMenu) {
+      to.meta.activeMenu = to.query.activeMenu
+    }
 
     // set page title
     document.title = getPageTitle(to.meta.title)
@@ -27,48 +52,58 @@ export const setupPermissionRouter = (router: Router) => {
       return
     }
 
-    if (to.path === '/login') {
-      next({ path: '/' })
+    if (whiteList.includes(to.path)) {
+      // 已登录再进登录相关页面：按权限落到非 hidden 的首屏，避免固定 `/`
+      redirectToFirstAccessible(next)
       NProgress.done()
       return
     }
 
     if (username) {
+      // 已有用户信息：访问根路径但无 Dashboard（会命中 404）时，跳到首个可访问页面
+      if (to.path === '/' && isNotFoundRoute(to)) {
+        redirectToFirstAccessible(next)
+        NProgress.done()
+        return
+      }
+
+      const module = resolveRouterModuleByRouteName(to.name as string | undefined)
+      if (module) routerMStore.setCurrentRouterModule(module)
       next()
       return
     }
 
     try {
-      const user = await getUserInfo()
-      userStore.setUserInfo(user)
-      // generate accessible routes map based on roles
-      const menus: string[] = [] // menus = ["Apis"] // 此menus 可通過接口獲得
-      menuStore.setMenuNames(menus)
+      const menu_names = await loadUserSessionAndRoutes(router, '')
 
-      // generate accessible routes map based on roles
-      const accessRoutes = permissionStore.generateRoutes(menus)
-      // dynamically add accessible routes
-      resetRouter()
-      accessRoutes.forEach(val => {
-        router.addRoute(val)
-      })
-      if (menus.includes(<string>to.name)) {
+      if (menu_names.includes(<string>to.name)) {
         next(`/401`)
         NProgress.done()
         return
       }
+
+      // 权限路由已注入：若根路径仍命中 404，说明没首页权限，改为跳到首个可访问页面
+      if (to.path === '/' && isNotFoundRoute(to)) {
+        redirectToFirstAccessible(next)
+        NProgress.done()
+        return
+      }
+
+      const module = resolveRouterModuleByRouteName(to.name as string | undefined)
+      if (module) routerMStore.setCurrentRouterModule(module)
 
       next({ ...to, replace: true })
     } catch (error) {
       console.log('err:', error)
       // remove token and go to login page to re-login
       userStore.removeUserStore()
+      localStorage.setItem('remove_user_store', 'permission err')
       next(`/login`)
       NProgress.done()
     }
   })
 
-  router.afterEach(guard => {
+  router.afterEach(() => {
     NProgress.done()
   })
 }

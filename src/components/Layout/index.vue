@@ -1,119 +1,129 @@
 <template>
   <div :class="classes" class="app-wrapper">
-    <div v-if="device === 'mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside"></div>
+    <!-- 移动端侧边栏遮罩 -->
+    <Hamburger
+      v-if="device === 'mobile' && currentRouterModule !== 'dash' && !['UserInfo', 'TestCli'].includes(routerName as string)"
+      :is-active="sidebar.opened" class="drawer-bg"
+      @toggleClick="handleClickOutside"></Hamburger>
 
-    <!-- 侧边栏 -->
-    <sidebar class="sidebar-container"></sidebar>
-    <div class="main-container">
-      <navbar />
+    <!-- 顶部导航 -->
+    <Navbar />
 
-      <tags-view></tags-view>
+    <div
+      class="main-container"
+      :class="['Dashboard', 'UserInfo', 'TestCli'].includes(routerName as string) ? 'dash' : 'transition'"
+    >
+      <!-- 侧边栏 -->
+      <Sidebar />
+
       <!-- 主体内容 -->
-      <app-main />
+      <AppMain />
     </div>
+
+
+    <el-drawer v-model="drawer" direction="ltr" :with-header="false" size="230" style="position: fixed;top: 50px"
+               body-class="lfdrawer-body">
+      <LeftSidebar @closeDraw="closeDraw"></LeftSidebar>
+    </el-drawer>
+
   </div>
 </template>
 
-<script lang="ts">
-import { Navbar, AppMain, Sidebar, TagsView } from './components'
-import { ref, reactive, computed, toRefs, watchEffect, onMounted, onBeforeMount } from 'vue'
+<script lang="ts" setup>
+import { ref, computed, onMounted, watchEffect } from 'vue'
+import { useRoute } from 'vue-router'
 import { useEventListener } from '@vueuse/core'
-import settings from '@/settings'
 import { useAppStore } from '@/store/modules/app'
+import { Navbar, AppMain, Sidebar } from './components'
+import Hamburger from '@/components/HamBurger'
+import LeftSidebar from '@/components/Layout/components/sidebar/LeftSidebar.vue'
+import { useRouterMStore } from '@/store/modules/router'
+import { storeToRefs } from 'pinia'
 
-interface setInter {
-  sidebar: any
-  device: string
-  classes: any
-}
+// ---------------------------
+// 常量
+// ---------------------------
+const WIDTH = 992
 
-export default {
-  name: 'layout',
-  components: {
-    TagsView,
-    Navbar,
-    AppMain,
-    Sidebar
-  },
-  setup() {
-    const appStore = useAppStore()
+// ---------------------------
+// Store & Route
+// ---------------------------
+const appStore = useAppStore()
+const route = useRoute()
 
-    const WIDTH = ref(992)
+// ---------------------------
+// 响应式计算属性
+// ---------------------------
+const sidebar = computed(() => appStore.sidebar)
+const device = computed(() => appStore.device)
 
-    const set: setInter = reactive({
-      sidebar: computed(() => {
-        return appStore.sidebar
-      }),
+const classes = computed(() => ({
+  hideSidebar: !sidebar.value.opened,
+  openSidebar: sidebar.value.opened,
+  withoutAnimation: sidebar.value.withoutAnimation,
+  mobile: device.value === 'mobile'
+}))
 
-      device: computed(() => {
-        return appStore.device
-      }),
+const routerName = computed(() => route.name)
 
-      classes: computed(() => {
-        return {
-          hideSidebar: !set.sidebar.opened,
-          openSidebar: set.sidebar.opened,
-          withoutAnimation: set.sidebar.withoutAnimation,
-          mobile: set.device === 'mobile'
-        }
-      })
-    })
+// ---------------------------
+// 方法
+// ---------------------------
+// 判断是否移动端
+const isMobile = () => document.body.getBoundingClientRect().width - 1 < WIDTH
 
-    watchEffect(() => {
-      if (set.device === 'mobile' && !set.sidebar.opened) {
-        appStore.closeSideBar(false)
-      }
-    })
-
-    const handleClickOutside = () => {
-      appStore.closeSideBar(false)
-    }
-
-    const $_isMobile = () => {
-      const rect = document.body.getBoundingClientRect()
-      return rect.width - 1 < WIDTH.value
-    }
-
-    const $_resizeHandler = () => {
-      if (!document.hidden) {
-        const isMobile = $_isMobile()
-        appStore.toggleDevice(isMobile ? 'mobile' : 'desktop')
-
-        if (isMobile) {
-          appStore.closeSideBar(true)
-        }
-      }
-    }
-
-    onMounted(() => {
-      const isMobile = $_isMobile()
-      if (isMobile) {
-        appStore.toggleDevice('mobile')
-        appStore.closeSideBar(true)
-      }
-    })
-
-    onBeforeMount(() => {
-      useEventListener('resize', $_resizeHandler)
-    })
-
-    return {
-      ...toRefs(set),
-      handleClickOutside,
-      settings
-    }
+// 窗口大小变化处理
+const resizeHandler = () => {
+  drawer.value = false
+  if (!document.hidden) {
+    const mobile = isMobile()
+    appStore.toggleDevice(mobile ? 'mobile' : 'desktop')
+    if (mobile) appStore.closeSideBar(true)
   }
 }
+
+// 点击遮罩关闭侧边栏
+const drawer = ref<boolean>(false)
+const handleClickOutside = () => {
+  drawer.value = true
+}
+const closeDraw = () => {
+  drawer.value = false // todo use store 传递
+}
+
+
+// ---------------------------
+// 生命周期
+// ---------------------------
+onMounted(() => {
+  // 初始判断是否移动端
+  const mobile = isMobile()
+  appStore.toggleDevice(mobile ? 'mobile' : 'desktop')
+  if (mobile) appStore.closeSideBar(true)
+
+  // 监听窗口变化
+  useEventListener('resize', resizeHandler)
+})
+
+// 当移动端且侧边栏关闭时，保证状态同步
+watchEffect(() => {
+  if (device.value === 'mobile' && !sidebar.value.opened) {
+    appStore.closeSideBar(false)
+  }
+})
+
+const routerMStore = useRouterMStore()
+const { currentRouterModule } = storeToRefs(routerMStore)
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 @import '@/styles/mixin.scss';
 
 .app-wrapper {
   @include clearfix;
   position: relative;
-  height: 100%;
   width: 100%;
+  height: 100%;
 
   &.mobile.openSidebar {
     position: fixed;
@@ -122,12 +132,20 @@ export default {
 }
 
 .drawer-bg {
-  background: #000;
-  opacity: 0.3;
-  width: 100%;
-  top: 0;
-  height: 100%;
   position: absolute;
-  z-index: 999;
+  float: left;
+  height: 30px;
+  line-height: 25px;
+  margin: 8px;
+  padding: 1px 8px !important;
+  border-radius: 5px;
+  border-color: #1ab394;
+  background-color: #fff;
+  cursor: pointer;
+  -webkit-transition: .2s;
+  transition: .2s;
+  opacity: 1;
 }
+
+
 </style>

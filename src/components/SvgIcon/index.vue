@@ -26,7 +26,7 @@ const svgClass = computed(() => {
 })
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .svg-icon {
   width: 1em;
   height: 1em;

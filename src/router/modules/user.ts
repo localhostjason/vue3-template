@@ -18,7 +18,7 @@ const userRoutes: Array<AppRouteRecordRaw> = [
         component: () => import('@/views/user/list/index.vue'),
         meta: {
           title: '用户列表',
-          icon: 'person'
+          icon: 'v2_user'
         }
       },
       {
@@ -27,7 +27,7 @@ const userRoutes: Array<AppRouteRecordRaw> = [
         component: () => import('@/views/user/test/index.vue'),
         meta: {
           title: '测试',
-          icon: 'list'
+          icon: 'v2_user'
         }
       },
       {

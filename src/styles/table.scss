@@ -1,0 +1,130 @@
+table {
+  .el-button {
+    padding: 0 6px;
+    height: 22px !important;
+  }
+}
+
+.el-table th {
+  background: #f0f6f6 !important;
+}
+
+.el-table {
+  thead {
+    th {
+      height: 36px;
+    }
+  }
+}
+
+.el-table th {
+  background: var(--elem-table-thead-bkg);
+  padding: 5px 0 !important;
+
+  &.is-sortable {
+    padding: 0 !important;
+  }
+}
+
+.el-table thead.is-group th {
+  background: var(--elem-table-thead-bkg);
+  padding: 5px 0 !important;
+}
+
+.el-table--enable-row-hover .el-table__body tr:hover > td {
+  background: var(--elem-table-tbody-bkg-hover);
+}
+
+
+.el-table thead th.el-table__cell.is-leaf {
+  border-bottom: none;
+}
+
+.column-drag-ghost {
+  opacity: 0.5;
+  background-color: #f0f0f0;
+  border: 1px dashed #2f9e9e;
+}
+
+/* 正在拖动的列 */
+.column-drag-dragging {
+  background-color: #e6f7ff;
+  border: 1px solid #2f9e9e;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 鼠标选中列 */
+.column-drag-chosen {
+  outline: 2px solid #2f9e9e;
+}
+
+.el-table:not(.nomove) th.is-leaf:not(:first-child):not(:last-child):hover {
+  background-color: #f5f7fa;
+}
+
+
+.full-width-table {
+
+
+  &.el-table--border tbody .el-table__cell {
+    border-right: 0;
+  }
+
+  &.el-table--border:after {
+    width: 0;
+  }
+
+  &.el-table--border:before {
+    width: 0;
+  }
+
+  &.el-table--border .el-table__inner-wrapper:after {
+    height: 0;
+  }
+
+  .el-table__border-left-patch {
+    width: 0;
+  }
+
+
+  thead th.el-table__cell {
+    position: relative;
+    border-right: none; /* 去掉原有 border */
+  }
+
+  /* 默认：只中间列生效（排除首列和末列） */
+  thead th.el-table__cell:not(:first-child):not(:last-child):hover::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    bottom: 8px;
+    right: 0;
+    width: 2px;
+    background-color: #2f9e9e;
+    opacity: 1;
+    transition: opacity 0.2s;
+  }
+
+  /* 当存在 .not-child 时，不排除首列和末列 */
+  &.not-child {
+    thead th.el-table__cell:hover::after {
+      content: '';
+      position: absolute;
+      top: 8px;
+      bottom: 8px;
+      right: 0;
+      width: 2px;
+      background-color: #2f9e9e;
+      opacity: 1;
+      transition: opacity 0.2s;
+    }
+  }
+
+
+  /* 默认隐藏竖线 */
+  thead th.el-table__cell::after {
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+}
+

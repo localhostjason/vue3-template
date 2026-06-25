@@ -1,50 +1,53 @@
 <template>
-  <div v-if="!item.hidden && item.children && item.children.filter(v => !v.hidden).length" class="menu-wrapper">
-    <template v-if="hasOneShowingChild(item.children) && !onlyOneChild.children">
-      <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
-        <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{ 'submenu-title-noDropdown': !isNest }">
-          <svg-icon
-            class="font_icon"
-            v-if="onlyOneChild.meta && onlyOneChild.meta.icon"
-            :icon-class="onlyOneChild.meta.icon"
-          ></svg-icon>
-          <template #title>
-            <span>{{ onlyOneChild.meta.title }}</span>
-          </template>
-        </el-menu-item>
-      </app-link>
-    </template>
+  <div
+    v-if="!item.hidden && item.children && item.children.filter((v:any) => !v.hidden).length"
+    class="menu-wrapper"
+    :class="{ collapse: isCollapse }"
+  >
 
-    <el-sub-menu v-else ref="subMenu" :index="resolvePath(item.path)" teleported>
-      <template #title>
-        <svg-icon class="font_icon" v-if="item.meta && item.meta.icon" :icon-class="item.meta.icon" />
-        <span v-if="item.meta && item.meta.title && sidebar.opened">{{ item.meta.title }}</span>
-      </template>
+    <!-- 一级标题：折叠时隐藏 -->
+    <div class="menu-group-title" v-if="item.meta?.title && !isCollapse">
+      <span>{{ item.meta?.title }}</span>
+    </div>
 
-      <template v-for="child in item.children.filter(v => !v.hidden)">
+    <!-- 二级菜单 -->
+    <div class="menu-group-items">
+      <template v-for="child in item.children.filter((v: any) => !v.hidden)" :key="child.path">
+
+        <!-- 递归子菜单 -->
         <sidebar-item
-          v-if="child.children && child.children.length > 0"
-          :is-nest="true"
+          v-if="child.children && child.children.length"
           :item="child"
-          :key="child.path"
+          :is-nest="true"
           :base-path="resolvePath(child.path)"
           class="nest-menu"
-        ></sidebar-item>
+        />
 
-        <router-link v-else :to="resolvePath(child.path)" :key="child.name">
-          <el-menu-item :index="resolvePath(child.path)">
-            <svg-icon class="font_icon" v-if="child.meta && child.meta.icon" :icon-class="child.meta.icon"></svg-icon>
-            <span v-if="child.meta && child.meta.title">{{ child.meta.title }}</span>
-          </el-menu-item>
+        <!-- 普通菜单 -->
+        <router-link v-else :to="resolvePath(child.path)">
+          <el-tooltip
+            placement="right"
+            :disabled="!isCollapse"
+            :content="child.meta?.title"
+          >
+            <el-menu-item :index="resolvePath(child.path)" class="menu-item">
+              <svg-icon v-if="child.meta?.icon" :icon-class="child.meta.icon" />
+
+              <!--  文字在折叠时隐藏 -->
+              <span v-show="!isCollapse">
+                {{ child.meta?.title }}
+              </span>
+            </el-menu-item>
+          </el-tooltip>
         </router-link>
       </template>
-    </el-sub-menu>
+    </div>
   </div>
 </template>
 
+
 <script lang="ts" setup>
-import { ref } from 'vue'
-import AppLink from './Link.vue'
+import { computed, ref } from 'vue'
 import { AppRouteRecordRaw } from '@/router/types'
 import { useAppStore } from '@/store/modules/app'
 import { storeToRefs } from 'pinia'
@@ -67,6 +70,7 @@ const props = defineProps({
 
 const appStore = useAppStore()
 const { sidebar } = storeToRefs(appStore)
+const isCollapse = computed(() => !sidebar.value.opened)
 
 const onlyOneChild = ref<AppRouteRecordRaw>({} as any)
 
@@ -91,15 +95,52 @@ function hasOneShowingChild(children: AppRouteRecordRaw[] = []) {
 
 <style rel="" lang="scss" scoped>
 .menu-wrapper {
-  .font_icon {
-    width: 12px;
-    height: 12px;
-    vertical-align: -0.15em;
-    fill: currentColor;
-    /*overflow: hidden;*/
-    margin-right: 16px;
-    position: relative;
-    bottom: 1px;
+
+  /* 一级标题 */
+  .menu-group-title {
+    font-size: 11px;
+    font-weight: bold;
+    color: rgb(107 114 128 / 87%);
+    padding: 12px 20px 6px 20px;
+  }
+
+  .menu-group-items {
+    .menu-item {
+      padding-left: 40px !important;
+      height: 38px;
+      display: flex;
+      align-items: center;
+
+      svg {
+        margin-right: 10px;
+        font-size: 14px;
+      }
+    }
+  }
+
+  /* 折叠模式  */
+  &.collapse {
+
+    /* 隐藏一级标题 */
+    .menu-group-title {
+      display: none;
+    }
+
+    /* 图标居中、隐藏文字 */
+    .menu-item {
+      padding-left: 0 !important;
+      justify-content: center;
+
+      svg {
+        margin-right: -16px;
+      }
+
+      span {
+        display: none !important; /* 隐藏文字 */
+      }
+    }
   }
 }
+
+
 </style>

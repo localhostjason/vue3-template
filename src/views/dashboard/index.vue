@@ -9,9 +9,9 @@
 </template>
 
 <script setup lang="ts">
-import DashHeader from './components/DashHeader'
-import DashBody from './components/DashBody'
-import DashFoot from './components/DashFoot'
+import DashHeader from './components/DashHeader.vue'
+import DashBody from './components/DashBody.vue'
+import DashFoot from './components/DashFoot.vue'
 </script>
 
 <style lang="scss" scoped>
@@ -24,7 +24,7 @@ import DashFoot from './components/DashFoot'
   margin: 0 -15px;
 
   .dash-panel {
-    padding: 20px;
+    padding: 10px 20px 20px 20px;
   }
 }
 </style>

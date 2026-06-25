@@ -35,6 +35,17 @@ export const getFormDataByFields = (fields: any, keys: string[]): object => {
   return data
 }
 
+export function getFieldFormArray(val: any[], field = 'id') {
+  const result = []
+  if (val && val.length) {
+    for (const v of val) {
+      result.push(v[field])
+    }
+  }
+  return result
+}
+
+
 export function formatPrice(price: number) {
   try {
     return String(price).replace(/\B(?=(\d{3})+(?!\d))/g, ',')

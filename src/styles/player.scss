@@ -1,0 +1,16 @@
+.ap-overlay-error {
+  background-image: url('@/assets/failure.png');
+  background-size: 30% 43%;
+  background-position: center;
+  text-align: center;
+  color: white;
+  font-size: 18px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  span {
+    display: none;
+  }
+}
