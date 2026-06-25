@@ -44,6 +44,7 @@ import { storeToRefs } from 'pinia'
 // 常量
 // ---------------------------
 const WIDTH = 992
+const COLLAPSE_WIDTH = 1400
 
 // ---------------------------
 // Store & Route
@@ -76,9 +77,14 @@ const isMobile = () => document.body.getBoundingClientRect().width - 1 < WIDTH
 const resizeHandler = () => {
   drawer.value = false
   if (!document.hidden) {
-    const mobile = isMobile()
+    const width = document.body.getBoundingClientRect().width
+    const mobile = width < WIDTH
     appStore.toggleDevice(mobile ? 'mobile' : 'desktop')
-    if (mobile) appStore.closeSideBar(true)
+    if (mobile) {
+      appStore.closeSideBar(true)
+    } else if (width < COLLAPSE_WIDTH && sidebar.value.opened) {
+      appStore.closeSideBar(true)
+    }
   }
 }
 
