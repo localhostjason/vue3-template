@@ -83,7 +83,7 @@
 
 <script setup lang="ts">
 import PanelTitle from '@/components/PanelTitle'
-import { nextTick, reactive, ref } from 'vue'
+import { computed, nextTick, reactive, ref } from 'vue'
 import { getUsers } from '@/api/user/users'
 import { confirmWarning } from '@/utils/element/messageBox'
 import { User, UserState } from '@/views/user/list/type'
@@ -95,6 +95,8 @@ import CommonTableColumn from '@/views/common/table_column/CommonTableColumn.vue
 import { UserColumnKey } from '@/views/common/table_column/data/user'
 import ModifyUser from '@/views/user/list/ModifyUser.vue'
 import UserDetail from '@/views/user/list/UserDetail.vue'
+import { getTableDragColumn, useTableColumnDrag } from '@/utils/composables/useTableColumnDrag'
+import { useTableColumnStore } from '@/store/modules/table_column'
 
 const pageQuery = ref<PageQuery>({})
 const args = ref<any>({})
@@ -186,6 +188,22 @@ const initialize = async (): Promise<void> => {
 }
 
 initialize()
+
+
+const tableRef = ref<any>(null)
+const tableColumnStore = useTableColumnStore()
+const _data = computed(() => {
+  return tableColumnStore.getSelectedColumn
+})
+
+useTableColumnDrag({
+  tableRef,
+  columns: getTableDragColumn(UserColumnKey, _data),
+  columnKey: UserColumnKey,
+  onChange(fields) {
+    tableColumnStore.setSelectedColumnOrder(UserColumnKey, fields)
+  }
+})
 </script>
 
 <style scoped></style>
