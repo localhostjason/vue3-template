@@ -1,7 +1,8 @@
-import { onMounted, onBeforeUnmount, nextTick, watch, Ref, computed } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, Ref, watch } from 'vue'
 import Sortable from 'sortablejs'
 import { getDefaultColumns, tableColumnMap } from '@/views/common/table_column/data/tableColumnMap'
 import { Column } from '@/views/common/table_column/data/types'
+import { useTableColumnStore } from '@/store/modules/table_column'
 
 interface UseTableColumnDragOptions<T = any> {
   /** el-table ref */
@@ -127,4 +128,39 @@ export function useTableColumnDrag<T = any>(
     sortable?.destroy()
     sortable = null
   })
+}
+
+/**
+ * 表格列拖拽 + 列宽自适应的组合函数，封装了常用样板代码
+ *
+ * 用法：const { tableRef } = useTableDragable(UserColumnKey)
+ *
+ * @param key     - 表格 column key
+ * @param options - 可选配置 { dk, disabled, firstLastField }
+ * @returns { tableRef }
+ */
+export function useTableDragable(
+  key: string,
+  options?: {
+    dk?: string
+    disabled?: boolean
+    firstLastField?: boolean
+  }
+) {
+  const tableRef = ref<any>(null)
+  const tableColumnStore = useTableColumnStore()
+  const _data = computed(() => tableColumnStore.getSelectedColumn)
+
+  useTableColumnDrag({
+    tableRef,
+    columns: getTableDragColumn(key, _data, options?.dk),
+    columnKey: key,
+    disabled: options?.disabled,
+    firstLastField: options?.firstLastField ?? true,
+    onChange(fields) {
+      tableColumnStore.setSelectedColumnOrder(key, fields)
+    }
+  })
+
+  return { tableRef }
 }
